@@ -31,10 +31,10 @@ public class Station implements Serializable {
     private ArrayList<Navette> listeNavettes;
     
     @OneToOne(mappedBy = "stationDepart")
-    private Trajet trajetDepart;
+    private Trajet trajet1;
     
     @OneToOne(mappedBy = "stationArrivee")
-    private Trajet trajetArrivee;
+    private Trajet trajet2;
     
     public Station() {
     }
@@ -48,19 +48,19 @@ public class Station implements Serializable {
     }
     
     public Trajet getTrajetDepart() {
-        return trajetDepart;
+        return trajet1;
     }
 
     public void setTrajetDepart(Trajet trajetDepart) {
-        this.trajetDepart = trajetDepart;
+        this.trajet1 = trajetDepart;
     }
 
     public Trajet getTrajetArrivee() {
-        return trajetArrivee;
+        return trajet2;
     }
 
     public void setTrajetArrivee(Trajet trajetArrivee) {
-        this.trajetArrivee = trajetArrivee;
+        this.trajet2 = trajetArrivee;
     }
     
     
