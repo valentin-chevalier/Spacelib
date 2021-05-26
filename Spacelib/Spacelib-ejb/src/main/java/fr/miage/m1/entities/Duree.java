@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -27,6 +28,11 @@ public class Duree implements Serializable {
     private Long idStation2;
     private int duree;
 
+    @OneToOne
+    public Station station1;
+    @OneToOne
+    public Station station2;
+    
     public Duree() {
     }
 
@@ -35,6 +41,46 @@ public class Duree implements Serializable {
         this.idStation1 = idStation1;
         this.idStation2 = idStation2;
         this.duree = duree;
+    }
+
+    public Long getIdStation1() {
+        return idStation1;
+    }
+
+    public void setIdStation1(Long idStation1) {
+        this.idStation1 = idStation1;
+    }
+
+    public Long getIdStation2() {
+        return idStation2;
+    }
+
+    public void setIdStation2(Long idStation2) {
+        this.idStation2 = idStation2;
+    }
+
+    public int getDuree() {
+        return duree;
+    }
+
+    public void setDuree(int duree) {
+        this.duree = duree;
+    }
+
+    public Station getStation1() {
+        return station1;
+    }
+
+    public void setStation1(Station station1) {
+        this.station1 = station1;
+    }
+
+    public Station getStation2() {
+        return station2;
+    }
+
+    public void setStation2(Station station2) {
+        this.station2 = station2;
     }
     
 

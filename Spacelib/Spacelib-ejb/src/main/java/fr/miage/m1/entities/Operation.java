@@ -6,6 +6,7 @@
 package fr.miage.m1.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +24,24 @@ public class Operation implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private Date dateCreationOperation;
+
+    public Operation() {
+    }
+
+    public Operation(Long id, Date dateCreationOperation) {
+        this.id = id;
+        this.dateCreationOperation = dateCreationOperation;
+    }
+
+    public Date getDateCreationOperation() {
+        return dateCreationOperation;
+    }
+
+    public void setDateCreationOperation(Date dateCreationOperation) {
+        this.dateCreationOperation = dateCreationOperation;
+    }
+    
     public Long getId() {
         return id;
     }

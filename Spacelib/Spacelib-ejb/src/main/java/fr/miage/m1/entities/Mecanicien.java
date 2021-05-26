@@ -6,10 +6,12 @@
 package fr.miage.m1.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -23,6 +25,9 @@ public class Mecanicien extends Utilisateur implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @OneToMany(mappedBy = "mecanicien")
+    private ArrayList<Reparation> listeReparations;
+    
     public Long getId() {
         return id;
     }
@@ -31,6 +36,14 @@ public class Mecanicien extends Utilisateur implements Serializable {
         this.id = id;
     }
 
+    public ArrayList<Reparation> getListeReparations() {
+        return listeReparations;
+    }
+
+    public void setListeReparations(ArrayList<Reparation> listeReparations) {
+        this.listeReparations = listeReparations;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

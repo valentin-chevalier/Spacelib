@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -28,7 +29,13 @@ public class Station implements Serializable {
     private String coordonnees;
     private ArrayList<Quai> listeQuais;
     private ArrayList<Navette> listeNavettes;
-
+    
+    @OneToOne(mappedBy = "stationDepart")
+    private Trajet trajetDepart;
+    
+    @OneToOne(mappedBy = "stationArrivee")
+    private Trajet trajetArrivee;
+    
     public Station() {
     }
 
@@ -38,6 +45,22 @@ public class Station implements Serializable {
         this.coordonnees = coordonnees;
         this.listeQuais = listeQuais;
         this.listeNavettes = listeNavettes;
+    }
+    
+    public Trajet getTrajetDepart() {
+        return trajetDepart;
+    }
+
+    public void setTrajetDepart(Trajet trajetDepart) {
+        this.trajetDepart = trajetDepart;
+    }
+
+    public Trajet getTrajetArrivee() {
+        return trajetArrivee;
+    }
+
+    public void setTrajetArrivee(Trajet trajetArrivee) {
+        this.trajetArrivee = trajetArrivee;
     }
     
     
