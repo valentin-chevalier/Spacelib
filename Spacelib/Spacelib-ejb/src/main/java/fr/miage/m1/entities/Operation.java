@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -23,6 +24,21 @@ public class Operation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Date dateOperation;
+    private Long idNavette;
+
+    @ManyToOne
+    public Navette navette;
+
+    public Operation() {
+    }
+
+    public Operation(Long id, Date dateOperation, Long idNavette, Navette navette) {
+        this.id = id;
+        this.dateOperation = dateOperation;
+        this.idNavette = idNavette;
+        this.navette = navette;
+    }
 
     private Date dateCreationOperation;
 
@@ -74,5 +90,30 @@ public class Operation implements Serializable {
     public String toString() {
         return "fr.miage.m1.entities.Operation[ id=" + id + " ]";
     }
+
+    public Date getDateOperation() {
+        return dateOperation;
+    }
+
+    public void setDateOperation(Date dateOperation) {
+        this.dateOperation = dateOperation;
+    }
+
+    public Long getIdNavette() {
+        return idNavette;
+    }
+
+    public void setIdNavette(Long idNavette) {
+        this.idNavette = idNavette;
+    }
+
+    public Navette getNavette() {
+        return navette;
+    }
+
+    public void setNavette(Navette navette) {
+        this.navette = navette;
+    }
+    
     
 }
