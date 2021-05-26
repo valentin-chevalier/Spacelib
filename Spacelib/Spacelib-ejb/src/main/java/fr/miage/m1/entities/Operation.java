@@ -39,16 +39,8 @@ public class Operation implements Serializable {
         this.idNavette = idNavette;
         this.navette = navette;
     }
-
+   
     private Date dateCreationOperation;
-
-    public Operation() {
-    }
-
-    public Operation(Long id, Date dateCreationOperation) {
-        this.id = id;
-        this.dateCreationOperation = dateCreationOperation;
-    }
 
     public Date getDateCreationOperation() {
         return dateCreationOperation;
