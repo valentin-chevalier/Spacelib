@@ -22,6 +22,21 @@ public class Duree implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    private Long idStation1;
+    private Long idStation2;
+    private int duree;
+
+    public Duree() {
+    }
+
+    public Duree(Long id, Long idStation1, Long idStation2, int duree) {
+        this.id = id;
+        this.idStation1 = idStation1;
+        this.idStation2 = idStation2;
+        this.duree = duree;
+    }
+    
 
     public Long getId() {
         return id;
