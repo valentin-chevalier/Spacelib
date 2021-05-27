@@ -24,8 +24,6 @@ public class Duree implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private Long idStation1;
-    private Long idStation2;
     private int duree;
 
     @OneToOne
@@ -36,27 +34,11 @@ public class Duree implements Serializable {
     public Duree() {
     }
 
-    public Duree(Long id, Long idStation1, Long idStation2, int duree) {
+    public Duree(Long id, int duree, Station station1, Station station2) {
         this.id = id;
-        this.idStation1 = idStation1;
-        this.idStation2 = idStation2;
         this.duree = duree;
-    }
-
-    public Long getIdStation1() {
-        return idStation1;
-    }
-
-    public void setIdStation1(Long idStation1) {
-        this.idStation1 = idStation1;
-    }
-
-    public Long getIdStation2() {
-        return idStation2;
-    }
-
-    public void setIdStation2(Long idStation2) {
-        this.idStation2 = idStation2;
+        this.station1 = station1;
+        this.station2 = station2;
     }
 
     public int getDuree() {

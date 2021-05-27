@@ -25,7 +25,6 @@ public class Operation implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Date dateOperation;
-    private Long idNavette;
 
     @ManyToOne
     public Navette navette;
@@ -36,7 +35,6 @@ public class Operation implements Serializable {
     public Operation(Long id, Date dateOperation, Long idNavette, Navette navette) {
         this.id = id;
         this.dateOperation = dateOperation;
-        this.idNavette = idNavette;
         this.navette = navette;
     }
    
@@ -89,14 +87,6 @@ public class Operation implements Serializable {
 
     public void setDateOperation(Date dateOperation) {
         this.dateOperation = dateOperation;
-    }
-
-    public Long getIdNavette() {
-        return idNavette;
-    }
-
-    public void setIdNavette(Long idNavette) {
-        this.idNavette = idNavette;
     }
 
     public Navette getNavette() {
