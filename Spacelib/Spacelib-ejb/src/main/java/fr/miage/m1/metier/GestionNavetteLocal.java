@@ -3,36 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.miage.m1.facades;
+package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Navette;
+import fr.miage.m1.entities.Operation;
 import fr.miage.m1.entities.Quai;
-import java.util.List;
+import java.util.ArrayList;
 import javax.ejb.Local;
 
 /**
  *
- * @author Valentin
+ * @author Flo
  */
 @Local
-public interface NavetteFacadeLocal {
-
-    void create(Navette navette);
-
-    void edit(Navette navette);
-
-    void remove(Navette navette);
-
-    Navette find(Object id);
-
-    List<Navette> findAll();
-
-    List<Navette> findRange(int[] range);
-
-    int count();
-    
+public interface GestionNavetteLocal {
+ 
     public void creerNavette(boolean estEnRevision, int nbVoyages, int capacite, Quai quai);
-
+    
     public Navette getNavette(Long idNavette);
-
 }

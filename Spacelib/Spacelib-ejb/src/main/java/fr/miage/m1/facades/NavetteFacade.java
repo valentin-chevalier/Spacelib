@@ -6,6 +6,9 @@
 package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Navette;
+import fr.miage.m1.entities.Operation;
+import fr.miage.m1.entities.Quai;
+import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,4 +32,18 @@ public class NavetteFacade extends AbstractFacade<Navette> implements NavetteFac
         super(Navette.class);
     }
     
+    @Override
+    public void creerNavette(boolean estEnRevision, int nbVoyages, int capacite, Quai quai){
+       Navette navette = new Navette();
+       navette.setListeOperations(new ArrayList<Operation>());
+       navette.setEstEnRevision(estEnRevision);
+       navette.setNbVoyages(nbVoyages);
+       navette.setCapacite(capacite);
+       navette.setQuai(new Quai());
+    }
+    
+    @Override
+    public Navette getNavette(Long idNavette) {
+        return this.find(idNavette);
+    }
 }
