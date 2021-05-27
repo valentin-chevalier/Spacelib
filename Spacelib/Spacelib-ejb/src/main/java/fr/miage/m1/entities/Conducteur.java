@@ -23,6 +23,9 @@ public class Conducteur implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    public Conducteur() {
+    }
+
     public Long getId() {
         return id;
     }

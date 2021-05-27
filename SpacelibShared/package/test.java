@@ -3,17 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.miage.m1.ws;
-
-import javax.ejb.Stateless;
 
 /**
  *
- * @author Valentin
+ * @author Flo
  */
-@Stateless
 public class test {
-
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    
 }

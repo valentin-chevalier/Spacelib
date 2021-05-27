@@ -31,6 +31,9 @@ public class Usager extends Utilisateur implements Serializable {
         this.id = id;
     }
 
+    public Usager() {
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

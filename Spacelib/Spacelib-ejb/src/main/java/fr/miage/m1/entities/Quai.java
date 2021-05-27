@@ -30,6 +30,34 @@ public class Quai implements Serializable {
     
     @OneToOne
     public Station station;
+
+    public Quai() {
+    }
+
+    public int getNoQuai() {
+        return noQuai;
+    }
+
+    public void setNoQuai(int noQuai) {
+        this.noQuai = noQuai;
+    }
+
+    public boolean isEstLibre() {
+        return estLibre;
+    }
+
+    public void setEstLibre(boolean estLibre) {
+        this.estLibre = estLibre;
+    }
+
+    public Station getStation() {
+        return station;
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
+    }
+    
     
     public Long getId() {
         return id;

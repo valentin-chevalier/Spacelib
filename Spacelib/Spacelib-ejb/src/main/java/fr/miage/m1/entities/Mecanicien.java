@@ -27,6 +27,9 @@ public class Mecanicien extends Utilisateur implements Serializable {
 
     @OneToMany(mappedBy = "mecanicien")
     private ArrayList<Reparation> listeReparations;
+
+    public Mecanicien() {
+    }
     
     public Long getId() {
         return id;
