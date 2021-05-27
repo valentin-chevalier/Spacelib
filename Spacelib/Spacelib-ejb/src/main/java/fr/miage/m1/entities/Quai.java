@@ -25,7 +25,12 @@ public class Quai implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    private int noQuai;
+    private boolean estLibre;
+    
+    @OneToOne
+    public Station station;
+    
     public Long getId() {
         return id;
     }

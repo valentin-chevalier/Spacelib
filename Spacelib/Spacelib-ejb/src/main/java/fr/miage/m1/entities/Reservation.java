@@ -57,7 +57,7 @@ public class Reservation implements Serializable {
         this.quaiDepart = quaiDepart;
         this.quaiArrivee = quaiArrivee;
     }
-
+    
     public Navette getNavette() {
         return navette;
     }

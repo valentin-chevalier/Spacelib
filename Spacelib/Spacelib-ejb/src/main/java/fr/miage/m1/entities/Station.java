@@ -29,7 +29,9 @@ public class Station implements Serializable {
     
     private String nom;
     private String coordonnees;
+    @OneToMany
     private ArrayList<Quai> listeQuais;
+    @OneToMany
     private ArrayList<Navette> listeNavettes;
     
     @OneToOne(mappedBy = "stationDepart")

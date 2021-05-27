@@ -28,24 +28,33 @@ public class Navette implements Serializable {
     private boolean estEnRevision;
     private int nbVoyages;
     private int capacite;
-    private int idQUai;
+    
+    @OneToOne
+    public Quai quai;
+    
     @OneToMany(mappedBy = "navette")
     private ArrayList<Operation> listeOperations;
     
     public Navette() {
     }
 
-    public Navette(Long id, boolean estEnRevision, int nbVoyages, int capacite, ArrayList<Operation> listeOperations, int idQUai) {
+    public Navette(Long id, boolean estEnRevision, int nbVoyages, int capacite, Quai quai, ArrayList<Operation> listeOperations) {
         this.id = id;
         this.estEnRevision = estEnRevision;
         this.nbVoyages = nbVoyages;
         this.capacite = capacite;
+        this.quai = quai;
         this.listeOperations = listeOperations;
-        this.idQUai = idQUai;
+    }
+
+    public Quai getQuai() {
+        return quai;
+    }
+
+    public void setQuai(Quai quai) {
+        this.quai = quai;
     }
     
-    
-
     public Long getId() {
         return id;
     }
@@ -109,14 +118,6 @@ public class Navette implements Serializable {
 
     public void setListeOperations(ArrayList<Operation> listeOperations) {
         this.listeOperations = listeOperations;
-    }
-
-    public int getIdQUai() {
-        return idQUai;
-    }
-
-    public void setIdQUai(int idQUai) {
-        this.idQUai = idQUai;
     }
     
 }
