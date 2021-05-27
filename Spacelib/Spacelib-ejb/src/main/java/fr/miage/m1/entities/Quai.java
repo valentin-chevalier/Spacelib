@@ -6,10 +6,12 @@
 package fr.miage.m1.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -18,12 +20,6 @@ import javax.persistence.OneToOne;
  */
 @Entity
 public class Quai implements Serializable {
-
-    @OneToOne(mappedBy = "quaiArrivee")
-    private Trajet trajetQuaiArrivee;
-
-    @OneToOne(mappedBy = "quaiDepart")
-    private Trajet trajetQuaiDepart;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,23 +33,6 @@ public class Quai implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Trajet getTrajetQuaiArrivee() {
-        return trajetQuaiArrivee;
-    }
-
-    public void setTrajetQuaiArrivee(Trajet trajetQuaiArrivee) {
-        this.trajetQuaiArrivee = trajetQuaiArrivee;
-    }
-
-    public Trajet getTrajetQuaiDepart() {
-        return trajetQuaiDepart;
-    }
-
-    public void setTrajetQuaiDepart(Trajet trajetQuaiDepart) {
-        this.trajetQuaiDepart = trajetQuaiDepart;
-    }
-
     
     @Override
     public int hashCode() {

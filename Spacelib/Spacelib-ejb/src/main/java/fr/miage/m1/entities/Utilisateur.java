@@ -29,8 +29,6 @@ public class Utilisateur implements Serializable {
     private String nom;
     private String mail;
     private String mdp; 
-    @OneToMany(mappedBy = "utilisateur")
-    private List<Trajet> trajets;
 
     public Utilisateur(){
         

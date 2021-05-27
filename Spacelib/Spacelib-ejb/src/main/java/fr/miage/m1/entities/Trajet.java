@@ -37,7 +37,7 @@ public class Trajet implements Serializable {
     public Quai quaiDepart;
     @OneToOne
     public Quai quaiArrivee;
-    @ManyToOne
+    @OneToOne
     public Utilisateur utilisateur;
     
     public Trajet() {
