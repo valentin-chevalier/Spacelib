@@ -3,33 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.miage.m1.facades;
+package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
-import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
- * @author Valentin
+ * @author Flo
  */
 @Local
-public interface QuaiFacadeLocal {
-
-    void create(Quai quai);
-
-    void edit(Quai quai);
-
-    void remove(Quai quai);
-
-    Quai find(Object id);
-
-    List<Quai> findAll();
-
-    List<Quai> findRange(int[] range);
-
-    int count();
+public interface GestionQuaiLocal {
     
     public Quai creerQuai(int noQuai, boolean estLibre, Station station);
     

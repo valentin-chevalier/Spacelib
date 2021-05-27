@@ -34,6 +34,13 @@ public class Quai implements Serializable {
     public Quai() {
     }
 
+    public Quai(Long id, int noQuai, boolean estLibre, Station station) {
+        this.id = id;
+        this.noQuai = noQuai;
+        this.estLibre = estLibre;
+        this.station = station;
+    }
+
     public int getNoQuai() {
         return noQuai;
     }

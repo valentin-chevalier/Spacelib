@@ -5,7 +5,11 @@
  */
 package fr.miage.m1.facades;
 
+import fr.miage.m1.entities.EtatTrajet;
+import fr.miage.m1.entities.Quai;
+import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Trajet;
+import fr.miage.m1.entities.Utilisateur;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +31,25 @@ public class TrajetFacade extends AbstractFacade<Trajet> implements TrajetFacade
 
     public TrajetFacade() {
         super(Trajet.class);
+    }
+
+    @Override
+    public Trajet creerTrajet(Long id, int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) {
+        Trajet trajet = new Trajet();
+        trajet.setEtatTrajet(etatTrajet);
+        trajet.setNbPassagers(nbPassagers);
+        trajet.setQuaiArrivee(quaiArrivee);
+        trajet.setQuaiDepart(quaiDepart);
+        trajet.setStationArrivee(stationArrivee);
+        trajet.setStationDepart(stationDepart);
+        trajet.setUtilisateur(utilisateur);
+        this.create(trajet);
+        return trajet;
+    }
+
+    @Override
+    public Trajet getTrajet(Long idTrajet) {
+        return this.find(idTrajet);
     }
     
 }

@@ -25,7 +25,11 @@ public class Administrateur extends Utilisateur implements Serializable {
 
     public Administrateur() {
     }
-
+    
+    public Administrateur(Long id, String prenom, String nom, String mail, String mdp){
+        super(id, prenom, nom, mail, mdp);
+    }
+    
     public Long getId() {
         return id;
     }

@@ -5,7 +5,9 @@
  */
 package fr.miage.m1.facades;
 
+import fr.miage.m1.entities.Administrateur;
 import fr.miage.m1.entities.Usager;
+import fr.miage.m1.entities.Utilisateur;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +29,22 @@ public class UsagerFacade extends AbstractFacade<Usager> implements UsagerFacade
 
     public UsagerFacade() {
         super(Usager.class);
+    }
+
+    @Override
+    public Usager creerUsager(String prenom, String nom, String mail, String mdp) {
+        Usager user = new Usager();
+        user.setMail(mail);
+        user.setMdp(mdp);
+        user.setNom(nom);
+        user.setPrenom(prenom);
+        this.create(user);
+        return user;
+    }
+
+    @Override
+    public Usager getUsager(Long idUsager) {
+        return this.find(idUsager);
     }
     
 }

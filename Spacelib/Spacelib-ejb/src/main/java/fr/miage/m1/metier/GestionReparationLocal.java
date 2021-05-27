@@ -3,37 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.miage.m1.facades;
+package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Mecanicien;
 import fr.miage.m1.entities.Reparation;
 import java.util.Date;
-import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
- * @author Valentin
+ * @author Flo
  */
 @Local
-public interface ReparationFacadeLocal {
-
-    void create(Reparation reparation);
-
-    void edit(Reparation reparation);
-
-    void remove(Reparation reparation);
-
-    Reparation find(Object id);
-
-    List<Reparation> findAll();
-
-    List<Reparation> findRange(int[] range);
-
-    int count();
-    
+public interface GestionReparationLocal {
+        
     public Reparation creerReparation (Date dateCreationOperation, Mecanicien mecanicien);
     
     public Reparation getReparation(Long idReparation);
-    
 }

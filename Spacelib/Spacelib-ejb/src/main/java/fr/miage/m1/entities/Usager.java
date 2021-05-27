@@ -23,15 +23,18 @@ public class Usager extends Utilisateur implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    public Usager() {
+    }
+    
+    public Usager(Long id, String prenom, String nom, String mail, String mdp){
+        super(id, prenom, nom, mail, mdp);
+    }
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Usager() {
     }
 
     @Override

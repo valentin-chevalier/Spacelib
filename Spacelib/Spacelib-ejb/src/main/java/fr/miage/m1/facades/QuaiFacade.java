@@ -6,6 +6,7 @@
 package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Quai;
+import fr.miage.m1.entities.Station;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +28,21 @@ public class QuaiFacade extends AbstractFacade<Quai> implements QuaiFacadeLocal 
 
     public QuaiFacade() {
         super(Quai.class);
+    }
+
+    @Override
+    public Quai creerQuai(int noQuai, boolean estLibre, Station station) {
+        Quai quai = new Quai();
+        quai.setNoQuai(noQuai);
+        quai.setEstLibre(estLibre);
+        quai.setStation(station);
+        this.create(quai);
+        return quai;
+    }
+
+    @Override
+    public Quai getQuai(int idQuai) {
+        return this.find(idQuai);
     }
     
 }

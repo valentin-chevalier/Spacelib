@@ -3,37 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.miage.m1.facades;
+package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Operation;
 import java.util.Date;
-import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
- * @author Valentin
+ * @author Flo
  */
 @Local
-public interface OperationFacadeLocal {
-
-    void create(Operation operation);
-
-    void edit(Operation operation);
-
-    void remove(Operation operation);
-
-    Operation find(Object id);
-
-    List<Operation> findAll();
-
-    List<Operation> findRange(int[] range);
-
-    int count();
+public interface GestionOperationLocal {
     
     public Operation creerOperation(Date dateOperation, Navette navette);
     
     public Operation getOperation (Long idOperation);
-    
 }

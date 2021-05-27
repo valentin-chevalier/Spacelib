@@ -6,6 +6,8 @@
 package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Mecanicien;
+import fr.miage.m1.entities.Reparation;
+import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +29,23 @@ public class MecanicienFacade extends AbstractFacade<Mecanicien> implements Meca
 
     public MecanicienFacade() {
         super(Mecanicien.class);
+    }
+
+    @Override
+    public Mecanicien creerMecanicien(String prenom, String nom, String mail, String mdp) {
+        Mecanicien mecanicien = new Mecanicien();
+        mecanicien.setMail(mail);
+        mecanicien.setMdp(mdp);
+        mecanicien.setNom(nom);
+        mecanicien.setPrenom(prenom);
+        mecanicien.setListeReparations(new ArrayList<Reparation>());
+        this.create(mecanicien);
+        return mecanicien;
+    }
+
+    @Override
+    public Mecanicien getMecanicien(Long idMecanicien) {
+        return this.find(idMecanicien);
     }
     
 }

@@ -16,7 +16,7 @@ import javax.persistence.Id;
  * @author Valentin
  */
 @Entity
-public class Conducteur implements Serializable {
+public class Conducteur extends Usager implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -26,6 +26,10 @@ public class Conducteur implements Serializable {
     public Conducteur() {
     }
 
+    public Conducteur(Long id, String prenom, String nom, String mail, String mdp){
+        super(id, prenom, nom, mail, mdp);
+    }
+    
     public Long getId() {
         return id;
     }

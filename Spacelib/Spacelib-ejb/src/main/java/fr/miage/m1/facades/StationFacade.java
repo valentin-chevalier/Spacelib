@@ -5,7 +5,11 @@
  */
 package fr.miage.m1.facades;
 
+import fr.miage.m1.entities.Navette;
+import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
+import fr.miage.m1.entities.Trajet;
+import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +31,24 @@ public class StationFacade extends AbstractFacade<Station> implements StationFac
 
     public StationFacade() {
         super(Station.class);
+    }
+
+    @Override
+    public Station creerStation(String nom, String coordonnees, ArrayList<Quai> listeQuais, ArrayList<Navette> listeNavettes, Trajet trajet1, Trajet trajet2) {
+        Station station = new Station();
+        station.setCoordonnees(coordonnees);
+        station.setListeNavettes(new ArrayList<Navette>());
+        station.setListeQuais(new ArrayList<Quai>());
+        station.setNom(nom);
+        station.setTrajet1(trajet1);
+        station.setTrajet2(trajet2);
+        this.create(station);
+        return station;
+    }
+
+    @Override
+    public Station getStation(Long idStation) {
+        return this.find(idStation);
     }
     
 }

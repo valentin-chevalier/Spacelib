@@ -32,7 +32,7 @@ public class Operation implements Serializable {
     public Operation() {
     }
 
-    public Operation(Long id, Date dateOperation, Long idNavette, Navette navette) {
+    public Operation(Long id, Date dateOperation, Navette navette) {
         this.id = id;
         this.dateOperation = dateOperation;
         this.navette = navette;

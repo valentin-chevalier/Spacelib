@@ -3,33 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.miage.m1.facades;
+package fr.miage.m1.metier;
 
-import fr.miage.m1.entities.Conducteur;
 import fr.miage.m1.entities.Mecanicien;
-import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
- * @author Valentin
+ * @author Flo
  */
 @Local
-public interface MecanicienFacadeLocal {
-
-    void create(Mecanicien mecanicien);
-
-    void edit(Mecanicien mecanicien);
-
-    void remove(Mecanicien mecanicien);
-
-    Mecanicien find(Object id);
-
-    List<Mecanicien> findAll();
-
-    List<Mecanicien> findRange(int[] range);
-
-    int count();
+public interface GestionMecanicienLocal {
     
     public Mecanicien creerMecanicien(String prenom, String nom, String mail, String mdp);
 

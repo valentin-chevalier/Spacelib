@@ -5,8 +5,12 @@
  */
 package fr.miage.m1.metier;
 
+import fr.miage.m1.entities.Navette;
+import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
+import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.facades.StationFacadeLocal;
+import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -21,13 +25,13 @@ public class GestionStation implements GestionStationLocal {
     private StationFacadeLocal stationFacade;
 
     @Override
-    public Station creerStation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Station creerStation(String nom, String coordonnees, ArrayList<Quai> listeQuais, ArrayList<Navette> listeNavettes, Trajet trajet1, Trajet trajet2) {
+        return this.stationFacade.creerStation(nom, coordonnees, listeQuais, listeNavettes, trajet1, trajet2);
     }
 
     @Override
-    public Station getStation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Station getStation(Long idStation){
+        return this.stationFacade.getStation(idStation);
     }
 
    

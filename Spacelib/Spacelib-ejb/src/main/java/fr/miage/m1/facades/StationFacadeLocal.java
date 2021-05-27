@@ -5,7 +5,11 @@
  */
 package fr.miage.m1.facades;
 
+import fr.miage.m1.entities.Navette;
+import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
+import fr.miage.m1.entities.Trajet;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -30,4 +34,7 @@ public interface StationFacadeLocal {
 
     int count();
     
+    public Station creerStation(String nom, String coordonnees, ArrayList<Quai> listeQuais, ArrayList<Navette> listeNavettes, Trajet trajet1, Trajet trajet2);
+    
+    public Station getStation(Long idStation);
 }

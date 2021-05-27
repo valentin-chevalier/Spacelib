@@ -32,7 +32,7 @@ public class Reparation implements Serializable {
     @ManyToOne
     public Mecanicien mecanicien;
     
-    public Reparation(Long id, Date dateCreationOperation) {
+    public Reparation(Long id, Mecanicien mecanicien, Date dateCreationOperation) {
         this.id = id;
         this.dateCreationOperation = dateCreationOperation;
     }

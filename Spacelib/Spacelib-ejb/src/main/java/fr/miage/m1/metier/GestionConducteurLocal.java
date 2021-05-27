@@ -3,35 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.miage.m1.facades;
+package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Conducteur;
-import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
- * @author Valentin
+ * @author Flo
  */
 @Local
-public interface ConducteurFacadeLocal {
-
-    void create(Conducteur conducteur);
-
-    void edit(Conducteur conducteur);
-
-    void remove(Conducteur conducteur);
-
-    Conducteur find(Object id);
-
-    List<Conducteur> findAll();
-
-    List<Conducteur> findRange(int[] range);
-
-    int count();
+public interface GestionConducteurLocal {
     
     public Conducteur creerConducteur(String prenom, String nom, String mail, String mdp);
     
     public Conducteur getConducteur(Long idConducteur);
-    
 }

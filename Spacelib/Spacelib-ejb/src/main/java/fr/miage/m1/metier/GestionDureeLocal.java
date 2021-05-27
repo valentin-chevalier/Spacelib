@@ -3,36 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.miage.m1.facades;
+package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Duree;
 import fr.miage.m1.entities.Station;
-import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
- * @author Valentin
+ * @author Flo
  */
 @Local
-public interface DureeFacadeLocal {
-
-    void create(Duree duree);
-
-    void edit(Duree duree);
-
-    void remove(Duree duree);
-
-    Duree find(Object id);
-
-    List<Duree> findAll();
-
-    List<Duree> findRange(int[] range);
-
-    int count();
+public interface GestionDureeLocal {
     
     public Duree creerDuree(int duree, Station station1, Station station2);
     
     public Duree getDuree(Long idDuree);
-    
 }

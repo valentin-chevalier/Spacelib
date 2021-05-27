@@ -40,9 +40,20 @@ public class Station implements Serializable {
     @OneToOne(mappedBy = "stationArrivee")
     private Trajet trajet2;
     
+    
     public Station() {
     }
 
+    public Station(Long id, String nom, String coordonnees, ArrayList<Quai> listeQuais, ArrayList<Navette> listeNavettes, Trajet trajet1, Trajet trajet2) {
+        this.id = id;
+        this.nom = nom;
+        this.coordonnees = coordonnees;
+        this.listeQuais = listeQuais;
+        this.listeNavettes = listeNavettes;
+        this.trajet1 = trajet1;
+        this.trajet2 = trajet2;
+    }
+    
     public Trajet getTrajet1() {
         return trajet1;
     }
@@ -58,33 +69,7 @@ public class Station implements Serializable {
     public void setTrajet2(Trajet trajet2) {
         this.trajet2 = trajet2;
     }
-
-    public Station(Long id, String nom, String coordonnees, ArrayList<Quai> listeQuais, ArrayList<Navette> listeNavettes) {
-        this.id = id;
-        this.nom = nom;
-        this.coordonnees = coordonnees;
-        this.listeQuais = listeQuais;
-        this.listeNavettes = listeNavettes;
-    }
-    
-    public Trajet getTrajetDepart() {
-        return trajet1;
-    }
-
-    public void setTrajetDepart(Trajet trajetDepart) {
-        this.trajet1 = trajetDepart;
-    }
-
-    public Trajet getTrajetArrivee() {
-        return trajet2;
-    }
-
-    public void setTrajetArrivee(Trajet trajetArrivee) {
-        this.trajet2 = trajetArrivee;
-    }
-    
-    
-
+   
     public Long getId() {
         return id;
     }

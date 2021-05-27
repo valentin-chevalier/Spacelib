@@ -3,36 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.miage.m1.facades;
+package fr.miage.m1.metier;
 
-import fr.miage.m1.entities.Administrateur;
 import fr.miage.m1.entities.Usager;
-import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
- * @author Valentin
+ * @author Flo
  */
 @Local
-public interface UsagerFacadeLocal {
-
-    void create(Usager usager);
-
-    void edit(Usager usager);
-
-    void remove(Usager usager);
-
-    Usager find(Object id);
-
-    List<Usager> findAll();
-
-    List<Usager> findRange(int[] range);
-
-    int count();
-    
+public interface GestionUsagerLocal {
+  
     public Usager creerUsager(String prenom, String nom, String mail, String mdp);
 
     public Usager getUsager(Long idUsager);
-    
 }
