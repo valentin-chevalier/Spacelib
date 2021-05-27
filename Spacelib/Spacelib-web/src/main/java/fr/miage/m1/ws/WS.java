@@ -41,8 +41,8 @@ public class WS {
 
     @WebMethod(operationName = "creerNavette")
     //@Oneway
-    public String creerNavette(@WebParam(name = "estEnRevision") boolean estEnRevision, @WebParam(name = "nbVoyages") int nbVoyages, @WebParam(name = "capacite") int capacite, @WebParam(name = "quai") Quai quai) {
-        Navette navette = ejbRef.creerNavette(estEnRevision, nbVoyages, capacite, quai);
+    public String creerNavette(@WebParam(name = "estEnRevision") boolean estEnRevision, @WebParam(name = "nbVoyages") int nbVoyages, @WebParam(name = "capacite") int capacite) {
+        Navette navette = ejbRef.creerNavette(estEnRevision, nbVoyages, capacite, null);
         return navette.toString();
     }
 
@@ -90,8 +90,8 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerDuree")
-    public String creerDuree(@WebParam(name = "duree") int duree, @WebParam(name = "station1") Station station1, @WebParam(name = "station2") Station station2) {
-        Duree objDuree = ejbRef.creerDuree(duree, station1, station2);
+    public String creerDuree(@WebParam(name = "duree") int duree) {
+        Duree objDuree = ejbRef.creerDuree(duree, null, null);
         return objDuree.toString();
     }
 
@@ -114,8 +114,8 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerOperation")
-    public String creerOperation(@WebParam(name = "dateOperation") Date dateOperation, @WebParam(name = "navette") Navette navette) {
-        Operation operation = ejbRef.creerOperation(dateOperation, navette);
+    public String creerOperation(@WebParam(name = "dateOperation") Date dateOperation) {
+        Operation operation = ejbRef.creerOperation(dateOperation, null);
         return operation.toString();
     }
 
@@ -126,8 +126,8 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerQuai")
-    public String creerQuai(@WebParam(name = "noQuai") int noQuai, @WebParam(name = "estLibre") boolean estLibre, @WebParam(name = "station") Station station) {
-        Quai quai = ejbRef.creerQuai(noQuai, estLibre, station);
+    public String creerQuai(@WebParam(name = "noQuai") int noQuai, @WebParam(name = "estLibre") boolean estLibre) {
+        Quai quai = ejbRef.creerQuai(noQuai, estLibre, null);
         return quai.toString();
     }
 
@@ -138,8 +138,8 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerReparation")
-    public String creerReparation(@WebParam(name = "dateCreationOperation") Date dateCreationOperation, @WebParam(name = "mecanicien") Mecanicien mecanicien) {
-        Reparation reparation = ejbRef.creerReparation(dateCreationOperation, mecanicien);
+    public String creerReparation(@WebParam(name = "dateCreationOperation") Date dateCreationOperation) {
+        Reparation reparation = ejbRef.creerReparation(dateCreationOperation, null);
         return reparation.toString();
     }
 
@@ -150,8 +150,8 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerReservation")
-    public String creerReservation(@WebParam(name = "nbPassagers") Long nbPassagers, @WebParam(name = "dateDepart") Date dateDepart, @WebParam(name = "navette") Navette navette, @WebParam(name = "usager") Usager usager, @WebParam(name = "stationDepart") Station stationDepart, @WebParam(name = "stationArrivee") Station stationArrivee, @WebParam(name = "quaiDepart") Quai quaiDepart, @WebParam(name = "quaiArrivee") Quai quaiArrivee) {
-        Reservation reservation = ejbRef.creerReservation(nbPassagers, dateDepart, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
+    public String creerReservation(@WebParam(name = "nbPassagers") Long nbPassagers, @WebParam(name = "dateDepart") Date dateDepart) {
+        Reservation reservation = ejbRef.creerReservation(nbPassagers, dateDepart, null, null, null, null, null, null);
         return reservation.toString();
     }
 
@@ -162,8 +162,8 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerStation")
-    public String creerStation(@WebParam(name = "nom") String nom, @WebParam(name = "coordonnees") String coordonnees, @WebParam(name = "listeQuais") ArrayList<Quai> listeQuais, @WebParam(name = "listeNavettes") ArrayList<Navette> listeNavettes, @WebParam(name = "trajet1") Trajet trajet1, @WebParam(name = "trajet2") Trajet trajet2) {
-        Station station = ejbRef.creerStation(nom, coordonnees, listeQuais, listeNavettes, trajet1, trajet2);
+    public String creerStation(@WebParam(name = "nom") String nom, @WebParam(name = "coordonnees") String coordonnees) {
+        Station station = ejbRef.creerStation(nom, coordonnees, null, null, null, null);
         return station.toString();
     }
 
@@ -174,8 +174,8 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerTrajet")
-    public String creerTrajet(@WebParam(name = "id") Long id, @WebParam(name = "nbPassagers") int nbPassagers, @WebParam(name = "etatTrajet") EtatTrajet etatTrajet, @WebParam(name = "stationDepart") Station stationDepart, @WebParam(name = "stationArrivee") Station stationArrivee, @WebParam(name = "quaiDepart") Quai quaiDepart, @WebParam(name = "quaiArrivee") Quai quaiArrivee, @WebParam(name = "utilisateur") Utilisateur utilisateur) {
-        Trajet trajet = ejbRef.creerTrajet(id, nbPassagers, etatTrajet, stationDepart, stationArrivee, quaiDepart, quaiArrivee, utilisateur);
+    public String creerTrajet(@WebParam(name = "id") Long id, @WebParam(name = "nbPassagers") int nbPassagers, @WebParam(name = "etatTrajet") EtatTrajet etatTrajet) {
+        Trajet trajet = ejbRef.creerTrajet(id, nbPassagers, etatTrajet, null, null, null, null, null);
         return trajet.toString();
     }
 
