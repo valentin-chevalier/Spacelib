@@ -33,13 +33,15 @@ public class NavetteFacade extends AbstractFacade<Navette> implements NavetteFac
     }
     
     @Override
-    public void creerNavette(boolean estEnRevision, int nbVoyages, int capacite, Quai quai){
+    public Navette creerNavette(boolean estEnRevision, int nbVoyages, int capacite, Quai quai){
        Navette navette = new Navette();
        navette.setListeOperations(new ArrayList<Operation>());
        navette.setEstEnRevision(estEnRevision);
        navette.setNbVoyages(nbVoyages);
        navette.setCapacite(capacite);
        navette.setQuai(new Quai());
+       this.create(navette);
+       return navette;
     }
     
     @Override

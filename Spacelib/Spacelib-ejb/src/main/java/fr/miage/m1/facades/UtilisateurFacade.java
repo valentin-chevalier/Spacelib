@@ -28,5 +28,21 @@ public class UtilisateurFacade extends AbstractFacade<Utilisateur> implements Ut
     public UtilisateurFacade() {
         super(Utilisateur.class);
     }
+
+    @Override
+    public Utilisateur creerUtilisateur(String prenom, String nom, String mail, String mdp) {
+        Utilisateur user = new Utilisateur();
+        user.setMail(mail);
+        user.setMdp(mdp);
+        user.setNom(nom);
+        user.setPrenom(prenom);
+        this.create(user);
+        return user;
+    }
+
+    @Override
+    public Utilisateur getUtilisateur(Long idUtilisateur) {
+        return this.find(idUtilisateur);
+    }
     
 }

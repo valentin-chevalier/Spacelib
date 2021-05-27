@@ -7,6 +7,7 @@ package fr.miage.m1.exposition;
 
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
+import fr.miage.m1.entities.Utilisateur;
 import javax.ejb.Local;
 
 /**
@@ -16,8 +17,12 @@ import javax.ejb.Local;
 @Local
 public interface ExpoLocal {
     
-    public void creerNavette(boolean estEnRevision, int nbVoyages, int capacite, Quai quai);
+    public Navette creerNavette(boolean estEnRevision, int nbVoyages, int capacite, Quai quai);
     
     public Navette getNavette(long idNavette);
+    
+    public Utilisateur creerUtilisateur(String prenom, String nom, String mail, String mdp);
+    
+    public Utilisateur getUtilisateur(Long idUtilisateur);
     
 }
