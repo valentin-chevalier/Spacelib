@@ -44,7 +44,7 @@ public class Station implements Serializable {
     public Station() {
     }
 
-    public Station(Long id, String nom, String coordonnees, ArrayList<Quai> listeQuais, ArrayList<Navette> listeNavettes, Trajet trajet1, Trajet trajet2) {
+    public Station(Long id, String nom, String coordonnees, Trajet trajet1, Trajet trajet2) {
         this.id = id;
         this.nom = nom;
         this.coordonnees = coordonnees;

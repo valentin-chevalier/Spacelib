@@ -17,7 +17,7 @@ import javax.ejb.Local;
 @Local
 public interface GestionReparationLocal {
         
-    public Reparation creerReparation (Date dateCreationOperation, Mecanicien mecanicien);
+    public Reparation creerReparation (Date dateCreationOperation);
     
     public Reparation getReparation(Long idReparation);
 }

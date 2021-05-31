@@ -38,7 +38,7 @@ public class Navette implements Serializable {
     public Navette() {
     }
 
-    public Navette(Long id, boolean estEnRevision, int nbVoyages, int capacite, Quai quai, ArrayList<Operation> listeOperations) {
+    public Navette(Long id, boolean estEnRevision, int nbVoyages, int capacite, Quai quai) {
         this.id = id;
         this.estEnRevision = estEnRevision;
         this.nbVoyages = nbVoyages;

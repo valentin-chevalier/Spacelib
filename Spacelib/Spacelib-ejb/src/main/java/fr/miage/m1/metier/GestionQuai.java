@@ -27,7 +27,7 @@ public class GestionQuai implements GestionQuaiLocal {
     }
 
     @Override
-    public Quai getQuai(int idQuai) {
+    public Quai getQuai(Long idQuai) {
         return this.quaiFacade.getQuai(idQuai);
     }
 

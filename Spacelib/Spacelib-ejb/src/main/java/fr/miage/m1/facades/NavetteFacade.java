@@ -39,7 +39,7 @@ public class NavetteFacade extends AbstractFacade<Navette> implements NavetteFac
        navette.setEstEnRevision(estEnRevision);
        navette.setNbVoyages(nbVoyages);
        navette.setCapacite(capacite);
-       navette.setQuai(new Quai());
+       navette.setQuai(quai);
        this.create(navette);
        return navette;
     }

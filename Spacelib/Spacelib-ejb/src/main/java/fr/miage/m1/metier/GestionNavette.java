@@ -6,10 +6,8 @@
 package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Navette;
-import fr.miage.m1.entities.Operation;
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.facades.NavetteFacadeLocal;
-import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 

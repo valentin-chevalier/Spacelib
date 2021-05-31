@@ -18,5 +18,5 @@ public interface GestionQuaiLocal {
     
     public Quai creerQuai(int noQuai, boolean estLibre, Station station);
     
-    public Quai getQuai (int idQuai);
+    public Quai getQuai (Long idQuai);
 }

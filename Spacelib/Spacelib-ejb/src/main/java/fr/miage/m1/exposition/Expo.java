@@ -35,7 +35,6 @@ import fr.miage.m1.metier.GestionSystemeLocal;
 import fr.miage.m1.metier.GestionTrajetLocal;
 import fr.miage.m1.metier.GestionUsagerLocal;
 import fr.miage.m1.metier.GestionUtilisateurLocal;
-import java.util.ArrayList;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -72,9 +71,6 @@ public class Expo implements ExpoLocal {
     private GestionOperationLocal gestionOperation;
 
     @EJB
-    private GestionNavetteLocal gestionNavette1;
-
-    @EJB
     private GestionMecanicienLocal gestionMecanicien;
 
     @EJB
@@ -98,7 +94,7 @@ public class Expo implements ExpoLocal {
     }
     
     @Override
-    public Navette getNavette(long idNavette) {
+    public Navette getNavette(Long idNavette) {
         return this.gestionNavette.getNavette(idNavette);
     }
 
@@ -168,13 +164,13 @@ public class Expo implements ExpoLocal {
     }
 
     @Override
-    public Quai getQuai(int idQuai) {
+    public Quai getQuai(Long idQuai) {
         return this.gestionQuai.getQuai(idQuai);
     }
 
     @Override
-    public Reparation creerReparation(Date dateCreationOperation, Mecanicien mecanicien) {
-        return this.gestionReparation.creerReparation(dateCreationOperation, mecanicien);
+    public Reparation creerReparation(Date dateCreationOperation) {
+        return this.gestionReparation.creerReparation(dateCreationOperation);
     }
 
     @Override
@@ -193,8 +189,8 @@ public class Expo implements ExpoLocal {
     }
 
     @Override
-    public Station creerStation(String nom, String coordonnees, ArrayList<Quai> listeQuais, ArrayList<Navette> listeNavettes, Trajet trajet1, Trajet trajet2) {
-        return this.gestionStation.creerStation(nom, coordonnees, listeQuais, listeNavettes, trajet1, trajet2);
+    public Station creerStation(String nom, String coordonnees, Trajet trajet1, Trajet trajet2) {
+        return this.gestionStation.creerStation(nom, coordonnees, trajet1, trajet2);
     }
 
     @Override

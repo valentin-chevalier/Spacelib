@@ -41,7 +41,7 @@ public class QuaiFacade extends AbstractFacade<Quai> implements QuaiFacadeLocal 
     }
 
     @Override
-    public Quai getQuai(int idQuai) {
+    public Quai getQuai(Long idQuai) {
         return this.find(idQuai);
     }
     

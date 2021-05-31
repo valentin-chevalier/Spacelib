@@ -23,8 +23,8 @@ public class GestionReparation implements GestionReparationLocal {
     private ReparationFacadeLocal reparationFacade;
 
     @Override
-    public Reparation creerReparation(Date dateCreationOperation, Mecanicien mecanicien) {
-        return this.reparationFacade.creerReparation(dateCreationOperation, mecanicien);
+    public Reparation creerReparation(Date dateCreationOperation) {
+        return this.reparationFacade.creerReparation(dateCreationOperation);
     }
 
     @Override

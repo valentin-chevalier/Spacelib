@@ -48,7 +48,7 @@ public interface ExpoLocal {
     
     public Navette creerNavette(boolean estEnRevision, int nbVoyages, int capacite, Quai quai);
     
-    public Navette getNavette(long idNavette);
+    public Navette getNavette(Long idNavette);
     
     public Operation creerOperation(Date dateOperation, Navette navette);
     
@@ -56,9 +56,9 @@ public interface ExpoLocal {
     
     public Quai creerQuai(int noQuai, boolean estLibre, Station station);
     
-    public Quai getQuai (int idQuai);
+    public Quai getQuai (Long idQuai);
     
-    public Reparation creerReparation (Date dateCreationOperation, Mecanicien mecanicien);
+    public Reparation creerReparation (Date dateCreationOperation);
     
     public Reparation getReparation(Long idReparation);
     
@@ -66,7 +66,7 @@ public interface ExpoLocal {
     
     public Reservation getReservation (Long idReservation);
     
-    public Station creerStation(String nom, String coordonnees, ArrayList<Quai> listeQuais, ArrayList<Navette> listeNavettes, Trajet trajet1, Trajet trajet2);
+    public Station creerStation(String nom, String coordonnees, Trajet trajet1, Trajet trajet2);
     
     public Station getStation(Long idStation);
     

@@ -32,10 +32,9 @@ public class ReparationFacade extends AbstractFacade<Reparation> implements Repa
     }
 
     @Override
-    public Reparation creerReparation(Date dateCreationOperation, Mecanicien mecanicien) {
+    public Reparation creerReparation(Date dateCreationOperation) {
         Reparation reparation = new Reparation();
         reparation.setDateCreationOperation(new Date());
-        reparation.setMecanicien(mecanicien);
         this.create(reparation);
         return reparation;
     }

@@ -34,7 +34,7 @@ public class StationFacade extends AbstractFacade<Station> implements StationFac
     }
 
     @Override
-    public Station creerStation(String nom, String coordonnees, ArrayList<Quai> listeQuais, ArrayList<Navette> listeNavettes, Trajet trajet1, Trajet trajet2) {
+    public Station creerStation(String nom, String coordonnees, Trajet trajet1, Trajet trajet2) {
         Station station = new Station();
         station.setCoordonnees(coordonnees);
         station.setListeNavettes(new ArrayList<Navette>());

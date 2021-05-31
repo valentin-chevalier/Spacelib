@@ -32,7 +32,7 @@ public interface ReparationFacadeLocal {
 
     int count();
     
-    public Reparation creerReparation (Date dateCreationOperation, Mecanicien mecanicien);
+    public Reparation creerReparation (Date dateCreationOperation);
     
     public Reparation getReparation(Long idReparation);
     
