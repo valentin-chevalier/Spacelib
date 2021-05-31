@@ -33,7 +33,7 @@ public interface NavetteFacadeLocal {
 
     int count();
     
-    public Navette creerNavette(boolean estEnRevision, int nbVoyages, int capacite, Quai quai);
+    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai);
 
     public Navette getNavette(Long idNavette);
 

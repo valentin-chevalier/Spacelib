@@ -34,7 +34,7 @@ public interface StationFacadeLocal {
 
     int count();
     
-    public Station creerStation(String nom, String coordonnees, Trajet trajet1, Trajet trajet2);
+    public Station creerStation(String nom, String coordonnees);
     
     public Station getStation(Long idStation);
 }

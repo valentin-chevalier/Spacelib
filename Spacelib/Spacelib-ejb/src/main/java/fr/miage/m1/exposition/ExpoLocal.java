@@ -46,7 +46,7 @@ public interface ExpoLocal {
 
     public Mecanicien getMecanicien(Long idMecanicien);
     
-    public Navette creerNavette(boolean estEnRevision, int nbVoyages, int capacite, Quai quai);
+    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai);
     
     public Navette getNavette(Long idNavette);
     
@@ -66,7 +66,7 @@ public interface ExpoLocal {
     
     public Reservation getReservation (Long idReservation);
     
-    public Station creerStation(String nom, String coordonnees, Trajet trajet1, Trajet trajet2);
+    public Station creerStation(String nom, String coordonnees);
     
     public Station getStation(Long idStation);
     

@@ -18,7 +18,7 @@ import javax.ejb.Local;
 @Local
 public interface GestionNavetteLocal {
  
-    public Navette creerNavette(boolean estEnRevision, int nbVoyages, int capacite, Quai quai);
+    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai);
     
     public Navette getNavette(Long idNavette);
 }

@@ -36,6 +36,20 @@ public class ReservationFacade extends AbstractFacade<Reservation> implements Re
 
     @Override
     public Reservation creerReservation(Long nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
+        
+        //controle sur utilisateur
+        /*
+        Query q = this.em.createNamedQuery("Reservation.controlerUtilisateur");
+        q.setParameter("id", usager.getId());
+        
+        Reservation res = (Reservation) q.getSingleResult();
+        System.out.println("Res : " + res);
+        
+        
+        if ("".equals(q.getSingleResult()))
+            throw new  Error("L'usager en paramètre a déjà émis une réservation.");
+        */
+
         Reservation reservation = new Reservation();
         reservation.setDateDepart(dateDepart);
         reservation.setNavette(navette);

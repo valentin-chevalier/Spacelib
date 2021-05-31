@@ -38,8 +38,8 @@ public class WS {
     // "Web Service > Add Operation"
 
     @WebMethod(operationName = "creerNavette")
-    public String creerNavette(@WebParam(name = "estEnRevision") boolean estEnRevision, @WebParam(name = "nbVoyages") int nbVoyages, @WebParam(name = "capacite") int capacite, @WebParam(name = "idQuai") Long idQuai) {
-        Navette navette = ejbRef.creerNavette(estEnRevision, nbVoyages, capacite, ejbRef.getQuai(idQuai));
+    public String creerNavette(@WebParam(name = "estEnRevision") boolean estEnRevision, @WebParam(name = "estDispo") boolean estDispo, @WebParam(name = "nbVoyages") int nbVoyages, @WebParam(name = "capacite") int capacite, @WebParam(name = "idQuai") Long idQuai) {
+        Navette navette = ejbRef.creerNavette(estEnRevision, estDispo, nbVoyages, capacite, ejbRef.getQuai(idQuai));
         return navette.toString();
     }
 
@@ -167,8 +167,8 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerStation")
-    public String creerStation(@WebParam(name = "nom") String nom, @WebParam(name = "coordonnees") String coordonnees, @WebParam(name = "idTrajet1") Long idTrajet1, @WebParam(name = "idTrajet2") Long idTrajet2) {
-        Station station = ejbRef.creerStation(nom, coordonnees, ejbRef.getTrajet(idTrajet1), ejbRef.getTrajet(idTrajet2));
+    public String creerStation(@WebParam(name = "nom") String nom, @WebParam(name = "coordonnees") String coordonnees) {
+        Station station = ejbRef.creerStation(nom, coordonnees);
         return station.toString();
     }
 

@@ -22,8 +22,8 @@ public class GestionNavette implements GestionNavetteLocal {
     private NavetteFacadeLocal navetteFacade;
     
     @Override
-    public Navette creerNavette(boolean estEnRevision, int nbVoyages, int capacite, Quai quai){
-        return this.navetteFacade.creerNavette(estEnRevision, nbVoyages, capacite, quai);
+    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai){
+        return this.navetteFacade.creerNavette(estEnRevision, estDispo, nbVoyages, capacite, quai);
     }
 
     @Override

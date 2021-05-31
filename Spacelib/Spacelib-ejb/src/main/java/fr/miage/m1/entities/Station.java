@@ -44,30 +44,12 @@ public class Station implements Serializable {
     public Station() {
     }
 
-    public Station(Long id, String nom, String coordonnees, Trajet trajet1, Trajet trajet2) {
+    public Station(Long id, String nom, String coordonnees) {
         this.id = id;
         this.nom = nom;
         this.coordonnees = coordonnees;
         this.listeQuais = listeQuais;
         this.listeNavettes = listeNavettes;
-        this.trajet1 = trajet1;
-        this.trajet2 = trajet2;
-    }
-    
-    public Trajet getTrajet1() {
-        return trajet1;
-    }
-
-    public void setTrajet1(Trajet trajet1) {
-        this.trajet1 = trajet1;
-    }
-
-    public Trajet getTrajet2() {
-        return trajet2;
-    }
-
-    public void setTrajet2(Trajet trajet2) {
-        this.trajet2 = trajet2;
     }
    
     public Long getId() {

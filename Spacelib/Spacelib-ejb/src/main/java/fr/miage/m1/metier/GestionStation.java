@@ -25,8 +25,8 @@ public class GestionStation implements GestionStationLocal {
     private StationFacadeLocal stationFacade;
 
     @Override
-    public Station creerStation(String nom, String coordonnees, Trajet trajet1, Trajet trajet2) {
-        return this.stationFacade.creerStation(nom, coordonnees, trajet1, trajet2);
+    public Station creerStation(String nom, String coordonnees) {
+        return this.stationFacade.creerStation(nom, coordonnees);
     }
 
     @Override

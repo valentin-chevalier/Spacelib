@@ -89,8 +89,8 @@ public class Expo implements ExpoLocal {
     private GestionNavetteLocal gestionNavette;
     
     @Override
-    public Navette creerNavette(boolean estEnRevision, int nbVoyages, int capacite, Quai quai) {
-        return this.gestionNavette.creerNavette(estEnRevision, nbVoyages, capacite, quai);
+    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) {
+        return this.gestionNavette.creerNavette(estEnRevision, estDispo, nbVoyages, capacite, quai);
     }
     
     @Override
@@ -189,8 +189,8 @@ public class Expo implements ExpoLocal {
     }
 
     @Override
-    public Station creerStation(String nom, String coordonnees, Trajet trajet1, Trajet trajet2) {
-        return this.gestionStation.creerStation(nom, coordonnees, trajet1, trajet2);
+    public Station creerStation(String nom, String coordonnees) {
+        return this.gestionStation.creerStation(nom, coordonnees);
     }
 
     @Override

@@ -25,6 +25,7 @@ public class Navette implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private boolean estDispo;
     private boolean estEnRevision;
     private int nbVoyages;
     private int capacite;
@@ -38,13 +39,25 @@ public class Navette implements Serializable {
     public Navette() {
     }
 
-    public Navette(Long id, boolean estEnRevision, int nbVoyages, int capacite, Quai quai) {
+    public Navette(Long id, boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) {
         this.id = id;
         this.estEnRevision = estEnRevision;
+        this.estDispo = estDispo;
         this.nbVoyages = nbVoyages;
-        this.capacite = capacite;
+        if (capacite == 2 || capacite == 5 || capacite == 10 || capacite == 15)
+            this.capacite = capacite;
+        else 
+            throw new AssertionError("La navette insérée n'a pas une capacité autorisée.");
         this.quai = quai;
         this.listeOperations = listeOperations;
+    }
+
+    public boolean isEstDispo() {
+        return estDispo;
+    }
+
+    public void setEstDispo(boolean estDispo) {
+        this.estDispo = estDispo;
     }
 
     public Quai getQuai() {

@@ -19,7 +19,7 @@ import javax.ejb.Local;
 @Local
 public interface GestionStationLocal {
     
-    public Station creerStation(String nom, String coordonnees, Trajet trajet1, Trajet trajet2);
+    public Station creerStation(String nom, String coordonnees);
     
     public Station getStation(Long idStation);
 }
