@@ -19,8 +19,6 @@ import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.entities.Utilisateur;
-import fr.miage.m1.facades.AdministrateurFacadeLocal;
-import fr.miage.m1.facades.UtilisateurFacadeLocal;
 import fr.miage.m1.metier.GestionAdministrateurLocal;
 import fr.miage.m1.metier.GestionConducteurLocal;
 import fr.miage.m1.metier.GestionDureeLocal;
@@ -35,7 +33,10 @@ import fr.miage.m1.metier.GestionSystemeLocal;
 import fr.miage.m1.metier.GestionTrajetLocal;
 import fr.miage.m1.metier.GestionUsagerLocal;
 import fr.miage.m1.metier.GestionUtilisateurLocal;
+import fr.miage.m1.utilities.CapaciteNavetteException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -90,7 +91,14 @@ public class Expo implements ExpoLocal {
     
     @Override
     public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) {
-        return this.gestionNavette.creerNavette(estEnRevision, estDispo, nbVoyages, capacite, quai);
+        try {
+            if (this.gestionNavette.verifierCapacite(capacite)){
+                return this.gestionNavette.creerNavette(estEnRevision, estDispo, nbVoyages, capacite, quai);
+            };
+        } catch (CapaciteNavetteException ex) {
+            Logger.getLogger(Expo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
     @Override

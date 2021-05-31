@@ -40,6 +40,9 @@ public class WS {
     @WebMethod(operationName = "creerNavette")
     public String creerNavette(@WebParam(name = "estEnRevision") boolean estEnRevision, @WebParam(name = "estDispo") boolean estDispo, @WebParam(name = "nbVoyages") int nbVoyages, @WebParam(name = "capacite") int capacite, @WebParam(name = "idQuai") Long idQuai) {
         Navette navette = ejbRef.creerNavette(estEnRevision, estDispo, nbVoyages, capacite, ejbRef.getQuai(idQuai));
+        if (navette == null){
+            return "La navette insérée n'a pas une capacité autorisée.";
+        } 
         return navette.toString();
     }
 

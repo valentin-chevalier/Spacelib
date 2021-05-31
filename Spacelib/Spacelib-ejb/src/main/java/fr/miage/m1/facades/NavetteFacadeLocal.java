@@ -6,9 +6,7 @@
 package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Navette;
-import fr.miage.m1.entities.Operation;
 import fr.miage.m1.entities.Quai;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 

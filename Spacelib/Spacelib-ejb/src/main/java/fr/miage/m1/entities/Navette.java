@@ -43,11 +43,8 @@ public class Navette implements Serializable {
         this.id = id;
         this.estEnRevision = estEnRevision;
         this.estDispo = estDispo;
-        this.nbVoyages = nbVoyages;
-        if (capacite == 2 || capacite == 5 || capacite == 10 || capacite == 15)
-            this.capacite = capacite;
-        else 
-            throw new AssertionError("La navette insérée n'a pas une capacité autorisée.");
+        this.nbVoyages = nbVoyages; 
+        this.capacite = capacite;
         this.quai = quai;
         this.listeOperations = listeOperations;
     }
@@ -132,5 +129,4 @@ public class Navette implements Serializable {
     public void setListeOperations(ArrayList<Operation> listeOperations) {
         this.listeOperations = listeOperations;
     }
-    
 }
