@@ -9,9 +9,12 @@ import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
+import fr.miage.m1.facades.NavetteFacadeLocal;
 import fr.miage.m1.facades.QuaiFacadeLocal;
 import fr.miage.m1.facades.ReservationFacadeLocal;
 import fr.miage.m1.facades.StationFacadeLocal;
+import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.NavetteSansQuaiException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -29,6 +32,9 @@ public class GestionStation implements GestionStationLocal {
 
     @EJB
     private QuaiFacadeLocal quaiFacade;
+    
+    @EJB
+    private NavetteFacadeLocal navetteFacade;
 
     @EJB
     private StationFacadeLocal stationFacade;
@@ -95,5 +101,28 @@ public class GestionStation implements GestionStationLocal {
             }
         }
         
+    }
+
+    @Override
+    public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteException{
+        if (capaciteNavettes <= 0){
+            throw new CapaciteNavetteException();
+        }
+        Station station = this.stationFacade.creerStation(nom, coordonnees);
+        int numQuai = 1;
+        for (int i = 1; i <= nbQuais; i++){
+            Quai quai = this.quaiFacade.creerQuai(numQuai, true, station);
+            station.getListeQuais().add(quai);
+            numQuai++;
+            if (i <= nbQuais / 2){
+                try {
+                    Navette navette = this.navetteFacade.creerNavette(false, true, 0, capaciteNavettes, quai);
+                    station.getListeNavettes().add(navette);
+                } catch (Exception e){
+                    //gestion erreur
+                }
+            }
+        }
+        return station;
     }
 }

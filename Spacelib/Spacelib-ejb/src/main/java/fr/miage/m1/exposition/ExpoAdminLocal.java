@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.miage.m1.metier;
+package fr.miage.m1.exposition;
 
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.utilities.CapaciteNavetteException;
@@ -11,16 +11,11 @@ import javax.ejb.Local;
 
 /**
  *
- * @author Elias
+ * @author Valentin
  */
 @Local
-public interface GestionStationLocal {
-    
-    public Station creerStation(String nom, String coordonnees);
+public interface ExpoAdminLocal {
     
     public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteException;
     
-    public Station getStation(Long idStation);
-    
-    public void transfererNavettesDeStations(Station station);
 }
