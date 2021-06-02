@@ -7,7 +7,6 @@ package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
-import fr.miage.m1.entities.Station;
 import fr.miage.m1.utilities.CapaciteNavetteException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
 import fr.miage.m1.utilities.RevisionNavetteException;
@@ -28,5 +27,4 @@ public interface GestionNavetteLocal {
     
     public void incrementerNbVoyages(Navette navette) throws RevisionNavetteException;
     
-    public void calculerDisponibiliteNavettes(Station station);
 }

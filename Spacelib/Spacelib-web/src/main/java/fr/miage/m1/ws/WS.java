@@ -41,6 +41,8 @@ public class WS {
 
     @WebMethod(operationName = "creerNavette")
     public String creerNavette(@WebParam(name = "estEnRevision") boolean estEnRevision, @WebParam(name = "estDispo") boolean estDispo, @WebParam(name = "capacite") int capacite, @WebParam(name = "idQuai") Long idQuai) throws NavetteSansQuaiException, CapaciteNavetteException{
+        if (ejbRef.getQuai(idQuai) == null)
+            throw new NavetteSansQuaiException();
         Navette navette = ejbRef.creerNavette(estEnRevision, estDispo, 0, capacite, ejbRef.getQuai(idQuai));
         return navette.toString(); 
     }

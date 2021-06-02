@@ -7,7 +7,6 @@ package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
-import fr.miage.m1.entities.Station;
 import fr.miage.m1.facades.NavetteFacadeLocal;
 import fr.miage.m1.facades.QuaiFacadeLocal;
 import fr.miage.m1.utilities.CapaciteNavetteException;
@@ -31,8 +30,6 @@ public class GestionNavette implements GestionNavetteLocal {
     
     @Override
     public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) throws NavetteSansQuaiException, CapaciteNavetteException{
-        if (this.quaiFacade.find(quai.getId()) == null)
-            throw new NavetteSansQuaiException();
         verifierCapaciteAutorisee(capacite);
         return this.navetteFacade.creerNavette(estEnRevision, estDispo, nbVoyages, capacite, quai);
     }
@@ -61,10 +58,6 @@ public class GestionNavette implements GestionNavetteLocal {
         return this.navetteFacade.find(idNavette);
     }
 
-    @Override
-    public void calculerDisponibiliteNavettes(Station station) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
 }
 
