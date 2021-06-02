@@ -9,9 +9,9 @@ package fr.miage.m1.utilities;
  *
  * @author Flo
  */
-public class CapaciteNavetteException extends Exception{
+public class RevisionNavetteException extends Exception{
     
-    public CapaciteNavetteException(){
-        super("La navette insérée n'a pas une capacité autorisée.");
+    public RevisionNavetteException(){
+        super("Attention, la navette doit être révisée.");
     }
 }

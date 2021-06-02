@@ -5,11 +5,7 @@
  */
 package fr.miage.m1.metier;
 
-import fr.miage.m1.entities.Navette;
-import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
-import fr.miage.m1.entities.Trajet;
-import java.util.ArrayList;
 import javax.ejb.Local;
 
 /**
@@ -22,4 +18,6 @@ public interface GestionStationLocal {
     public Station creerStation(String nom, String coordonnees);
     
     public Station getStation(Long idStation);
+    
+    public void transfererNavettesDeStations(Station station);
 }

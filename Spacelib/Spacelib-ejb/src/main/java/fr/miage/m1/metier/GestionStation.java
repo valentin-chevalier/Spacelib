@@ -7,10 +7,13 @@ package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
+import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
-import fr.miage.m1.entities.Trajet;
+import fr.miage.m1.facades.QuaiFacadeLocal;
+import fr.miage.m1.facades.ReservationFacadeLocal;
 import fr.miage.m1.facades.StationFacadeLocal;
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -20,6 +23,12 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class GestionStation implements GestionStationLocal {
+
+    @EJB
+    private ReservationFacadeLocal reservationFacade;
+
+    @EJB
+    private QuaiFacadeLocal quaiFacade;
 
     @EJB
     private StationFacadeLocal stationFacade;
@@ -34,5 +43,57 @@ public class GestionStation implements GestionStationLocal {
         return this.stationFacade.getStation(idStation);
     }
 
-   
+    @Override
+    public void transfererNavettesDeStations(Station station) {
+        //récupérer toutes les réservations
+        List<Reservation> listeReservations = this.reservationFacade.findAll();
+        //pour chaque réservation
+        for (Reservation res : listeReservations){
+            int totalQuaisStationDepart = 0;
+            int nbQuaisDispoStationDepart = 0;
+            //si la date de réservation est dans - de 10j
+            if((res.getStationDepart() == station || res.getStationArrivee() == station) && (new Date().compareTo(res.getDateDepart()) == -10)){
+                //récupérer le nombre de quais dispo parmi toutes les quais
+                for (Quai q : station.getListeQuais()){
+                    totalQuaisStationDepart++;
+                    if (q.isEstLibre())
+                        nbQuaisDispoStationDepart++;
+                }
+                //calculer si < 10%
+                if ((nbQuaisDispoStationDepart / totalQuaisStationDepart) <0.1){
+                    //tant que ça n'est pas > 20%
+                    while ((nbQuaisDispoStationDepart / totalQuaisStationDepart) >= 0.2){
+                        //rechercher les autres stations
+                        List<Station> listeStations = this.stationFacade.findAll();
+                        //pour chaque station
+                        for (Station nouvelleStation : listeStations){
+                            int totalQuais = 0;
+                            int nbQuaisDispo = 0;
+                            //récupérer les quais
+                            for (Quai quai : nouvelleStation.getListeQuais()){
+                                totalQuais++;
+                                if (quai.isEstLibre()){
+                                    nbQuaisDispo++;
+                                }
+                            }
+                            //si le ratio quais dispo / total quais > 20% dans la nouvelle station
+                            if ((nbQuaisDispo / totalQuais) > 0.2){
+                                //tant que le rapport < 0.1
+                                while(!((nbQuaisDispo / totalQuais) < 0.1)){
+                                    //pour chaque quai
+                                    for (Quai quai : nouvelleStation.getListeQuais()){
+                                        //on change le quai de notre navette
+                                        for (Navette navette : station.getListeNavettes()){
+                                            navette.setQuai(quai);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
 }

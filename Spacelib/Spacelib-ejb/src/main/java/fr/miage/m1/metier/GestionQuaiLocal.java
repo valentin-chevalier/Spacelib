@@ -19,4 +19,7 @@ public interface GestionQuaiLocal {
     public Quai creerQuai(int noQuai, boolean estLibre, Station station);
     
     public Quai getQuai (Long idQuai);
+    
+    public void calculerQuantiteQuaisDispo();
+   
 }

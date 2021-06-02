@@ -19,7 +19,8 @@ import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.entities.Utilisateur;
-import java.util.ArrayList;
+import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.NavetteSansQuaiException;
 import java.util.Date;
 import javax.ejb.Local;
 
@@ -46,7 +47,7 @@ public interface ExpoLocal {
 
     public Mecanicien getMecanicien(Long idMecanicien);
     
-    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai);
+    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) throws NavetteSansQuaiException, CapaciteNavetteException;
     
     public Navette getNavette(Long idNavette);
     

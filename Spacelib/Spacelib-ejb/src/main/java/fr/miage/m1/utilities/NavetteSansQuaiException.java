@@ -9,9 +9,9 @@ package fr.miage.m1.utilities;
  *
  * @author Flo
  */
-public class CapaciteNavetteException extends Exception{
+public class NavetteSansQuaiException extends Exception{
     
-    public CapaciteNavetteException(){
-        super("La navette insérée n'a pas une capacité autorisée.");
+    public NavetteSansQuaiException(){
+        super("Le quai associé à la création de la navette n'existe pas.");
     }
 }

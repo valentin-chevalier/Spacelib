@@ -20,6 +20,8 @@ import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.entities.Utilisateur;
 import fr.miage.m1.exposition.ExpoLocal;
+import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.NavetteSansQuaiException;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -38,12 +40,9 @@ public class WS {
     // "Web Service > Add Operation"
 
     @WebMethod(operationName = "creerNavette")
-    public String creerNavette(@WebParam(name = "estEnRevision") boolean estEnRevision, @WebParam(name = "estDispo") boolean estDispo, @WebParam(name = "nbVoyages") int nbVoyages, @WebParam(name = "capacite") int capacite, @WebParam(name = "idQuai") Long idQuai) {
-        Navette navette = ejbRef.creerNavette(estEnRevision, estDispo, nbVoyages, capacite, ejbRef.getQuai(idQuai));
-        if (navette == null){
-            return "La navette insérée n'a pas une capacité autorisée.";
-        } 
-        return navette.toString();
+    public String creerNavette(@WebParam(name = "estEnRevision") boolean estEnRevision, @WebParam(name = "estDispo") boolean estDispo, @WebParam(name = "capacite") int capacite, @WebParam(name = "idQuai") Long idQuai) throws NavetteSansQuaiException, CapaciteNavetteException{
+        Navette navette = ejbRef.creerNavette(estEnRevision, estDispo, 0, capacite, ejbRef.getQuai(idQuai));
+        return navette.toString(); 
     }
 
     @WebMethod(operationName = "getNavette")
