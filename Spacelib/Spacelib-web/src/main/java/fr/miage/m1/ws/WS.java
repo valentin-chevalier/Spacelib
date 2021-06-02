@@ -21,6 +21,7 @@ import fr.miage.m1.entities.Usager;
 import fr.miage.m1.entities.Utilisateur;
 import fr.miage.m1.exposition.ExpoLocal;
 import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.MailUsagerDejaExistantException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
 import java.util.Date;
 import javax.ejb.EJB;
@@ -200,7 +201,7 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerUsager")
-    public String creerUsager(@WebParam(name = "prenom") String prenom, @WebParam(name = "nom") String nom, @WebParam(name = "mail") String mail, @WebParam(name = "mdp") String mdp) {
+    public String creerUsager(@WebParam(name = "prenom") String prenom, @WebParam(name = "nom") String nom, @WebParam(name = "mail") String mail, @WebParam(name = "mdp") String mdp) throws MailUsagerDejaExistantException {
         Usager usager = ejbRef.creerUsager(prenom, nom, mail, mdp);
         return usager.toString();
     }

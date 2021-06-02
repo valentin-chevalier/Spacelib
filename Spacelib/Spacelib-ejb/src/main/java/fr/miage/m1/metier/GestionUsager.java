@@ -7,6 +7,8 @@ package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.facades.UsagerFacadeLocal;
+import fr.miage.m1.utilities.MailUsagerDejaExistantException;
+import fr.miage.m1.utilities.UsagerInexistantException;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -21,7 +23,7 @@ public class GestionUsager implements GestionUsagerLocal {
     private UsagerFacadeLocal usagerFacade;
 
     @Override
-    public Usager creerUsager(String prenom, String nom, String mail, String mdp) {
+    public Usager creerUsager(String prenom, String nom, String mail, String mdp) throws MailUsagerDejaExistantException {
         return this.usagerFacade.creerUsager(prenom, nom, mail, mdp);
     }
 
@@ -30,6 +32,8 @@ public class GestionUsager implements GestionUsagerLocal {
         return this.usagerFacade.getUsager(idUsager);
     }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    @Override
+    public Usager verifierUsagerDansBd(String mail, String mdp) throws UsagerInexistantException {
+        return this.usagerFacade.verifierUsagerDansBd(mail, mdp);
+    }
 }

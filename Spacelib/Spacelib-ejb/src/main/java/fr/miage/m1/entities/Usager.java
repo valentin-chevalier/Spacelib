@@ -10,12 +10,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author Valentin
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name="Usager.verifierDansBd", query="SELECT u FROM Usager u WHERE u.mail = :vmail AND u.mdp = :vmdp"),
+    @NamedQuery(name="Usager.getMail", query="SELECT u FROM Usager u WHERE u.mail = :vmail")
+})
 public class Usager extends Utilisateur implements Serializable {
 
     private static final long serialVersionUID = 1L;

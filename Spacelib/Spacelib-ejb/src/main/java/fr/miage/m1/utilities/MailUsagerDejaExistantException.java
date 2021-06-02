@@ -9,9 +9,9 @@ package fr.miage.m1.utilities;
  *
  * @author Flo
  */
-public class RevisionNavetteException extends Exception{
+public class MailUsagerDejaExistantException extends Exception{
     
-    public RevisionNavetteException(){
-        super("Attention, la navette n'est plus disponible. Elle doit être révisée.");
+    public MailUsagerDejaExistantException(){
+        super("Le mail fourni est déjà utilisé par un autre usager.");
     }
 }

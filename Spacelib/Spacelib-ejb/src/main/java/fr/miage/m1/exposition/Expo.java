@@ -34,6 +34,7 @@ import fr.miage.m1.metier.GestionTrajetLocal;
 import fr.miage.m1.metier.GestionUsagerLocal;
 import fr.miage.m1.metier.GestionUtilisateurLocal;
 import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.MailUsagerDejaExistantException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
 import java.util.Date;
 import javax.ejb.EJB;
@@ -209,7 +210,7 @@ public class Expo implements ExpoLocal {
     }
 
     @Override
-    public Usager creerUsager(String prenom, String nom, String mail, String mdp) {
+    public Usager creerUsager(String prenom, String nom, String mail, String mdp) throws MailUsagerDejaExistantException {
         return this.gestionUsager.creerUsager(prenom, nom, mail, mdp);
     }
 

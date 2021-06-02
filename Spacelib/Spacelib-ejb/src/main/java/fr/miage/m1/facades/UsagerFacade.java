@@ -5,12 +5,13 @@
  */
 package fr.miage.m1.facades;
 
-import fr.miage.m1.entities.Administrateur;
 import fr.miage.m1.entities.Usager;
-import fr.miage.m1.entities.Utilisateur;
+import fr.miage.m1.utilities.MailUsagerDejaExistantException;
+import fr.miage.m1.utilities.UsagerInexistantException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -32,7 +33,14 @@ public class UsagerFacade extends AbstractFacade<Usager> implements UsagerFacade
     }
 
     @Override
-    public Usager creerUsager(String prenom, String nom, String mail, String mdp) {
+    public Usager creerUsager(String prenom, String nom, String mail, String mdp) throws MailUsagerDejaExistantException {
+        //récupérer le mail donné en param
+        Query q = this.em.createNamedQuery("Usager.getMail");
+        q.setParameter("vmail", mail);
+        //si mail déjà existant dans la bd
+        if (!q.getResultList().isEmpty())
+            //lever une exception pour usager déjà existant
+            throw new MailUsagerDejaExistantException();
         Usager user = new Usager();
         user.setMail(mail);
         user.setMdp(mdp);
@@ -47,4 +55,15 @@ public class UsagerFacade extends AbstractFacade<Usager> implements UsagerFacade
         return this.find(idUsager);
     }
     
+    @Override
+    public Usager verifierUsagerDansBd(String mail, String mdp) throws UsagerInexistantException{
+        Query q = this.em.createNamedQuery("Usager.verifierDansBd");
+        q.setParameter("vmail", mail);
+        q.setParameter("vmdp", mdp);
+        //si pas de résultat dans la bd
+        if(q.getResultList().isEmpty())
+            //lever exception pour usager inexistant
+            throw new UsagerInexistantException();
+        return (Usager)q.getSingleResult();
+    }
 }

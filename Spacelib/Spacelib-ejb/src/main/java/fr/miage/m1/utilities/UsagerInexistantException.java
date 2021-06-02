@@ -9,9 +9,9 @@ package fr.miage.m1.utilities;
  *
  * @author Flo
  */
-public class RevisionNavetteException extends Exception{
+public class UsagerInexistantException extends Exception{
     
-    public RevisionNavetteException(){
-        super("Attention, la navette n'est plus disponible. Elle doit être révisée.");
+    public UsagerInexistantException(){
+        super("Le couple mail/mdp ne correspond à aucun usager enregistré.");
     }
 }

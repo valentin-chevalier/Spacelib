@@ -20,6 +20,7 @@ import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.entities.Utilisateur;
 import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.MailUsagerDejaExistantException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
 import java.util.Date;
 import javax.ejb.Local;
@@ -75,7 +76,7 @@ public interface ExpoLocal {
     
     public Trajet getTrajet(Long idTrajet);
     
-    public Usager creerUsager(String prenom, String nom, String mail, String mdp);
+    public Usager creerUsager(String prenom, String nom, String mail, String mdp) throws MailUsagerDejaExistantException;
 
     public Usager getUsager(Long idUsager);
     
