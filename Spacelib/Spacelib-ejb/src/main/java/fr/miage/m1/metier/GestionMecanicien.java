@@ -6,8 +6,13 @@
 package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Mecanicien;
+import fr.miage.m1.entities.Quai;
+import fr.miage.m1.entities.Station;
 import fr.miage.m1.facades.MecanicienFacadeLocal;
+import fr.miage.m1.facades.StationFacadeLocal;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.StationInexistanteException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -17,6 +22,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class GestionMecanicien implements GestionMecanicienLocal {
+
+    @EJB
+    private StationFacadeLocal stationFacade;
 
     @EJB
     private MecanicienFacadeLocal mecanicienFacade;
@@ -36,4 +44,15 @@ public class GestionMecanicien implements GestionMecanicienLocal {
         return this.mecanicienFacade.verifierMecanicienDansBd(mail, mdp);
     }
 
+    @Override
+    public List<Quai> getAllQuais(Station station) throws StationInexistanteException{
+        return station.getListeQuais();
+    }
+    
+    @Override
+    public Station getStation(Long idStation) throws StationInexistanteException{
+        if (idStation == null || this.stationFacade.getStation(idStation) == null)
+            throw new StationInexistanteException();
+        return this.stationFacade.getStation(idStation);
+    }
 }

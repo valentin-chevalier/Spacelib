@@ -6,7 +6,11 @@
 package fr.miage.m1.exposition;
 
 import fr.miage.m1.entities.Mecanicien;
+import fr.miage.m1.entities.Quai;
+import fr.miage.m1.entities.Station;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.StationInexistanteException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -21,4 +25,9 @@ public interface ExpoMecanicienLocal {
     public Mecanicien getMecanicien(Long idMecanicien);
     
     public Mecanicien verifierMecanicienDansBd (String mail, String mdp) throws MailInexistantException;
+
+    public List<Quai> getAllQuais(Station station) throws StationInexistanteException;
+    
+    public Station getStation(Long idStation) throws StationInexistanteException;
+
 }

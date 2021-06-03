@@ -6,8 +6,12 @@
 package fr.miage.m1.exposition;
 
 import fr.miage.m1.entities.Mecanicien;
+import fr.miage.m1.entities.Quai;
+import fr.miage.m1.entities.Station;
 import fr.miage.m1.metier.GestionMecanicienLocal;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.StationInexistanteException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -36,5 +40,12 @@ public class ExpoMecanicien implements ExpoMecanicienLocal {
         return this.gestionMecanicien.verifierMecanicienDansBd(mail, mdp);
     }
 
+    @Override
+    public List<Quai> getAllQuais(Station station) throws StationInexistanteException{
+        return this.gestionMecanicien.getAllQuais(station);
+    }
     
+    public Station getStation(Long idStation) throws StationInexistanteException{
+        return this.gestionMecanicien.getStation(idStation);
+    }
 }

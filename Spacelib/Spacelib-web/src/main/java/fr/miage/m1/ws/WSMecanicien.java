@@ -7,6 +7,7 @@ package fr.miage.m1.ws;
 
 import fr.miage.m1.exposition.ExpoMecanicienLocal;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.StationInexistanteException;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -38,4 +39,8 @@ public class WSMecanicien {
         return ejbRef.verifierMecanicienDansBd(mail, mdp).toString();
     }
     
+    @WebMethod(operationName = "getAllQuais")
+    public String getAllQuais(@WebParam(name = "idStation") Long idStation) throws StationInexistanteException{
+        return ejbRef.getAllQuais(ejbRef.getStation(idStation)).toString();
+    }
 }
