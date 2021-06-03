@@ -14,6 +14,7 @@ import fr.miage.m1.entities.Utilisateur;
 import fr.miage.m1.utilities.AucuneReservationException;
 import fr.miage.m1.utilities.ReservationInexistanteException;
 import fr.miage.m1.utilities.RevisionNavetteException;
+import fr.miage.m1.utilities.TrajetDejaAcheveException;
 import fr.miage.m1.utilities.TrajetInexistantException;
 import fr.miage.m1.utilities.UsagerInexistantException;
 import javax.ejb.Local;
@@ -29,5 +30,7 @@ public interface GestionTrajetLocal {
     
     public Trajet getTrajet(Long idTrajet);
     
-    public Trajet finaliserTrajet(Usager usager) throws TrajetInexistantException, UsagerInexistantException, RevisionNavetteException, ReservationInexistanteException, AucuneReservationException;
+    public Trajet finaliserTrajet(Usager usager) throws TrajetDejaAcheveException, TrajetInexistantException, UsagerInexistantException, RevisionNavetteException, ReservationInexistanteException, AucuneReservationException;
+
+    public Trajet recupererTrajet(Long idUser) throws TrajetInexistantException;
 }

@@ -78,4 +78,13 @@ public class ReservationFacade extends AbstractFacade<Reservation> implements Re
         } 
         throw new AucuneReservationException();
     }
+    
+    public boolean reservationExiste(Long idUtilisateur){
+        for (Reservation res : this.findAll()){
+            if (idUtilisateur.equals(res.getUsager().getId())){
+                return true;
+            }
+        }
+        return false;
+    }
 }

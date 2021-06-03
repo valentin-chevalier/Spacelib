@@ -39,6 +39,5 @@ public interface TrajetFacadeLocal {
     
     public Trajet getTrajet(Long idTrajet);
     
-    public Trajet recupererTrajet(Long idUtilisateur) throws TrajetInexistantException;
-    
+    public Trajet recupererTrajet(Long idUtilisateur) throws TrajetInexistantException;    
 }

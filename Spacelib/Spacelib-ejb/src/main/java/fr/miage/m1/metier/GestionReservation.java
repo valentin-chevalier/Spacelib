@@ -25,6 +25,7 @@ import fr.miage.m1.utilities.PasDeQuaiDispoException;
 import fr.miage.m1.utilities.ReservationDejaExistanteException;
 import fr.miage.m1.utilities.ReservationInexistanteException;
 import fr.miage.m1.utilities.StationInexistanteException;
+import fr.miage.m1.utilities.TrajetInexistantException;
 import fr.miage.m1.utilities.UsagerInexistantException;
 import java.util.Date;
 import javax.ejb.EJB;
@@ -38,16 +39,13 @@ import javax.ejb.Stateless;
 public class GestionReservation implements GestionReservationLocal {
 
     @EJB
+    private GestionTrajetLocal gestionTrajet;
+
+    @EJB
     private StationFacadeLocal stationFacade;
 
     @EJB
     private UsagerFacadeLocal usagerFacade;
-
-    @EJB
-    private GestionUsagerLocal gestionUsager;
-
-    @EJB
-    private GestionStationLocal gestionStation;
 
     @EJB
     private OperationFacadeLocal operationFacade;
@@ -72,7 +70,7 @@ public class GestionReservation implements GestionReservationLocal {
     }
 
     @Override
-    public Reservation effectuerReservation (Date dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException{
+    public Reservation effectuerReservation (Date dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException{
         //controle des params fourni
         if (nbPassagers <= 0)
             throw new NbPassagersNonAutoriseException();
@@ -82,11 +80,9 @@ public class GestionReservation implements GestionReservationLocal {
             throw new StationInexistanteException("DEPART");
         if (stationArrivee == null || this.stationFacade.find(stationArrivee.getId())==null)
             throw new StationInexistanteException("ARRIVEE");
-        /*
-        if (this.controlerReservation(usager.getId()) != null){
+        if (this.reservationExiste(usager.getId()) && EtatTrajet.VOYAGE_INITIE.equals(this.gestionTrajet.recupererTrajet(usager.getId()).getEtatTrajet())){
             throw new ReservationDejaExistanteException();
         }
-*/
         Reservation res = null;
         //vérifier qu'un quai soit dispo
         int n = 0;
@@ -120,6 +116,10 @@ public class GestionReservation implements GestionReservationLocal {
 
     public Reservation controlerReservation(Long idUtilisateur) throws ReservationInexistanteException, AucuneReservationException{
         return this.reservationFacade.controlerReservation(idUtilisateur);
+    }
+    
+    public boolean reservationExiste(Long idUtilisateur){
+        return this.reservationFacade.reservationExiste(idUtilisateur);
     }
 
 }

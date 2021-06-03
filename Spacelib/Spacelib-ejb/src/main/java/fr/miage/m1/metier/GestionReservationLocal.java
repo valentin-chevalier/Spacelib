@@ -17,6 +17,7 @@ import fr.miage.m1.utilities.PasDeQuaiDispoException;
 import fr.miage.m1.utilities.ReservationDejaExistanteException;
 import fr.miage.m1.utilities.ReservationInexistanteException;
 import fr.miage.m1.utilities.StationInexistanteException;
+import fr.miage.m1.utilities.TrajetInexistantException;
 import fr.miage.m1.utilities.UsagerInexistantException;
 import java.util.Date;
 import javax.ejb.Local;
@@ -32,7 +33,9 @@ public interface GestionReservationLocal {
     
     public Reservation getReservation (Long idReservation);
     
-    public Reservation effectuerReservation (Date dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException;
+    public Reservation effectuerReservation (Date dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException;
 
     public Reservation controlerReservation(Long idUtilisateur) throws ReservationInexistanteException, AucuneReservationException;
+
+    public boolean reservationExiste(Long idUtilisateur);
 }

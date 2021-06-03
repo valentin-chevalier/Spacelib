@@ -9,11 +9,15 @@ import fr.miage.m1.entities.EtatTrajet;
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Trajet;
+import fr.miage.m1.entities.Usager;
 import fr.miage.m1.entities.Utilisateur;
 import fr.miage.m1.utilities.TrajetInexistantException;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -21,6 +25,9 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class TrajetFacade extends AbstractFacade<Trajet> implements TrajetFacadeLocal {
+
+    @EJB
+    private UsagerFacadeLocal usagerFacade;
 
     @PersistenceContext(unitName = "spaceLibPersistanceUnit")
     private EntityManager em;
@@ -55,20 +62,15 @@ public class TrajetFacade extends AbstractFacade<Trajet> implements TrajetFacade
     
     @Override
     public Trajet recupererTrajet(Long idUtilisateur) throws TrajetInexistantException{
-        /*
+        Usager usager = this.usagerFacade.find(idUtilisateur);
         Query q = this.em.createNamedQuery("Trajet.getTrajet");
-        q.setParameter("vid", idUtilisateur);
-        if (q.getResultList().isEmpty())
+        q.setParameter("vid", usager);
+        List<Trajet> listeTrajets = (List<Trajet>)q.getResultList();
+        if (listeTrajets.isEmpty())
             throw new TrajetInexistantException();
-        return (Trajet)q.getSingleResult();
-        */
-        for (Trajet trajet : this.findAll()){
-            if (trajet.getUtilisateur().getId() == idUtilisateur){
-                return trajet;
-            } else {
-                throw new TrajetInexistantException();
-            }
-        } 
+        //récupérer le dernier résultat (dernier trajet inséré)
+        if (idUtilisateur.equals(listeTrajets.get(listeTrajets.size()-1).getUtilisateur().getId()))
+            return listeTrajets.get(listeTrajets.size()-1);
         throw new TrajetInexistantException();
     }
 }

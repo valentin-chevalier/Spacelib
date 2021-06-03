@@ -16,6 +16,7 @@ import fr.miage.m1.facades.TrajetFacadeLocal;
 import fr.miage.m1.utilities.AucuneReservationException;
 import fr.miage.m1.utilities.ReservationInexistanteException;
 import fr.miage.m1.utilities.RevisionNavetteException;
+import fr.miage.m1.utilities.TrajetDejaAcheveException;
 import fr.miage.m1.utilities.TrajetInexistantException;
 import fr.miage.m1.utilities.UsagerInexistantException;
 import java.util.Date;
@@ -52,15 +53,26 @@ public class GestionTrajet implements GestionTrajetLocal {
     }
 
     @Override
-    public Trajet finaliserTrajet(Usager usager) throws TrajetInexistantException, UsagerInexistantException, RevisionNavetteException, ReservationInexistanteException, AucuneReservationException{
+    public Trajet finaliserTrajet(Usager usager) throws TrajetDejaAcheveException, TrajetInexistantException, UsagerInexistantException, RevisionNavetteException, ReservationInexistanteException, AucuneReservationException{
         if (usager == null)
             throw new UsagerInexistantException();
         Trajet trajet = this.trajetFacade.recupererTrajet(usager.getId());
-        trajet.setEtatTrajet(EtatTrajet.VOYAGE_ACHEVE);
+        //verifier que le trajet n'ait pas déjà été achevé
+        if (EtatTrajet.VOYAGE_INITIE.equals(trajetFacade.recupererTrajet(usager.getId()).getEtatTrajet())){
+            trajet.setEtatTrajet(EtatTrajet.VOYAGE_ACHEVE);
+        } else if (EtatTrajet.VOYAGE_ACHEVE.equals(trajetFacade.recupererTrajet(usager.getId()).getEtatTrajet())) {
+            throw new TrajetDejaAcheveException();
+        }
         trajet.setDateArrivee(new Date());
         Reservation res = this.gestionReservation.controlerReservation(usager.getId());
         this.gestionOperation.creerOperation(new Date(), res.getNavette());
         this.gestionNavette.incrementerNbVoyages(res.getNavette());
         return trajet;
     }
+    
+    @Override
+    public Trajet recupererTrajet(Long idUser) throws TrajetInexistantException{
+        return this.trajetFacade.recupererTrajet(idUser);
+    }
+    
 }

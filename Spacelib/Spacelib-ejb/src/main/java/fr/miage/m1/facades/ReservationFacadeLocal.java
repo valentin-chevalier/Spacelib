@@ -43,4 +43,5 @@ public interface ReservationFacadeLocal {
     
     public Reservation controlerReservation(Long idUtilisateur) throws ReservationInexistanteException, AucuneReservationException;
     
+    public boolean reservationExiste(Long idUtilisateur);
 }
