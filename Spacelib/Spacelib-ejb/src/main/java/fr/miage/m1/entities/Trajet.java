@@ -6,10 +6,13 @@
 package fr.miage.m1.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 
 /**
@@ -18,6 +21,10 @@ import javax.persistence.OneToOne;
  */
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name="Trajet.getTrajet", 
+            query="SELECT t FROM Trajet t WHERE t.utilisateur = :vid")
+})
 public class Trajet implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,7 +34,9 @@ public class Trajet implements Serializable {
 
     private int nbPassagers;
     private EtatTrajet etatTrajet;
-
+    private Date dateDepart;
+    private Date dateArrivee;
+    
     @OneToOne
     public Station stationDepart;
     @OneToOne
@@ -53,6 +62,24 @@ public class Trajet implements Serializable {
         this.utilisateur = utilisateur;
     }
 
+    public Date getDateDepart() {
+        return dateDepart;
+    }
+
+    public void setDateDepart(Date dateDepart) {
+        this.dateDepart = dateDepart;
+    }
+
+    public Date getDateArrivee() {
+        return dateArrivee;
+    }
+
+    public void setDateArrivee(Date dateArrivee) {
+        this.dateArrivee = dateArrivee;
+    }
+
+    
+    
     public int getNbPassagers() {
         return nbPassagers;
     }

@@ -7,10 +7,18 @@ package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.EtatTrajet;
 import fr.miage.m1.entities.Quai;
+import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Trajet;
+import fr.miage.m1.entities.Usager;
 import fr.miage.m1.entities.Utilisateur;
 import fr.miage.m1.facades.TrajetFacadeLocal;
+import fr.miage.m1.utilities.AucuneReservationException;
+import fr.miage.m1.utilities.ReservationInexistanteException;
+import fr.miage.m1.utilities.RevisionNavetteException;
+import fr.miage.m1.utilities.TrajetInexistantException;
+import fr.miage.m1.utilities.UsagerInexistantException;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -20,6 +28,15 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class GestionTrajet implements GestionTrajetLocal {
+
+    @EJB
+    private GestionNavetteLocal gestionNavette;
+
+    @EJB
+    private GestionOperationLocal gestionOperation;
+
+    @EJB
+    private GestionReservationLocal gestionReservation;
 
     @EJB
     private TrajetFacadeLocal trajetFacade;
@@ -34,6 +51,16 @@ public class GestionTrajet implements GestionTrajetLocal {
         return this.trajetFacade.getTrajet(idTrajet);
     }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    @Override
+    public Trajet finaliserTrajet(Usager usager) throws TrajetInexistantException, UsagerInexistantException, RevisionNavetteException, ReservationInexistanteException, AucuneReservationException{
+        if (usager == null)
+            throw new UsagerInexistantException();
+        Trajet trajet = this.trajetFacade.recupererTrajet(usager.getId());
+        trajet.setEtatTrajet(EtatTrajet.VOYAGE_ACHEVE);
+        trajet.setDateArrivee(new Date());
+        Reservation res = this.gestionReservation.controlerReservation(usager.getId());
+        this.gestionOperation.creerOperation(new Date(), res.getNavette());
+        this.gestionNavette.incrementerNbVoyages(res.getNavette());
+        return trajet;
+    }
 }

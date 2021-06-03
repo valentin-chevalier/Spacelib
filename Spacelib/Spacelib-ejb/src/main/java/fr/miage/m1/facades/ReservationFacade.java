@@ -10,6 +10,8 @@ import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Usager;
+import fr.miage.m1.utilities.AucuneReservationException;
+import fr.miage.m1.utilities.ReservationInexistanteException;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -58,4 +60,22 @@ public class ReservationFacade extends AbstractFacade<Reservation> implements Re
         return this.find(idReservation);
     }
     
+    @Override
+    public Reservation controlerReservation(Long idUtilisateur) throws ReservationInexistanteException, AucuneReservationException{
+        /*
+        Query q = this.em.createNamedQuery("Reservation.controlerUtilisateur");
+        q.setParameter("vid", idUtilisateur);
+        if (q.getResultList().isEmpty())
+            throw new ReservationInexistanteException();
+        return (Reservation) q.getSingleResult();
+        */
+        for (Reservation res : this.findAll()){
+            if (idUtilisateur.equals(res.getUsager().getId())){
+                return res;
+            } else {
+                throw new ReservationInexistanteException();
+            }
+        } 
+        throw new AucuneReservationException();
+    }
 }

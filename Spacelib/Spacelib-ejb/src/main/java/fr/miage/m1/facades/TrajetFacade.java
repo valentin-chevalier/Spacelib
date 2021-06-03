@@ -10,6 +10,7 @@ import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.entities.Utilisateur;
+import fr.miage.m1.utilities.TrajetInexistantException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -52,4 +53,22 @@ public class TrajetFacade extends AbstractFacade<Trajet> implements TrajetFacade
         return this.find(idTrajet);
     }
     
+    @Override
+    public Trajet recupererTrajet(Long idUtilisateur) throws TrajetInexistantException{
+        /*
+        Query q = this.em.createNamedQuery("Trajet.getTrajet");
+        q.setParameter("vid", idUtilisateur);
+        if (q.getResultList().isEmpty())
+            throw new TrajetInexistantException();
+        return (Trajet)q.getSingleResult();
+        */
+        for (Trajet trajet : this.findAll()){
+            if (trajet.getUtilisateur().getId() == idUtilisateur){
+                return trajet;
+            } else {
+                throw new TrajetInexistantException();
+            }
+        } 
+        throw new TrajetInexistantException();
+    }
 }

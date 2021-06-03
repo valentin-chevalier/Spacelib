@@ -6,12 +6,17 @@
 package fr.miage.m1.ws;
 
 import fr.miage.m1.exposition.ExpoBorneLocal;
+import fr.miage.m1.utilities.AucuneReservationException;
 import fr.miage.m1.utilities.CapaciteNavetteInsuffisanteException;
 import fr.miage.m1.utilities.MailUsagerDejaExistantException;
 import fr.miage.m1.utilities.NbPassagersNonAutoriseException;
 import fr.miage.m1.utilities.PasDeQuaiDispoException;
 import fr.miage.m1.utilities.StationInexistanteException;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.ReservationDejaExistanteException;
+import fr.miage.m1.utilities.ReservationInexistanteException;
+import fr.miage.m1.utilities.RevisionNavetteException;
+import fr.miage.m1.utilities.TrajetInexistantException;
 import fr.miage.m1.utilities.UsagerInexistantException;
 import java.util.Date;
 import javax.ejb.EJB;
@@ -55,7 +60,14 @@ public class WSBorne {
     }
 
     @WebMethod(operationName = "effectuerReservation")
-    public String effectuerReservation(@WebParam(name = "dateDepart") Date dateDepart, @WebParam(name = "idUsager") Long idUsager, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "nbPassagers") int nbPassagers) throws CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException{
+    public String effectuerReservation(@WebParam(name = "dateDepart") Date dateDepart, @WebParam(name = "idUsager") Long idUsager, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "nbPassagers") int nbPassagers) throws CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException{
         return ejbRef.effectuerReservation(dateDepart, ejbRef.getUsager(idUsager), ejbRef.getStation(idStationDepart), ejbRef.getStation(idStationArrivee), nbPassagers).toString();
+    }
+    
+    @WebMethod(operationName = "finaliserTrajet")
+    public String finaliserTrajet(@WebParam(name = "idUsager") Long idUsager) throws TrajetInexistantException, UsagerInexistantException, RevisionNavetteException, ReservationInexistanteException, AucuneReservationException {
+        if (idUsager == null || this.ejbRef.getUsager(idUsager) == null)
+            throw new UsagerInexistantException();
+        return ejbRef.finaliserTrajet(this.ejbRef.getUsager(idUsager)).toString();
     }
 }
