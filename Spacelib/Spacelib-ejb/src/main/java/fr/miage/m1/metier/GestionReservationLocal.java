@@ -10,6 +10,11 @@ import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Usager;
+import fr.miage.m1.utilities.CapaciteNavetteInsuffisanteException;
+import fr.miage.m1.utilities.NbPassagersNonAutoriseException;
+import fr.miage.m1.utilities.PasDeQuaiDispoException;
+import fr.miage.m1.utilities.StationInexistanteException;
+import fr.miage.m1.utilities.UsagerInexistantException;
 import java.util.Date;
 import javax.ejb.Local;
 
@@ -20,7 +25,9 @@ import javax.ejb.Local;
 @Local
 public interface GestionReservationLocal {
     
-    public Reservation creerReservation (Long nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee);
+    public Reservation creerReservation (int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee);
     
     public Reservation getReservation (Long idReservation);
+    
+    public Reservation effectuerReservation (Date dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException;
 }

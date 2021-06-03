@@ -20,7 +20,7 @@ import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.entities.Utilisateur;
 import fr.miage.m1.exposition.ExpoLocal;
-import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import fr.miage.m1.utilities.MailUsagerDejaExistantException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
 import java.util.Date;
@@ -41,7 +41,7 @@ public class WS {
     // "Web Service > Add Operation"
 
     @WebMethod(operationName = "creerNavette")
-    public String creerNavette(@WebParam(name = "estEnRevision") boolean estEnRevision, @WebParam(name = "estDispo") boolean estDispo, @WebParam(name = "capacite") int capacite, @WebParam(name = "idQuai") Long idQuai) throws NavetteSansQuaiException, CapaciteNavetteException{
+    public String creerNavette(@WebParam(name = "estEnRevision") boolean estEnRevision, @WebParam(name = "estDispo") boolean estDispo, @WebParam(name = "capacite") int capacite, @WebParam(name = "idQuai") Long idQuai) throws NavetteSansQuaiException, CapaciteNavetteNonAutoriseeException{
         if (ejbRef.getQuai(idQuai) == null)
             throw new NavetteSansQuaiException();
         Navette navette = ejbRef.creerNavette(estEnRevision, estDispo, 0, capacite, ejbRef.getQuai(idQuai));
@@ -154,7 +154,7 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerReservation")
-    public String creerReservation(@WebParam(name = "nbPassagers") Long nbPassagers, @WebParam(name = "dateDepart") Date dateDepart, @WebParam(name = "idNavette") Long idNavette, @WebParam(name = "idUsager") Long idUsager, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "idQuaiDepart") Long idQuaiDepart, @WebParam(name = "idQuaiArrivee") Long idQuaiArrivee) {
+    public String creerReservation(@WebParam(name = "nbPassagers") int nbPassagers, @WebParam(name = "dateDepart") Date dateDepart, @WebParam(name = "idNavette") Long idNavette, @WebParam(name = "idUsager") Long idUsager, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "idQuaiDepart") Long idQuaiDepart, @WebParam(name = "idQuaiArrivee") Long idQuaiArrivee) {
         Navette navette = ejbRef.getNavette(idNavette);
         Usager usager = ejbRef.getUsager(idUsager);
         Station stationDepart = ejbRef.getStation(idStationDepart);
@@ -184,13 +184,13 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerTrajet")
-    public String creerTrajet(@WebParam(name = "id") Long id, @WebParam(name = "nbPassagers") int nbPassagers, @WebParam(name = "etatTrajet") EtatTrajet etatTrajet, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "idQuaiDepart") Long idQuaiDepart, @WebParam(name = "idQuaiArrivee") Long idQuaiArrivee, @WebParam(name = "idUtilisateur") Long idUtilisateur) {
+    public String creerTrajet(@WebParam(name = "nbPassagers") int nbPassagers, @WebParam(name = "etatTrajet") EtatTrajet etatTrajet, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "idQuaiDepart") Long idQuaiDepart, @WebParam(name = "idQuaiArrivee") Long idQuaiArrivee, @WebParam(name = "idUtilisateur") Long idUtilisateur) {
         Station stationDepart = ejbRef.getStation(idStationDepart);
         Station stationArrivee = ejbRef.getStation(idStationArrivee);
         Quai quaiDepart = ejbRef.getQuai(idQuaiDepart);
         Quai quaiArrivee = ejbRef.getQuai(idQuaiArrivee);
         Utilisateur user = ejbRef.getUtilisateur(idUtilisateur);
-        Trajet trajet = ejbRef.creerTrajet(id, nbPassagers, etatTrajet, stationDepart, stationArrivee, quaiDepart, quaiArrivee, user);
+        Trajet trajet = ejbRef.creerTrajet(nbPassagers, etatTrajet, stationDepart, stationArrivee, quaiDepart, quaiArrivee, user);
         return trajet.toString();
     }
 

@@ -34,7 +34,7 @@ public interface TrajetFacadeLocal {
 
     int count();
     
-    public Trajet creerTrajet(Long id, int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur);
+    public Trajet creerTrajet(int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur);
     
     public Trajet getTrajet(Long idTrajet);
     

@@ -5,7 +5,6 @@
  */
 package fr.miage.m1.metier;
 
-import fr.miage.m1.entities.Mecanicien;
 import fr.miage.m1.entities.Reparation;
 import java.util.Date;
 import javax.ejb.Local;

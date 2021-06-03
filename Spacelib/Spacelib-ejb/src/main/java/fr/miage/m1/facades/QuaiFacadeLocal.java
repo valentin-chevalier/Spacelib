@@ -7,6 +7,7 @@ package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
+import fr.miage.m1.utilities.PasDeQuaiDispoException;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -34,4 +35,8 @@ public interface QuaiFacadeLocal {
     public Quai creerQuai(int noQuai, boolean estLibre, Station station);
     
     public Quai getQuai (Long idQuai);
+    
+    public List<Quai> getQuaisDispo(Long idStation) throws PasDeQuaiDispoException;
+    
+    public List<Quai> getAllQuais(Long idStation) throws PasDeQuaiDispoException;
 }

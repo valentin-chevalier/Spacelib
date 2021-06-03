@@ -7,7 +7,7 @@ package fr.miage.m1.ws;
 
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.exposition.ExpoAdminLocal;
-import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -24,7 +24,7 @@ public class WSAdmin {
     private ExpoAdminLocal ejbRef;
 
     @WebMethod(operationName = "creerStation")
-    public String creerStation(@WebParam(name = "nom") String nom, @WebParam(name = "coordonnees") String coordonnees, @WebParam(name = "nbQuais") int nbQuais, @WebParam(name = "capaciteNavettes") int capaciteNavettes) throws CapaciteNavetteException {
+    public String creerStation(@WebParam(name = "nom") String nom, @WebParam(name = "coordonnees") String coordonnees, @WebParam(name = "nbQuais") int nbQuais, @WebParam(name = "capaciteNavettes") int capaciteNavettes) throws CapaciteNavetteNonAutoriseeException {
         return ejbRef.creerStation(nom, coordonnees, nbQuais, capaciteNavettes).toString();
     }
     

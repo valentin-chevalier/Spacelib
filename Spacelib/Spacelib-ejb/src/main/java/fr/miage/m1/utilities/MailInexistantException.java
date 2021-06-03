@@ -9,9 +9,9 @@ package fr.miage.m1.utilities;
  *
  * @author Flo
  */
-public class UsagerInexistantException extends Exception{
+public class MailInexistantException extends Exception{
     
-    public UsagerInexistantException(){
-        super("L'usager fourni n'existe pas dans la bd.");
+    public MailInexistantException(){
+        super("Le couple mail/mdp ne correspond à aucun usager enregistré.");
     }
 }

@@ -5,11 +5,8 @@
  */
 package fr.miage.m1.facades;
 
-import fr.miage.m1.entities.Navette;
-import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
-import fr.miage.m1.entities.Trajet;
-import java.util.ArrayList;
+import fr.miage.m1.utilities.StationInexistanteException;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -37,4 +34,6 @@ public interface StationFacadeLocal {
     public Station creerStation(String nom, String coordonnees);
     
     public Station getStation(Long idStation);
+    
+    public boolean verifierStationDansBd(Long idStation) throws StationInexistanteException;
 }

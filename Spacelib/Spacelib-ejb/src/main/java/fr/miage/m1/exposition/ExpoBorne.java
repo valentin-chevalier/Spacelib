@@ -5,14 +5,22 @@
  */
 package fr.miage.m1.exposition;
 
+import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.entities.Usager;
+import fr.miage.m1.metier.GestionReservationLocal;
 import fr.miage.m1.metier.GestionStationLocal;
 import fr.miage.m1.metier.GestionTrajetLocal;
 import fr.miage.m1.metier.GestionUsagerLocal;
+import fr.miage.m1.utilities.CapaciteNavetteInsuffisanteException;
 import fr.miage.m1.utilities.MailUsagerDejaExistantException;
+import fr.miage.m1.utilities.NbPassagersNonAutoriseException;
+import fr.miage.m1.utilities.PasDeQuaiDispoException;
+import fr.miage.m1.utilities.StationInexistanteException;
+import fr.miage.m1.utilities.MailInexistantException;
 import fr.miage.m1.utilities.UsagerInexistantException;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -22,6 +30,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class ExpoBorne implements ExpoBorneLocal {
+
+    @EJB
+    private GestionReservationLocal gestionReservation;
 
     @EJB
     private GestionTrajetLocal gestionTrajet;
@@ -38,7 +49,7 @@ public class ExpoBorne implements ExpoBorneLocal {
     }
 
     @Override
-    public Usager verifierUsagerDansBd(String mail, String mdp) throws UsagerInexistantException{
+    public Usager connecterUsager(String mail, String mdp) throws MailInexistantException{
         return this.gestionUsager.verifierUsagerDansBd(mail, mdp);
     }
 
@@ -55,5 +66,10 @@ public class ExpoBorne implements ExpoBorneLocal {
     @Override
     public Trajet getTrajet(Long idTrajet) {
         return this.gestionTrajet.getTrajet(idTrajet);
+    }
+    
+    @Override
+    public Reservation effectuerReservation (Date dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException{
+        return this.gestionReservation.effectuerReservation(dateDepart, usager, stationDepart, stationArrivee, nbPassagers);
     }
 }

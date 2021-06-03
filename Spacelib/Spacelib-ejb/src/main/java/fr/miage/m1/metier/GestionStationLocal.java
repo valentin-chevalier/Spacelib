@@ -6,7 +6,8 @@
 package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Station;
-import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
+import fr.miage.m1.utilities.StationInexistanteException;
 import javax.ejb.Local;
 
 /**
@@ -18,9 +19,11 @@ public interface GestionStationLocal {
     
     public Station creerStation(String nom, String coordonnees);
     
-    public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteException;
+    public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteNonAutoriseeException;
     
     public Station getStation(Long idStation);
     
     public void transfererNavettesDeStations(Station station);
+    
+    public boolean verifierStationDansBd(Long idStation) throws StationInexistanteException; 
 }

@@ -8,7 +8,7 @@ package fr.miage.m1.metier;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.facades.UsagerFacadeLocal;
 import fr.miage.m1.utilities.MailUsagerDejaExistantException;
-import fr.miage.m1.utilities.UsagerInexistantException;
+import fr.miage.m1.utilities.MailInexistantException;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -33,7 +33,12 @@ public class GestionUsager implements GestionUsagerLocal {
     }
 
     @Override
-    public Usager verifierUsagerDansBd(String mail, String mdp) throws UsagerInexistantException {
+    public Usager verifierUsagerDansBd(String mail, String mdp) throws MailInexistantException {
         return this.usagerFacade.verifierUsagerDansBd(mail, mdp);
+    }
+
+    @Override
+    public boolean verifierUsagerExiste(Long idUsager) throws MailInexistantException {
+        return this.usagerFacade.verifierUsagerExiste(idUsager);
     }
 }

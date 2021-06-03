@@ -6,7 +6,7 @@
 package fr.miage.m1.exposition;
 
 import fr.miage.m1.entities.Station;
-import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import javax.ejb.Local;
 
 /**
@@ -16,6 +16,6 @@ import javax.ejb.Local;
 @Local
 public interface ExpoAdminLocal {
     
-    public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteException;
+    public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteNonAutoriseeException;
     
 }

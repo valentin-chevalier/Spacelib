@@ -9,7 +9,7 @@ import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.facades.NavetteFacadeLocal;
 import fr.miage.m1.facades.QuaiFacadeLocal;
-import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
 import fr.miage.m1.utilities.RevisionNavetteException;
 import javax.ejb.EJB;
@@ -29,15 +29,15 @@ public class GestionNavette implements GestionNavetteLocal {
     private NavetteFacadeLocal navetteFacade;
     
     @Override
-    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) throws NavetteSansQuaiException, CapaciteNavetteException{
+    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) throws NavetteSansQuaiException, CapaciteNavetteNonAutoriseeException{
         verifierCapaciteAutorisee(capacite);
         return this.navetteFacade.creerNavette(estEnRevision, estDispo, nbVoyages, capacite, quai);
     }
       
     @Override
-    public boolean verifierCapaciteAutorisee(int capacite) throws CapaciteNavetteException {
+    public boolean verifierCapaciteAutorisee(int capacite) throws CapaciteNavetteNonAutoriseeException {
         if (capacite != 2 && capacite != 5 && capacite != 10 && capacite != 15) {
-            throw new CapaciteNavetteException();
+            throw new CapaciteNavetteNonAutoriseeException();
         } 
         return true;
     }

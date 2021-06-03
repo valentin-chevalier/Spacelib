@@ -13,8 +13,8 @@ import fr.miage.m1.facades.NavetteFacadeLocal;
 import fr.miage.m1.facades.QuaiFacadeLocal;
 import fr.miage.m1.facades.ReservationFacadeLocal;
 import fr.miage.m1.facades.StationFacadeLocal;
-import fr.miage.m1.utilities.CapaciteNavetteException;
-import fr.miage.m1.utilities.NavetteSansQuaiException;
+import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
+import fr.miage.m1.utilities.StationInexistanteException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -104,9 +104,9 @@ public class GestionStation implements GestionStationLocal {
     }
 
     @Override
-    public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteException{
+    public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteNonAutoriseeException{
         if (capaciteNavettes <= 0){
-            throw new CapaciteNavetteException();
+            throw new CapaciteNavetteNonAutoriseeException();
         }
         Station station = this.stationFacade.creerStation(nom, coordonnees);
         int numQuai = 1;
@@ -124,5 +124,10 @@ public class GestionStation implements GestionStationLocal {
             }
         }
         return station;
+    }
+
+    @Override
+    public boolean verifierStationDansBd(Long idStation) throws StationInexistanteException {
+        return this.stationFacade.verifierStationDansBd(idStation);
     }
 }

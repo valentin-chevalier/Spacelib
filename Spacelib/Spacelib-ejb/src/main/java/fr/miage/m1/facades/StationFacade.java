@@ -8,7 +8,7 @@ package fr.miage.m1.facades;
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
-import fr.miage.m1.entities.Trajet;
+import fr.miage.m1.utilities.StationInexistanteException;
 import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -47,6 +47,13 @@ public class StationFacade extends AbstractFacade<Station> implements StationFac
     @Override
     public Station getStation(Long idStation) {
         return this.find(idStation);
+    }
+
+    @Override
+    public boolean verifierStationDansBd(Long idStation) throws StationInexistanteException {
+        if (getStation(idStation) == null)
+            throw new StationInexistanteException();
+        return true;
     }
     
 }

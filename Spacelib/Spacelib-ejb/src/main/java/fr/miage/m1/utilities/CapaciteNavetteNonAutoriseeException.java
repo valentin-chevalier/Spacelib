@@ -9,9 +9,9 @@ package fr.miage.m1.utilities;
  *
  * @author Flo
  */
-public class UsagerInexistantException extends Exception{
+public class CapaciteNavetteNonAutoriseeException extends Exception{
     
-    public UsagerInexistantException(){
-        super("L'usager fourni n'existe pas dans la bd.");
+    public CapaciteNavetteNonAutoriseeException(){
+        super("La navette insérée n'a pas une capacité autorisée.");
     }
 }

@@ -25,8 +25,8 @@ public class GestionTrajet implements GestionTrajetLocal {
     private TrajetFacadeLocal trajetFacade;
 
     @Override
-    public Trajet creerTrajet(Long id, int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) {
-        return this.trajetFacade.creerTrajet(id, nbPassagers, etatTrajet, stationDepart, stationArrivee, quaiDepart, quaiArrivee, utilisateur);
+    public Trajet creerTrajet(int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) {
+        return this.trajetFacade.creerTrajet(nbPassagers, etatTrajet, stationDepart, stationArrivee, quaiDepart, quaiArrivee, utilisateur);
     }
 
     @Override

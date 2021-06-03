@@ -34,7 +34,7 @@ public class TrajetFacade extends AbstractFacade<Trajet> implements TrajetFacade
     }
 
     @Override
-    public Trajet creerTrajet(Long id, int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) {
+    public Trajet creerTrajet(int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) {
         Trajet trajet = new Trajet();
         trajet.setEtatTrajet(etatTrajet);
         trajet.setNbPassagers(nbPassagers);

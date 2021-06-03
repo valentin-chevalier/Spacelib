@@ -33,7 +33,7 @@ import fr.miage.m1.metier.GestionSystemeLocal;
 import fr.miage.m1.metier.GestionTrajetLocal;
 import fr.miage.m1.metier.GestionUsagerLocal;
 import fr.miage.m1.metier.GestionUtilisateurLocal;
-import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import fr.miage.m1.utilities.MailUsagerDejaExistantException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
 import java.util.Date;
@@ -90,7 +90,7 @@ public class Expo implements ExpoLocal {
     private GestionNavetteLocal gestionNavette;
     
     @Override
-    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) throws NavetteSansQuaiException, CapaciteNavetteException {
+    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) throws NavetteSansQuaiException, CapaciteNavetteNonAutoriseeException {
         return this.gestionNavette.creerNavette(estEnRevision, estDispo, nbVoyages, capacite, quai);
     }
     
@@ -180,7 +180,7 @@ public class Expo implements ExpoLocal {
     }
 
     @Override
-    public Reservation creerReservation(Long nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
+    public Reservation creerReservation(int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
         return this.gestionReservation.creerReservation(nbPassagers, dateDepart, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
     }
 
@@ -200,8 +200,8 @@ public class Expo implements ExpoLocal {
     }
 
     @Override
-    public Trajet creerTrajet(Long id, int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) {
-        return this.gestionTrajet.creerTrajet(id, nbPassagers, etatTrajet, stationDepart, stationArrivee, quaiDepart, quaiArrivee, utilisateur);
+    public Trajet creerTrajet(int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) {
+        return this.gestionTrajet.creerTrajet(nbPassagers, etatTrajet, stationDepart, stationArrivee, quaiDepart, quaiArrivee, utilisateur);
     }
 
     @Override

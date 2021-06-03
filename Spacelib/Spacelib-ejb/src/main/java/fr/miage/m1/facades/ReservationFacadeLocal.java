@@ -35,7 +35,7 @@ public interface ReservationFacadeLocal {
 
     int count();
     
-    public Reservation creerReservation (Long nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee);
+    public Reservation creerReservation (int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee);
     
     public Reservation getReservation (Long idReservation);
     

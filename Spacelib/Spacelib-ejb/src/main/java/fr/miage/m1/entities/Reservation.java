@@ -31,9 +31,9 @@ public class Reservation implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
     
-    private Long nbPassagers;
+    private int nbPassagers;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateDepart;
     
@@ -54,7 +54,7 @@ public class Reservation implements Serializable {
         
     }
 
-    public Reservation(Long id, Long nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
+    public Reservation(int id, int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
         this.id = id;
         this.nbPassagers = nbPassagers;
         this.dateDepart = dateDepart;
@@ -114,32 +114,12 @@ public class Reservation implements Serializable {
         this.quaiArrivee = quaiArrivee;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Reservation)) {
-            return false;
-        }
-        Reservation other = (Reservation) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -147,11 +127,11 @@ public class Reservation implements Serializable {
         return "fr.miage.m1.entities.Reservation[ id=" + id + " ]";
     }
 
-    public Long getNbPassagers() {
+    public int getNbPassagers() {
         return nbPassagers;
     }
 
-    public void setNbPassagers(Long nbPassagers) {
+    public void setNbPassagers(int nbPassagers) {
         this.nbPassagers = nbPassagers;
     }
 

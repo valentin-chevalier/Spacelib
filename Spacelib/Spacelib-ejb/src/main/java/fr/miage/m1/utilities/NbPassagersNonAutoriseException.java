@@ -9,9 +9,9 @@ package fr.miage.m1.utilities;
  *
  * @author Flo
  */
-public class CapaciteNavetteException extends Exception{
+public class NbPassagersNonAutoriseException extends Exception{
     
-    public CapaciteNavetteException(){
-        super("La navette insérée n'a pas une capacité autorisée.");
+    public NbPassagersNonAutoriseException(){
+        super("Le nombre de passagers inséré n'est pas autorisé.");
     }
 }

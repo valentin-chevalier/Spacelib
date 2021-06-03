@@ -11,6 +11,7 @@ import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Usager;
 import java.util.Date;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,6 +22,9 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class ReservationFacade extends AbstractFacade<Reservation> implements ReservationFacadeLocal {
+
+    @EJB
+    private TrajetFacadeLocal trajetFacade;
 
     @PersistenceContext(unitName = "spaceLibPersistanceUnit")
     private EntityManager em;
@@ -35,21 +39,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> implements Re
     }
 
     @Override
-    public Reservation creerReservation(Long nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
-        
-        //controle sur utilisateur
-        /*
-        Query q = this.em.createNamedQuery("Reservation.controlerUtilisateur");
-        q.setParameter("id", usager.getId());
-        
-        Reservation res = (Reservation) q.getSingleResult();
-        System.out.println("Res : " + res);
-        
-        
-        if ("".equals(q.getSingleResult()))
-            throw new  Error("L'usager en paramètre a déjà émis une réservation.");
-        */
-
+    public Reservation creerReservation(int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
         Reservation reservation = new Reservation();
         reservation.setDateDepart(dateDepart);
         reservation.setNavette(navette);

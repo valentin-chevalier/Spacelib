@@ -5,11 +5,18 @@
  */
 package fr.miage.m1.exposition;
 
+import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.entities.Usager;
+import fr.miage.m1.utilities.CapaciteNavetteInsuffisanteException;
 import fr.miage.m1.utilities.MailUsagerDejaExistantException;
+import fr.miage.m1.utilities.NbPassagersNonAutoriseException;
+import fr.miage.m1.utilities.PasDeQuaiDispoException;
+import fr.miage.m1.utilities.StationInexistanteException;
+import fr.miage.m1.utilities.MailInexistantException;
 import fr.miage.m1.utilities.UsagerInexistantException;
+import java.util.Date;
 import javax.ejb.Local;
 
 /**
@@ -26,7 +33,8 @@ public interface ExpoBorneLocal {
     public Trajet getTrajet(Long idTrajet);
     
     public Station getStation(Long idStation);
-    
-    public Usager verifierUsagerDansBd(String mail, String mdp) throws UsagerInexistantException;
+   
+    public Usager connecterUsager(String mail, String mdp) throws MailInexistantException;
 
+    public Reservation effectuerReservation (Date dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException;
 }

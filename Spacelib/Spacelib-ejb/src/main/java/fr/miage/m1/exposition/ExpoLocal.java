@@ -19,7 +19,7 @@ import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.entities.Utilisateur;
-import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import fr.miage.m1.utilities.MailUsagerDejaExistantException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
 import java.util.Date;
@@ -48,7 +48,7 @@ public interface ExpoLocal {
 
     public Mecanicien getMecanicien(Long idMecanicien);
     
-    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) throws NavetteSansQuaiException, CapaciteNavetteException;
+    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) throws NavetteSansQuaiException, CapaciteNavetteNonAutoriseeException;
     
     public Navette getNavette(Long idNavette);
     
@@ -64,7 +64,7 @@ public interface ExpoLocal {
     
     public Reparation getReparation(Long idReparation);
     
-    public Reservation creerReservation (Long nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee);
+    public Reservation creerReservation (int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee);
     
     public Reservation getReservation (Long idReservation);
     
@@ -72,7 +72,7 @@ public interface ExpoLocal {
     
     public Station getStation(Long idStation);
     
-    public Trajet creerTrajet(Long id, int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur);
+    public Trajet creerTrajet(int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur);
     
     public Trajet getTrajet(Long idTrajet);
     

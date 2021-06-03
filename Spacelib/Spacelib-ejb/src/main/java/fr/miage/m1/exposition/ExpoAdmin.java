@@ -7,7 +7,7 @@ package fr.miage.m1.exposition;
 
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.metier.GestionStationLocal;
-import fr.miage.m1.utilities.CapaciteNavetteException;
+import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -22,7 +22,7 @@ public class ExpoAdmin implements ExpoAdminLocal {
     private GestionStationLocal gestionStation;
 
     @Override
-    public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteException {
+    public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteNonAutoriseeException {
         return this.gestionStation.creerStation(nom, coordonnees, nbQuais, capaciteNavettes);
     }
 
