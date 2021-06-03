@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -18,6 +20,10 @@ import javax.persistence.OneToMany;
  * @author Valentin
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name="Mecanicien.verifierDansBd", query="SELECT m FROM Mecanicien m WHERE m.mail = :vmail AND m.mdp = :vmdp"),
+    @NamedQuery(name="Mecanicien.getMail", query="SELECT m FROM Mecanicien m WHERE m.mail = :vmail")
+})
 public class Mecanicien extends Utilisateur implements Serializable {
 
     private static final long serialVersionUID = 1L;

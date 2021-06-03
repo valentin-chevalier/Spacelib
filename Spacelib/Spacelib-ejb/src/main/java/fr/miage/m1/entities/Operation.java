@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -20,12 +21,21 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Operation implements Serializable {
 
+    public enum EtatRevision {
+        DEBUT_REVISION, 
+        FIN_REVISION
+    }
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateOperation;
-
+    private EtatRevision etatRevision;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dateCreationOperation;
+    
     @ManyToOne
     public Navette navette;
 
@@ -37,8 +47,21 @@ public class Operation implements Serializable {
         this.dateOperation = dateOperation;
         this.navette = navette;
     }
-   
-    private Date dateCreationOperation;
+    
+    public Operation(Long id, Date dateOperation, Navette navette, EtatRevision etatRevision) {
+        this.id = id;
+        this.dateOperation = dateOperation;
+        this.navette = navette;
+        this.etatRevision = etatRevision;
+    }
+
+    public EtatRevision getEtatRevision() {
+        return etatRevision;
+    }
+
+    public void setEtatRevision(EtatRevision etatRevision) {
+        this.etatRevision = etatRevision;
+    }
 
     public Date getDateCreationOperation() {
         return dateCreationOperation;

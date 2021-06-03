@@ -28,6 +28,9 @@ import javax.ejb.Stateless;
 public class GestionStation implements GestionStationLocal {
 
     @EJB
+    private GestionNavetteLocal gestionNavette;
+
+    @EJB
     private ReservationFacadeLocal reservationFacade;
 
     @EJB
@@ -38,6 +41,8 @@ public class GestionStation implements GestionStationLocal {
 
     @EJB
     private StationFacadeLocal stationFacade;
+    
+    
 
     @Override
     public Station creerStation(String nom, String coordonnees) {
@@ -105,9 +110,7 @@ public class GestionStation implements GestionStationLocal {
 
     @Override
     public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteNonAutoriseeException{
-        if (capaciteNavettes <= 0){
-            throw new CapaciteNavetteNonAutoriseeException();
-        }
+        this.gestionNavette.verifierCapaciteAutorisee(capaciteNavettes);
         Station station = this.stationFacade.creerStation(nom, coordonnees);
         int numQuai = 1;
         for (int i = 1; i <= nbQuais; i++){
