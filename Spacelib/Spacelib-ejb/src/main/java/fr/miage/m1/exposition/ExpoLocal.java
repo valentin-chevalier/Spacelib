@@ -84,4 +84,5 @@ public interface ExpoLocal {
     
     public Utilisateur getUtilisateur(Long idUtilisateur);
     
+    public void setEstDispo(Navette navette, boolean bool);
 }

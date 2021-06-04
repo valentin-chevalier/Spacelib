@@ -26,5 +26,4 @@ public interface GestionNavetteLocal {
     public boolean verifierCapaciteAutorisee(int capacite) throws CapaciteNavetteNonAutoriseeException;
     
     public void incrementerNbVoyages(Navette navette) throws RevisionNavetteException;
-    
 }

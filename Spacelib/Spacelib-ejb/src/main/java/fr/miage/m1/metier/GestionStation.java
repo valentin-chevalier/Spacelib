@@ -42,8 +42,6 @@ public class GestionStation implements GestionStationLocal {
     @EJB
     private StationFacadeLocal stationFacade;
     
-    
-
     @Override
     public Station creerStation(String nom, String coordonnees) {
         return this.stationFacade.creerStation(nom, coordonnees);
@@ -120,6 +118,7 @@ public class GestionStation implements GestionStationLocal {
             if (i <= nbQuais / 2){
                 try {
                     Navette navette = this.navetteFacade.creerNavette(false, true, 0, capaciteNavettes, quai);
+                    quai.setEstLibre(false);
                     station.getListeNavettes().add(navette);
                 } catch (Exception e){
                     //gestion erreur

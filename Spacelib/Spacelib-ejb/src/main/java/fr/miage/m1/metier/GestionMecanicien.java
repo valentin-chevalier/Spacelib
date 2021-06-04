@@ -6,12 +6,18 @@
 package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Mecanicien;
+import fr.miage.m1.entities.Navette;
+import fr.miage.m1.entities.Operation;
 import fr.miage.m1.entities.Quai;
+import fr.miage.m1.entities.Reparation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.facades.MecanicienFacadeLocal;
 import fr.miage.m1.facades.StationFacadeLocal;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.PasDeNavetteAReviserException;
 import fr.miage.m1.utilities.StationInexistanteException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -22,6 +28,18 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class GestionMecanicien implements GestionMecanicienLocal {
+
+    @EJB
+    private GestionReparationLocal gestionReparation;
+
+    @EJB
+    private GestionNavetteLocal gestionNavette;
+
+    @EJB
+    private GestionQuaiLocal gestionQuai;
+
+    @EJB
+    private GestionOperationLocal gestionOperation;
 
     @EJB
     private StationFacadeLocal stationFacade;
@@ -43,16 +61,48 @@ public class GestionMecanicien implements GestionMecanicienLocal {
     public Mecanicien verifierMecanicienDansBd (String mail, String mdp) throws MailInexistantException{
         return this.mecanicienFacade.verifierMecanicienDansBd(mail, mdp);
     }
-
-    @Override
-    public List<Quai> getAllQuais(Station station) throws StationInexistanteException{
-        return station.getListeQuais();
-    }
     
     @Override
     public Station getStation(Long idStation) throws StationInexistanteException{
         if (idStation == null || this.stationFacade.getStation(idStation) == null)
             throw new StationInexistanteException();
         return this.stationFacade.getStation(idStation);
+    }
+    
+    @Override
+    public Reparation commencerReparation(Long idMecanicien, Long idQuai, Long idNavette){
+        Quai quai = this.gestionQuai.getQuai(idQuai);
+        quai.setEstLibre(false);
+        Navette navette = this.gestionNavette.getNavette(idNavette);
+        navette.setEstDispo(false);
+        navette.setEstEnRevision(true);
+        Operation operation = this.gestionOperation.creerOperation(new Date(), navette);
+        Reparation reparation = this.gestionReparation.creerReparation(new Date());
+        reparation.setMecanicien(getMecanicien(idMecanicien));
+        operation.setEtatRevision(Operation.EtatRevision.DEBUT_REVISION);
+        return reparation;
+    }
+
+    @Override
+    public Quai getQuai(Long idQuai) {
+        return this.gestionQuai.getQuai(idQuai);
+    }
+
+    @Override
+    public List<Navette> getNavettesAReviser(Station station) throws PasDeNavetteAReviserException{
+        List<Navette> listeNavettesAReviser = new ArrayList<>();
+        System.out.println("fr.miage.m1.metier.GestionMecanicien.getNavettesAReviser()" + station.getListeNavettes());
+        for (Navette navette : station.getListeNavettes()){
+            System.out.println("DISPO !! " + navette.isEstDispo());
+            System.out.println("REV !! " + navette.isEstEnRevision());
+
+            if(!navette.isEstDispo() && !navette.isEstEnRevision()){
+                listeNavettesAReviser.add(navette);
+            }
+        }
+        if (listeNavettesAReviser.isEmpty()){
+            throw new PasDeNavetteAReviserException();
+        }
+        return listeNavettesAReviser;
     }
 }

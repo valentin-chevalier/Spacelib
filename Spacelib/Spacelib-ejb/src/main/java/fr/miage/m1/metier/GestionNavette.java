@@ -8,7 +8,6 @@ package fr.miage.m1.metier;
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.facades.NavetteFacadeLocal;
-import fr.miage.m1.facades.QuaiFacadeLocal;
 import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
 import fr.miage.m1.utilities.RevisionNavetteException;
@@ -21,9 +20,6 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class GestionNavette implements GestionNavetteLocal {
-
-    @EJB
-    private QuaiFacadeLocal quaiFacade;
 
     @EJB
     private NavetteFacadeLocal navetteFacade;
@@ -57,7 +53,5 @@ public class GestionNavette implements GestionNavetteLocal {
     public Navette getNavette(Long idNavette) {
         return this.navetteFacade.find(idNavette);
     }
-
-    
 }
 

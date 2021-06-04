@@ -7,6 +7,7 @@ package fr.miage.m1.ws;
 
 import fr.miage.m1.exposition.ExpoMecanicienLocal;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.PasDeNavetteAReviserException;
 import fr.miage.m1.utilities.StationInexistanteException;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -21,8 +22,7 @@ import javax.jws.WebService;
 public class WSMecanicien {
 
     @EJB
-    private ExpoMecanicienLocal ejbRef;// Add business logic below. (Right-click in editor and choose
-    // "Web Service > Add Operation"
+    private ExpoMecanicienLocal ejbRef;
 
     @WebMethod(operationName = "creerMecanicien")
     public String creerMecanicien(@WebParam(name = "prenom") String prenom, @WebParam(name = "nom") String nom, @WebParam(name = "mail") String mail, @WebParam(name = "mdp") String mdp) {
@@ -39,8 +39,21 @@ public class WSMecanicien {
         return ejbRef.verifierMecanicienDansBd(mail, mdp).toString();
     }
     
-    @WebMethod(operationName = "getAllQuais")
-    public String getAllQuais(@WebParam(name = "idStation") Long idStation) throws StationInexistanteException{
-        return ejbRef.getAllQuais(ejbRef.getStation(idStation)).toString();
+    @WebMethod(operationName = "commencerReparation")
+    public String commencerReparation(@WebParam(name = "idMecanicien") Long idMecanicien, @WebParam(name = "idQuai") Long idQuai, @WebParam(name = "idNavette") Long idNavette){
+        return this.ejbRef.commencerReparation(idMecanicien, idQuai, idNavette).toString();
+    }
+    
+    @WebMethod(operationName = "getQuai")
+    public String commencerReparation(@WebParam(name = "idQuai") Long idQuai){
+        return this.ejbRef.getQuai(idQuai).toString();
+    }
+    
+    @WebMethod(operationName = "getNavettesAReviser")
+    public String getNavettesAReviser(@WebParam(name = "idStation") Long idStation) throws PasDeNavetteAReviserException, StationInexistanteException{
+        if (idStation == null || this.ejbRef.getStation(idStation) == null){
+            throw new StationInexistanteException();
+        }
+        return this.ejbRef.getNavettesAReviser(ejbRef.getStation(idStation)).toString();
     }
 }

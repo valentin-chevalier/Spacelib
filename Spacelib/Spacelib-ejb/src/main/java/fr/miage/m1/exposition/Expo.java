@@ -219,4 +219,8 @@ public class Expo implements ExpoLocal {
         return this.gestionUsager.getUsager(idUsager);
     }
 
+    @Override
+    public void setEstDispo(Navette navette, boolean bool){
+        navette.setEstDispo(bool);
+    }
 }

@@ -212,4 +212,8 @@ public class WS {
         return usager.toString();
     }
 
+    @WebMethod(operationName = "setNavette")
+    public void setEstDispo(@WebParam(name = "idUsager") Long idNavette, boolean bool){
+        ejbRef.getNavette(idNavette).setEstDispo(bool);
+    }
 }
