@@ -13,9 +13,12 @@ import fr.miage.m1.entities.Reparation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.facades.MecanicienFacadeLocal;
 import fr.miage.m1.facades.NavetteFacadeLocal;
+import fr.miage.m1.facades.OperationFacadeLocal;
 import fr.miage.m1.facades.ReparationFacadeLocal;
 import fr.miage.m1.facades.StationFacadeLocal;
+import fr.miage.m1.utilities.AucuneReparationException;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.MauvaisMecanicienException;
 import fr.miage.m1.utilities.NavetteInexistanteException;
 import fr.miage.m1.utilities.NavettePasRevisableException;
 import fr.miage.m1.utilities.PasDeNavetteAReviserException;
@@ -35,7 +38,7 @@ import javax.ejb.Stateless;
 public class GestionMecanicien implements GestionMecanicienLocal {
 
     @EJB
-    private GestionStationLocal gestionStation;
+    private OperationFacadeLocal operationFacade;
 
     @EJB
     private NavetteFacadeLocal navetteFacade;
@@ -125,7 +128,7 @@ public class GestionMecanicien implements GestionMecanicienLocal {
         if (this.gestionQuai.getQuai(this.gestionNavette.getNavette(idNavette).getQuai().getId()) == null)
             throw new NavetteInexistanteException();
         Station station = this.gestionQuai.getQuai(this.gestionNavette.getNavette(idNavette).getQuai().getId()).getStation();
-        for (Navette navette : getNavettesAReviser(station)){
+        for (Navette navette : this.gestionNavette.getAllNavettes()){
             if (!navette.getId().equals(idNavette))
                 throw new NavettePasRevisableException();
         }
@@ -141,5 +144,33 @@ public class GestionMecanicien implements GestionMecanicienLocal {
         this.navetteFacade.edit(this.gestionNavette.getNavette(idNavette));
         //retourner le quai où est la navette
         return this.gestionNavette.getNavette(idNavette).getQuai();
+    }
+    
+    @Override
+    public Operation cloturerReservation(Long idMecanicien, Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException{
+        if (idMecanicien == null || getMecanicien(idMecanicien) == null){
+            throw new UsagerInexistantException();
+        }
+        //récupérer la navette
+        Navette navette = this.gestionNavette.getNavette(idNavette);
+        if (navette == null)
+            throw new NavetteInexistanteException();
+        //récupérer le début révision
+        if (navette.getListeOperations().isEmpty())
+            throw new AucuneReparationException();
+        for (Reparation rep : getMecanicien(idMecanicien).getListeReparations()){
+            if (!idMecanicien.equals(rep.getMecanicien().getId()))
+                throw new MauvaisMecanicienException();
+            if (this.gestionOperation.getOperation(rep.getId()) == null 
+                    || !idNavette.equals(this.gestionOperation.getOperation(rep.getId()).getNavette()))
+                throw new AucuneReparationException();
+        }
+        Operation ope = this.gestionOperation.creerOperationMaintenance(navette, Operation.EtatRevision.FIN_REVISION);
+        //navette redevient disponible à l'emprunt
+        navette.setNbVoyages(0);
+        navette.setEstEnRevision(false);
+        navette.setEstDispo(true);
+        this.navetteFacade.edit(navette);
+        return ope;
     }
 }

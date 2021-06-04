@@ -8,7 +8,9 @@ package fr.miage.m1.metier;
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
+import fr.miage.m1.utilities.NavetteInexistanteException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -23,5 +25,7 @@ public interface GestionNavetteLocal {
     public Navette getNavette(Long idNavette);
     
     public boolean verifierCapaciteAutorisee(int capacite) throws CapaciteNavetteNonAutoriseeException;
+    
+    public List<Navette> getAllNavettes() throws NavetteInexistanteException;
 
 }

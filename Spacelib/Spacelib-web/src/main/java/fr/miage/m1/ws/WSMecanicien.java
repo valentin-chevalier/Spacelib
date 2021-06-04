@@ -6,7 +6,9 @@
 package fr.miage.m1.ws;
 
 import fr.miage.m1.exposition.ExpoMecanicienLocal;
+import fr.miage.m1.utilities.AucuneReparationException;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.MauvaisMecanicienException;
 import fr.miage.m1.utilities.NavetteInexistanteException;
 import fr.miage.m1.utilities.NavettePasRevisableException;
 import fr.miage.m1.utilities.PasDeNavetteAReviserException;
@@ -65,4 +67,8 @@ public class WSMecanicien {
         return this.ejbRef.choisirNavetteAReviser(idMecanicien, idNavette).toString();
     }
 
+    @WebMethod(operationName = "cloturerReservation")
+    public String cloturerReservation(@WebParam(name = "idMecanicien") Long idMecanicien, @WebParam(name = "idNavette") Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException{
+        return this.ejbRef.cloturerReservation(idMecanicien, idNavette).toString();
+    }
 }

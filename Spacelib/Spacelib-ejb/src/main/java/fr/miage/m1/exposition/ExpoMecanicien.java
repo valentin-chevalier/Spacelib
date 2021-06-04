@@ -7,11 +7,14 @@ package fr.miage.m1.exposition;
 
 import fr.miage.m1.entities.Mecanicien;
 import fr.miage.m1.entities.Navette;
+import fr.miage.m1.entities.Operation;
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Reparation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.metier.GestionMecanicienLocal;
+import fr.miage.m1.utilities.AucuneReparationException;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.MauvaisMecanicienException;
 import fr.miage.m1.utilities.NavetteInexistanteException;
 import fr.miage.m1.utilities.NavettePasRevisableException;
 import fr.miage.m1.utilities.PasDeNavetteAReviserException;
@@ -69,6 +72,11 @@ public class ExpoMecanicien implements ExpoMecanicienLocal {
     @Override
     public Quai choisirNavetteAReviser(Long idMecanicien, Long idNavette) throws NavettePasRevisableException, UsagerInexistantException, PasDeNavetteAReviserException, NavetteInexistanteException{
         return this.gestionMecanicien.choisirNavetteAReviser(idMecanicien, idNavette);
+    }
+
+    @Override
+    public Operation cloturerReservation(Long idMecanicien, Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException{
+        return this.gestionMecanicien.cloturerReservation(idMecanicien, idNavette);
     }
 
 }

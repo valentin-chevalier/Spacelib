@@ -9,7 +9,9 @@ import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.facades.NavetteFacadeLocal;
 import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
+import fr.miage.m1.utilities.NavetteInexistanteException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -40,6 +42,13 @@ public class GestionNavette implements GestionNavetteLocal {
     @Override
     public Navette getNavette(Long idNavette) {
         return this.navetteFacade.find(idNavette);
+    }
+    
+    public List<Navette> getAllNavettes() throws NavetteInexistanteException{
+        if (navetteFacade.findAll().isEmpty()){
+            throw new NavetteInexistanteException();
+        }
+        return this.navetteFacade.findAll();
     }
 }
 
