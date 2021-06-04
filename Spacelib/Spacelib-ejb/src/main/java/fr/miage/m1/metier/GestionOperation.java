@@ -31,7 +31,10 @@ public class GestionOperation implements GestionOperationLocal {
     public Operation getOperation(Long idOperation) {
         return this.operationFacade.getOperation(idOperation);
     }
+    
+    @Override
+    public Operation creerOperationMaintenance(Navette navette, Operation.EtatRevision etatRevision){
+        return this.operationFacade.creerOperationMaintenance(new Date(), navette, etatRevision);
+    }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
 }

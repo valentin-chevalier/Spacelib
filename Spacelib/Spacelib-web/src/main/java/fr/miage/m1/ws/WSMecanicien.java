@@ -7,8 +7,11 @@ package fr.miage.m1.ws;
 
 import fr.miage.m1.exposition.ExpoMecanicienLocal;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.NavetteInexistanteException;
+import fr.miage.m1.utilities.NavettePasRevisableException;
 import fr.miage.m1.utilities.PasDeNavetteAReviserException;
 import fr.miage.m1.utilities.StationInexistanteException;
+import fr.miage.m1.utilities.UsagerInexistantException;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -56,4 +59,10 @@ public class WSMecanicien {
         }
         return this.ejbRef.getNavettesAReviser(ejbRef.getStation(idStation)).toString();
     }
+   
+    @WebMethod(operationName = "choisirNavetteAReviser")
+    public String choisirNavetteAReviser(@WebParam(name = "idMecanicien") Long idMecanicien, @WebParam(name = "idNavette") Long idNavette) throws NavettePasRevisableException, UsagerInexistantException, PasDeNavetteAReviserException, NavetteInexistanteException{
+        return this.ejbRef.choisirNavetteAReviser(idMecanicien, idNavette).toString();
+    }
+
 }

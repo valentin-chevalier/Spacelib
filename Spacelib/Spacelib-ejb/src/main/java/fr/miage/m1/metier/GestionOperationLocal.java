@@ -20,4 +20,7 @@ public interface GestionOperationLocal {
     public Operation creerOperation(Date dateOperation, Navette navette);
     
     public Operation getOperation (Long idOperation);
+    
+    public Operation creerOperationMaintenance(Navette navette, Operation.EtatRevision etatRevision);
+
 }

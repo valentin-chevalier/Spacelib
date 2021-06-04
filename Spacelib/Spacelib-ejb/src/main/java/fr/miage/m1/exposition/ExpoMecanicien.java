@@ -12,8 +12,11 @@ import fr.miage.m1.entities.Reparation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.metier.GestionMecanicienLocal;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.NavetteInexistanteException;
+import fr.miage.m1.utilities.NavettePasRevisableException;
 import fr.miage.m1.utilities.PasDeNavetteAReviserException;
 import fr.miage.m1.utilities.StationInexistanteException;
+import fr.miage.m1.utilities.UsagerInexistantException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -62,4 +65,10 @@ public class ExpoMecanicien implements ExpoMecanicienLocal {
     public List<Navette> getNavettesAReviser(Station station) throws PasDeNavetteAReviserException{
         return this.gestionMecanicien.getNavettesAReviser(station);
     }
+    
+    @Override
+    public Quai choisirNavetteAReviser(Long idMecanicien, Long idNavette) throws NavettePasRevisableException, UsagerInexistantException, PasDeNavetteAReviserException, NavetteInexistanteException{
+        return this.gestionMecanicien.choisirNavetteAReviser(idMecanicien, idNavette);
+    }
+
 }

@@ -36,4 +36,6 @@ public interface OperationFacadeLocal {
     
     public Operation getOperation (Long idOperation);
     
+    public Operation creerOperationMaintenance(Date dateOperation, Navette navette, Operation.EtatRevision etatRevision);
+    
 }

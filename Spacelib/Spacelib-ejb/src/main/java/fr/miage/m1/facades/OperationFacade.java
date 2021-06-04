@@ -7,7 +7,6 @@ package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Operation;
-import java.util.Calendar;
 import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -45,6 +44,17 @@ public class OperationFacade extends AbstractFacade<Operation> implements Operat
     @Override
     public Operation getOperation(Long idOperation) {
         return this.find(idOperation);
+    }
+    
+    @Override
+    public Operation creerOperationMaintenance(Date dateOperation, Navette navette, Operation.EtatRevision etatRevision){
+        Operation ope = new Operation();
+        ope.setDateCreationOperation(new Date());
+        ope.setDateOperation(dateOperation);
+        ope.setNavette(navette);
+        ope.setEtatRevision(etatRevision);
+        this.create(ope);
+        return ope;
     }
     
 }
