@@ -36,6 +36,9 @@ import fr.miage.m1.metier.GestionUtilisateurLocal;
 import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import fr.miage.m1.utilities.MailUsagerDejaExistantException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
+import fr.miage.m1.utilities.PasDeNavetteAQuaiException;
+import fr.miage.m1.utilities.PasDeQuaiDispoException;
+import fr.miage.m1.utilities.RevisionNavetteException;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -200,7 +203,7 @@ public class Expo implements ExpoLocal {
     }
 
     @Override
-    public Trajet creerTrajet(int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) {
+    public Trajet creerTrajet(int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) throws RevisionNavetteException, PasDeQuaiDispoException, PasDeNavetteAQuaiException{
         return this.gestionTrajet.creerTrajet(nbPassagers, etatTrajet, stationDepart, stationArrivee, quaiDepart, quaiArrivee, utilisateur);
     }
 

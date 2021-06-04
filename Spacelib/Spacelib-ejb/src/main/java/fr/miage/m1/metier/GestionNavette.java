@@ -40,12 +40,13 @@ public class GestionNavette implements GestionNavetteLocal {
     
     @Override
     public void incrementerNbVoyages(Navette navette) throws RevisionNavetteException {
-        if (navette.getNbVoyages() < 3){
+        if (navette.getNbVoyages() <= 2){
             navette.setNbVoyages(navette.getNbVoyages() + 1);
         } else if (navette.getNbVoyages() >= 3){
-            navette.setNbVoyages(0);
             navette.setEstDispo(false);
+            //passe à true quand un mécanicien prend la révision
             navette.setEstEnRevision(false);
+            throw new RevisionNavetteException();
         }
     }
         

@@ -23,6 +23,9 @@ import fr.miage.m1.exposition.ExpoLocal;
 import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import fr.miage.m1.utilities.MailUsagerDejaExistantException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
+import fr.miage.m1.utilities.PasDeNavetteAQuaiException;
+import fr.miage.m1.utilities.PasDeQuaiDispoException;
+import fr.miage.m1.utilities.RevisionNavetteException;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -184,7 +187,7 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerTrajet")
-    public String creerTrajet(@WebParam(name = "nbPassagers") int nbPassagers, @WebParam(name = "etatTrajet") EtatTrajet etatTrajet, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "idQuaiDepart") Long idQuaiDepart, @WebParam(name = "idQuaiArrivee") Long idQuaiArrivee, @WebParam(name = "idUtilisateur") Long idUtilisateur) {
+    public String creerTrajet(@WebParam(name = "nbPassagers") int nbPassagers, @WebParam(name = "etatTrajet") EtatTrajet etatTrajet, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "idQuaiDepart") Long idQuaiDepart, @WebParam(name = "idQuaiArrivee") Long idQuaiArrivee, @WebParam(name = "idUtilisateur") Long idUtilisateur) throws RevisionNavetteException, PasDeQuaiDispoException, PasDeNavetteAQuaiException {
         Station stationDepart = ejbRef.getStation(idStationDepart);
         Station stationArrivee = ejbRef.getStation(idStationArrivee);
         Quai quaiDepart = ejbRef.getQuai(idQuaiDepart);

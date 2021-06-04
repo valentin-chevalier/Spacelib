@@ -6,6 +6,7 @@
 package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.EtatTrajet;
+import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
@@ -14,12 +15,16 @@ import fr.miage.m1.entities.Usager;
 import fr.miage.m1.entities.Utilisateur;
 import fr.miage.m1.facades.TrajetFacadeLocal;
 import fr.miage.m1.utilities.AucuneReservationException;
+import fr.miage.m1.utilities.PasDeNavetteAQuaiException;
+import fr.miage.m1.utilities.PasDeQuaiDispoException;
 import fr.miage.m1.utilities.ReservationInexistanteException;
 import fr.miage.m1.utilities.RevisionNavetteException;
 import fr.miage.m1.utilities.TrajetDejaAcheveException;
 import fr.miage.m1.utilities.TrajetInexistantException;
 import fr.miage.m1.utilities.UsagerInexistantException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -43,8 +48,30 @@ public class GestionTrajet implements GestionTrajetLocal {
     private TrajetFacadeLocal trajetFacade;
 
     @Override
-    public Trajet creerTrajet(int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) {
-        return this.trajetFacade.creerTrajet(nbPassagers, etatTrajet, stationDepart, stationArrivee, quaiDepart, quaiArrivee, utilisateur);
+    public Trajet creerTrajet(int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) throws RevisionNavetteException, PasDeQuaiDispoException, PasDeNavetteAQuaiException {
+        //verifier que la station de départ peut accueillir la navette
+        List<Quai> listeQuaisDepart = verifierQuaiDispo(stationDepart);
+        if (listeQuaisDepart.isEmpty())
+            throw new PasDeQuaiDispoException("DEPART");
+        //vérifier pour la station d'arrivée 
+        List<Quai> listeQuaisArrivee = verifierQuaiDispo(stationArrivee);
+        if (listeQuaisArrivee.isEmpty())
+            throw new PasDeQuaiDispoException("ARRIVEE");
+        Trajet trajet = null;
+        //pour chaque navette de la stationDepart
+        for (Navette navette : stationDepart.getListeNavettes()){
+            //chercher une navette
+            if(navette.isEstDispo() && !navette.isEstEnRevision() && navette.getCapacite() >= nbPassagers){
+                //si trouvé, créer un trajet
+                this.gestionNavette.incrementerNbVoyages(navette);
+                trajet = trajetFacade.creerTrajet(nbPassagers, etatTrajet, stationDepart, stationArrivee, quaiDepart, quaiArrivee, utilisateur);
+                break;
+            }
+        }
+        if (trajet == null){
+            throw new PasDeNavetteAQuaiException();
+        }
+        return trajet;
     }
 
     @Override
@@ -75,4 +102,14 @@ public class GestionTrajet implements GestionTrajetLocal {
         return this.trajetFacade.recupererTrajet(idUser);
     }
     
+    @Override
+    public List<Quai> verifierQuaiDispo(Station station){
+        List<Quai> listeQuaisDispo = new ArrayList<>();
+        for (Quai quai : station.getListeQuais()){
+            if (quai.isEstLibre()){
+                listeQuaisDispo.add(quai);
+            }
+        }
+        return listeQuaisDispo;
+    }
 }

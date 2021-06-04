@@ -93,7 +93,7 @@ public class GestionReservation implements GestionReservationLocal {
             Quai quaiArrivee = this.quaiFacade.getQuaisDispo(stationArrivee.getId()).get(n);
             for (Navette navette : stationDepart.getListeNavettes()){
                 //vérifier la capacité de la navette
-                if (navette.getCapacite() == nbPassagers || navette.getCapacite() > nbPassagers){
+                if (navette.getCapacite() == nbPassagers || navette.getCapacite() > nbPassagers && navette.getCapacite() < 3){
                     res = this.reservationFacade.creerReservation(nbPassagers, dateDepart, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
                     Trajet t = this.trajetFacade.creerTrajet(nbPassagers, EtatTrajet.VOYAGE_INITIE, stationDepart, stationArrivee, quaiDepart, quaiArrivee, usager);
                     t.setDateDepart(new Date());
@@ -114,10 +114,12 @@ public class GestionReservation implements GestionReservationLocal {
         return res;
     }
 
+    @Override
     public Reservation controlerReservation(Long idUtilisateur) throws ReservationInexistanteException, AucuneReservationException{
         return this.reservationFacade.controlerReservation(idUtilisateur);
     }
     
+    @Override
     public boolean reservationExiste(Long idUtilisateur){
         return this.reservationFacade.reservationExiste(idUtilisateur);
     }
