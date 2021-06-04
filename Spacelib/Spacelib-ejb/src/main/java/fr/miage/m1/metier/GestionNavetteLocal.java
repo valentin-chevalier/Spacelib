@@ -9,7 +9,6 @@ import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
-import fr.miage.m1.utilities.RevisionNavetteException;
 import javax.ejb.Local;
 
 /**
@@ -24,6 +23,5 @@ public interface GestionNavetteLocal {
     public Navette getNavette(Long idNavette);
     
     public boolean verifierCapaciteAutorisee(int capacite) throws CapaciteNavetteNonAutoriseeException;
-    
-    public void incrementerNbVoyages(Navette navette) throws RevisionNavetteException;
+
 }

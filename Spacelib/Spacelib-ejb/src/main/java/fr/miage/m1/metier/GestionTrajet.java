@@ -61,9 +61,9 @@ public class GestionTrajet implements GestionTrajetLocal {
         //pour chaque navette de la stationDepart
         for (Navette navette : stationDepart.getListeNavettes()){
             //chercher une navette
-            if(navette.isEstDispo() && !navette.isEstEnRevision() && navette.getCapacite() >= nbPassagers){
+            if(navette.isEstDispo() && !navette.isEstEnRevision() && navette.getCapacite() >= nbPassagers && navette.getNbVoyages() < 3){
                 //si trouvé, créer un trajet
-                this.gestionNavette.incrementerNbVoyages(navette);
+                navette.incrementerNbVoyages();
                 trajet = trajetFacade.creerTrajet(nbPassagers, etatTrajet, stationDepart, stationArrivee, quaiDepart, quaiArrivee, utilisateur);
                 break;
             }
@@ -93,7 +93,6 @@ public class GestionTrajet implements GestionTrajetLocal {
         trajet.setDateArrivee(new Date());
         Reservation res = this.gestionReservation.controlerReservation(usager.getId());
         this.gestionOperation.creerOperation(new Date(), res.getNavette());
-        this.gestionNavette.incrementerNbVoyages(res.getNavette());
         return trajet;
     }
     

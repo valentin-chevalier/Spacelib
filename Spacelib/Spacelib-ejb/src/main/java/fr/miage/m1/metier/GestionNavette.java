@@ -10,7 +10,6 @@ import fr.miage.m1.entities.Quai;
 import fr.miage.m1.facades.NavetteFacadeLocal;
 import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import fr.miage.m1.utilities.NavetteSansQuaiException;
-import fr.miage.m1.utilities.RevisionNavetteException;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -36,18 +35,6 @@ public class GestionNavette implements GestionNavetteLocal {
             throw new CapaciteNavetteNonAutoriseeException();
         } 
         return true;
-    }
-    
-    @Override
-    public void incrementerNbVoyages(Navette navette) throws RevisionNavetteException {
-        if (navette.getNbVoyages() <= 2){
-            navette.setNbVoyages(navette.getNbVoyages() + 1);
-        } else if (navette.getNbVoyages() >= 3){
-            navette.setEstDispo(false);
-            //passe à true quand un mécanicien prend la révision
-            navette.setEstEnRevision(false);
-            throw new RevisionNavetteException();
-        }
     }
         
     @Override

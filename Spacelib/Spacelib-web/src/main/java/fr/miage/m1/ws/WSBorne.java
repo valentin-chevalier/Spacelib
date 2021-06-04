@@ -13,6 +13,7 @@ import fr.miage.m1.utilities.NbPassagersNonAutoriseException;
 import fr.miage.m1.utilities.PasDeQuaiDispoException;
 import fr.miage.m1.utilities.StationInexistanteException;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.PasDeNavetteAQuaiException;
 import fr.miage.m1.utilities.ReservationDejaExistanteException;
 import fr.miage.m1.utilities.ReservationInexistanteException;
 import fr.miage.m1.utilities.RevisionNavetteException;
@@ -61,7 +62,7 @@ public class WSBorne {
     }
 
     @WebMethod(operationName = "effectuerReservation")
-    public String effectuerReservation(@WebParam(name = "dateDepart") Date dateDepart, @WebParam(name = "idUsager") Long idUsager, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "nbPassagers") int nbPassagers) throws TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException{
+    public String effectuerReservation(@WebParam(name = "dateDepart") Date dateDepart, @WebParam(name = "idUsager") Long idUsager, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "nbPassagers") int nbPassagers) throws PasDeNavetteAQuaiException, RevisionNavetteException, TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException{
         return ejbRef.effectuerReservation(dateDepart, ejbRef.getUsager(idUsager), ejbRef.getStation(idStationDepart), ejbRef.getStation(idStationArrivee), nbPassagers).toString();
     }
     

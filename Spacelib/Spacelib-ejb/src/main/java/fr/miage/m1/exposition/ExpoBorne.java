@@ -20,6 +20,7 @@ import fr.miage.m1.utilities.NbPassagersNonAutoriseException;
 import fr.miage.m1.utilities.PasDeQuaiDispoException;
 import fr.miage.m1.utilities.StationInexistanteException;
 import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.utilities.PasDeNavetteAQuaiException;
 import fr.miage.m1.utilities.ReservationDejaExistanteException;
 import fr.miage.m1.utilities.ReservationInexistanteException;
 import fr.miage.m1.utilities.RevisionNavetteException;
@@ -75,7 +76,7 @@ public class ExpoBorne implements ExpoBorneLocal {
     }
     
     @Override
-    public Reservation effectuerReservation (Date dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException{
+    public Reservation effectuerReservation (Date dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws PasDeNavetteAQuaiException, RevisionNavetteException, TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException{
         return this.gestionReservation.effectuerReservation(dateDepart, usager, stationDepart, stationArrivee, nbPassagers);
     }
 

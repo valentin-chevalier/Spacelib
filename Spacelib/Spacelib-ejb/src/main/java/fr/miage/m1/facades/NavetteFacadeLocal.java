@@ -35,4 +35,5 @@ public interface NavetteFacadeLocal {
     public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) throws NavetteSansQuaiException;
 
     public Navette getNavette(Long idNavette);
+  
 }

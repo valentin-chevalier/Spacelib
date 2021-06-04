@@ -5,6 +5,7 @@
  */
 package fr.miage.m1.entities;
 
+import fr.miage.m1.utilities.RevisionNavetteException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.persistence.Entity;
@@ -128,5 +129,19 @@ public class Navette implements Serializable {
 
     public void setListeOperations(ArrayList<Operation> listeOperations) {
         this.listeOperations = listeOperations;
+    }
+    
+    public void incrementerNbVoyages() throws RevisionNavetteException{
+        if (this.isEstEnRevision() || !this.isEstDispo() || this.nbVoyages >= 3){
+            throw new RevisionNavetteException();
+        }
+        System.out.println("Avant" + this.nbVoyages);
+        this.nbVoyages++;
+        System.out.println("Apres" + this.nbVoyages);
+        if (this.nbVoyages >= 3){
+            //La navette passe en attente de révision
+            this.estDispo = false;
+            this.estEnRevision = false;
+        }
     }
 }

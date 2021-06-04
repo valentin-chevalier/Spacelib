@@ -91,12 +91,10 @@ public class GestionMecanicien implements GestionMecanicienLocal {
     @Override
     public List<Navette> getNavettesAReviser(Station station) throws PasDeNavetteAReviserException{
         List<Navette> listeNavettesAReviser = new ArrayList<>();
-        System.out.println("fr.miage.m1.metier.GestionMecanicien.getNavettesAReviser()" + station.getListeNavettes());
         for (Navette navette : station.getListeNavettes()){
-            System.out.println("DISPO !! " + navette.isEstDispo());
-            System.out.println("REV !! " + navette.isEstEnRevision());
-
-            if(!navette.isEstDispo() && !navette.isEstEnRevision()){
+            if(navette.getNbVoyages() >= 3){
+                navette.setEstDispo(false);
+                navette.setEstEnRevision(false);
                 listeNavettesAReviser.add(navette);
             }
         }
