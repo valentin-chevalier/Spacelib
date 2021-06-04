@@ -113,8 +113,6 @@ public class GestionReservation implements GestionReservationLocal {
                     t.setDateDepart(new Date());
                     this.operationFacade.creerOperation(new Date(), navette);
                     return res;
-                } else {
-                    throw new PasDeNavetteAQuaiException();
                 }
             }
             n++;
@@ -124,6 +122,9 @@ public class GestionReservation implements GestionReservationLocal {
                 throw new PasDeQuaiDispoException("DEPART");
             if (this.quaiFacade.getQuaisDispo(stationArrivee.getId()).isEmpty())
                 throw new PasDeQuaiDispoException("ARRIVEE");
+        }
+        if (res == null){
+            throw new PasDeNavetteAQuaiException();
         }
         return res;
     }
