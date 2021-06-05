@@ -22,6 +22,7 @@ import fr.miage.m1.utilities.MauvaisMecanicienException;
 import fr.miage.m1.utilities.NavetteInexistanteException;
 import fr.miage.m1.utilities.NavettePasRevisableException;
 import fr.miage.m1.utilities.PasDeNavetteAReviserException;
+import fr.miage.m1.utilities.QuaiInexistantException;
 import fr.miage.m1.utilities.StationInexistanteException;
 import fr.miage.m1.utilities.UsagerInexistantException;
 import java.util.ArrayList;
@@ -87,17 +88,24 @@ public class GestionMecanicien implements GestionMecanicienLocal {
     }
     
     @Override
-    public Reparation commencerReparation(Long idMecanicien, Long idQuai, Long idNavette){
-        Quai quai = this.gestionQuai.getQuai(idQuai);
+    public Quai commencerReparation(Long idMecanicien, Long idNavette) throws NavetteInexistanteException, QuaiInexistantException{
+        if (idNavette == null || this.gestionNavette.getNavette(idNavette) == null)
+            throw new NavetteInexistanteException();
+        if (this.gestionNavette.getNavette(idNavette).getQuai() == null)
+            throw new QuaiInexistantException();
+        //récupérer le quai
+        Quai quai = this.gestionNavette.getNavette(idNavette).getQuai();
         quai.setEstLibre(false);
+        //maj la navette 
         Navette navette = this.gestionNavette.getNavette(idNavette);
         navette.setEstDispo(false);
         navette.setEstEnRevision(true);
+        //enregistrer operation de maintenance
         Operation operation = this.gestionOperation.creerOperation(new Date(), navette);
         Reparation reparation = this.gestionReparation.creerReparation(new Date());
         reparation.setMecanicien(getMecanicien(idMecanicien));
         operation.setEtatRevision(Operation.EtatRevision.DEBUT_REVISION);
-        return reparation;
+        return quai;
     }
 
     @Override
@@ -127,7 +135,6 @@ public class GestionMecanicien implements GestionMecanicienLocal {
                 throw new NavetteInexistanteException();
         if (this.gestionQuai.getQuai(this.gestionNavette.getNavette(idNavette).getQuai().getId()) == null)
             throw new NavetteInexistanteException();
-        Station station = this.gestionQuai.getQuai(this.gestionNavette.getNavette(idNavette).getQuai().getId()).getStation();
         for (Navette navette : this.gestionNavette.getAllNavettes()){
             if (!navette.getId().equals(idNavette))
                 throw new NavettePasRevisableException();

@@ -36,4 +36,6 @@ public interface StationFacadeLocal {
     public Station getStation(Long idStation);
     
     public boolean verifierStationDansBd(Long idStation) throws StationInexistanteException;
+    
+    public List<Station> getAllStations();
 }

@@ -10,6 +10,7 @@ import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.utilities.StationInexistanteException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -56,4 +57,8 @@ public class StationFacade extends AbstractFacade<Station> implements StationFac
         return true;
     }
     
+    @Override
+    public List<Station> getAllStations(){
+        return this.findAll();
+    }
 }

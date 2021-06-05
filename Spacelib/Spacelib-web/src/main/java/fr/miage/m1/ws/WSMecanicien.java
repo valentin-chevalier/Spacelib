@@ -12,6 +12,7 @@ import fr.miage.m1.utilities.MauvaisMecanicienException;
 import fr.miage.m1.utilities.NavetteInexistanteException;
 import fr.miage.m1.utilities.NavettePasRevisableException;
 import fr.miage.m1.utilities.PasDeNavetteAReviserException;
+import fr.miage.m1.utilities.QuaiInexistantException;
 import fr.miage.m1.utilities.StationInexistanteException;
 import fr.miage.m1.utilities.UsagerInexistantException;
 import javax.ejb.EJB;
@@ -23,11 +24,12 @@ import javax.jws.WebService;
  *
  * @author Flo
  */
-@WebService(serviceName = "WSMecanicien")
+@WebService(serviceName = "WSMecan")
 public class WSMecanicien {
 
     @EJB
-    private ExpoMecanicienLocal ejbRef;
+    private ExpoMecanicienLocal ejbRef;// Add business logic below. (Right-click in editor and choose
+    // "Web Service > Add Operation"
 
     @WebMethod(operationName = "creerMecanicien")
     public String creerMecanicien(@WebParam(name = "prenom") String prenom, @WebParam(name = "nom") String nom, @WebParam(name = "mail") String mail, @WebParam(name = "mdp") String mdp) {
@@ -43,32 +45,35 @@ public class WSMecanicien {
     public String verifierMecanicienDansBd(@WebParam(name = "mail") String mail, @WebParam(name = "mdp") String mdp) throws MailInexistantException {
         return ejbRef.verifierMecanicienDansBd(mail, mdp).toString();
     }
-    
+
+    @WebMethod(operationName = "getStation")
+    public String getStation(@WebParam(name = "idStation") Long idStation) throws StationInexistanteException {
+        return ejbRef.getStation(idStation).toString();
+    }
+
     @WebMethod(operationName = "commencerReparation")
-    public String commencerReparation(@WebParam(name = "idMecanicien") Long idMecanicien, @WebParam(name = "idQuai") Long idQuai, @WebParam(name = "idNavette") Long idNavette){
-        return this.ejbRef.commencerReparation(idMecanicien, idQuai, idNavette).toString();
+    public String commencerReparation(@WebParam(name = "idMecanicien") Long idMecanicien, @WebParam(name = "idNavette") Long idNavette) throws NavetteInexistanteException, QuaiInexistantException {
+        return ejbRef.commencerReparation(idMecanicien, idNavette).toString();
     }
-    
+
     @WebMethod(operationName = "getQuai")
-    public String commencerReparation(@WebParam(name = "idQuai") Long idQuai){
-        return this.ejbRef.getQuai(idQuai).toString();
+    public String getQuai(@WebParam(name = "idQuai") Long idQuai) {
+        return ejbRef.getQuai(idQuai).toString();
     }
-    
+
     @WebMethod(operationName = "getNavettesAReviser")
-    public String getNavettesAReviser(@WebParam(name = "idStation") Long idStation) throws PasDeNavetteAReviserException, StationInexistanteException{
-        if (idStation == null || this.ejbRef.getStation(idStation) == null){
-            throw new StationInexistanteException();
-        }
-        return this.ejbRef.getNavettesAReviser(ejbRef.getStation(idStation)).toString();
+    public String getNavettesAReviser(@WebParam(name = "idStation") Long idStation) throws StationInexistanteException, PasDeNavetteAReviserException {
+        return ejbRef.getNavettesAReviser(ejbRef.getStation(idStation)).toString();
     }
-   
+
     @WebMethod(operationName = "choisirNavetteAReviser")
-    public String choisirNavetteAReviser(@WebParam(name = "idMecanicien") Long idMecanicien, @WebParam(name = "idNavette") Long idNavette) throws NavettePasRevisableException, UsagerInexistantException, PasDeNavetteAReviserException, NavetteInexistanteException{
-        return this.ejbRef.choisirNavetteAReviser(idMecanicien, idNavette).toString();
+    public String choisirNavetteAReviser(@WebParam(name = "idMecanicien") Long idMecanicien, @WebParam(name = "idNavette") Long idNavette) throws NavettePasRevisableException, UsagerInexistantException, PasDeNavetteAReviserException, NavetteInexistanteException {
+        return ejbRef.choisirNavetteAReviser(idMecanicien, idNavette).toString();
     }
 
     @WebMethod(operationName = "cloturerReservation")
-    public String cloturerReservation(@WebParam(name = "idMecanicien") Long idMecanicien, @WebParam(name = "idNavette") Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException{
-        return this.ejbRef.cloturerReservation(idMecanicien, idNavette).toString();
+    public String cloturerReservation(@WebParam(name = "idMecanicien") Long idMecanicien, @WebParam(name = "idNavette") Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException {
+        return ejbRef.cloturerReservation(idMecanicien, idNavette).toString();
     }
+    
 }

@@ -132,4 +132,9 @@ public class GestionStation implements GestionStationLocal {
     public boolean verifierStationDansBd(Long idStation) throws StationInexistanteException {
         return this.stationFacade.verifierStationDansBd(idStation);
     }
+    
+    @Override
+    public List<Station> getAllStations(){
+        return this.stationFacade.getAllStations();
+    }
 }

@@ -9,7 +9,6 @@ import fr.miage.m1.entities.Mecanicien;
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Operation;
 import fr.miage.m1.entities.Quai;
-import fr.miage.m1.entities.Reparation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.utilities.AucuneReparationException;
 import fr.miage.m1.utilities.MailInexistantException;
@@ -17,6 +16,7 @@ import fr.miage.m1.utilities.MauvaisMecanicienException;
 import fr.miage.m1.utilities.NavetteInexistanteException;
 import fr.miage.m1.utilities.NavettePasRevisableException;
 import fr.miage.m1.utilities.PasDeNavetteAReviserException;
+import fr.miage.m1.utilities.QuaiInexistantException;
 import fr.miage.m1.utilities.StationInexistanteException;
 import fr.miage.m1.utilities.UsagerInexistantException;
 import java.util.List;
@@ -37,7 +37,7 @@ public interface ExpoMecanicienLocal {
 
     public Station getStation(Long idStation) throws StationInexistanteException;
 
-    public Reparation commencerReparation(Long idMecanicien, Long idQuai, Long idNavette);
+    public Quai commencerReparation(Long idMecanicien, Long idNavette) throws NavetteInexistanteException, QuaiInexistantException;
 
     public Quai getQuai(Long idQuai);
 
