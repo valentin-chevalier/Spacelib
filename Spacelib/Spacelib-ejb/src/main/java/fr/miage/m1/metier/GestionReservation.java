@@ -21,6 +21,7 @@ import fr.miage.m1.facades.TrajetFacadeLocal;
 import fr.miage.m1.facades.UsagerFacadeLocal;
 import fr.miage.m1.utilities.AucuneReservationException;
 import fr.miage.m1.utilities.CapaciteNavetteInsuffisanteException;
+import fr.miage.m1.utilities.DelaiAnnulationResDepasseException;
 import fr.miage.m1.utilities.NbPassagersNonAutoriseException;
 import fr.miage.m1.utilities.PasDeNavetteAQuaiException;
 import fr.miage.m1.utilities.PasDeQuaiDispoException;
@@ -28,8 +29,11 @@ import fr.miage.m1.utilities.ReservationDejaExistanteException;
 import fr.miage.m1.utilities.ReservationInexistanteException;
 import fr.miage.m1.utilities.RevisionNavetteException;
 import fr.miage.m1.utilities.StationInexistanteException;
+import fr.miage.m1.utilities.TrajetDejaAcheveException;
 import fr.miage.m1.utilities.TrajetInexistantException;
 import fr.miage.m1.utilities.UsagerInexistantException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -76,7 +80,7 @@ public class GestionReservation implements GestionReservationLocal {
     }
 
     @Override
-    public Reservation effectuerReservation (Date dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws PasDeNavetteAQuaiException, RevisionNavetteException, TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException{
+    public Reservation effectuerReservation (String dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws ParseException, PasDeNavetteAQuaiException, RevisionNavetteException, TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException{
         //controle des params fourni
         if (nbPassagers <= 0 || nbPassagers > 15)
             throw new NbPassagersNonAutoriseException();
@@ -100,17 +104,17 @@ public class GestionReservation implements GestionReservationLocal {
             Quai quaiArrivee = this.quaiFacade.getQuaisDispo(stationArrivee.getId()).get(n);
             //pour chaque navette de la station
             for (Navette navette : stationDepart.getListeNavettes()){
-                System.out.println("[navette] : " + navette);
-                System.out.println("[nb voyages] : " + navette.getNbVoyages());
                 //vérifier la capacité de la navette
                 if (navette.isEstDispo() && !navette.isEstEnRevision() && navette.getCapacite() >= nbPassagers && navette.getNbVoyages() < 3){
-                    System.out.println("HERE !!!!!!!!!! id " + navette.getId());
                     navette.incrementerNbVoyages();
                     this.navetteFacade.edit(navette);
-                    System.out.println("HERE !!!!!!!!!! nbVoyages " + navette.getNbVoyages());
-                    res = this.reservationFacade.creerReservation(nbPassagers, dateDepart, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
+                    SimpleDateFormat formatter1=new SimpleDateFormat("dd/MM/yyyy");  
+                    Date date1=formatter1.parse(dateDepart);  
+                    System.out.println("DATE " + date1);
+                    res = this.reservationFacade.creerReservation(nbPassagers, date1, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
+                    System.out.println("DATE DEPART " + dateDepart);
                     Trajet t = this.trajetFacade.creerTrajet(nbPassagers, EtatTrajet.VOYAGE_INITIE, stationDepart, stationArrivee, quaiDepart, quaiArrivee, usager);
-                    t.setDateDepart(new Date());
+                    t.setDateDepart(date1);
                     this.operationFacade.creerOperation(new Date(), navette);
                     return res;
                 }
@@ -138,5 +142,53 @@ public class GestionReservation implements GestionReservationLocal {
     public boolean reservationExiste(Long idUtilisateur){
         return this.reservationFacade.reservationExiste(idUtilisateur);
     }
+
+    @Override
+    public boolean annulerReservation(Usager usager, Long idReservation) throws ParseException, TrajetDejaAcheveException, TrajetInexistantException, DelaiAnnulationResDepasseException, UsagerInexistantException, AucuneReservationException{
+        if (usager == null || this.usagerFacade.find(usager.getId()) == null)
+            throw new UsagerInexistantException();
+        //si réservation n'existe pas
+        //ou si réservation ne correspond pas à cet usager
+        if (idReservation == null || getReservation(idReservation) == null || !this.reservationExiste(usager.getId()))
+            throw new AucuneReservationException();
+        System.out.println("date 1 " + new Date());
+        System.out.println("date 2 " + getReservation(idReservation).getDateDepart());
+        int nbJours = new Date().compareTo(getReservation(idReservation).getDateDepart());
+        System.out.println("LAPS DE TEMPS " + nbJours);
+        if (nbJours > 0)
+            throw new DelaiAnnulationResDepasseException();
+        Reservation res = getReservation(idReservation);
+        if (EtatTrajet.VOYAGE_INITIE.equals(this.gestionTrajet.recupererTrajet(usager.getId()).getEtatTrajet())){
+            //décrémenter le nb de voyages de la navette
+            res.getNavette().setNbVoyages(res.getNavette().getNbVoyages()-1);
+            //supprimer la réservation
+            this.reservationFacade.remove(res);
+            //supprimer le trajet
+            Trajet trajet = this.gestionTrajet.recupererTrajet(usager.getId());
+            this.trajetFacade.remove(trajet);
+            return true;
+        } else if (EtatTrajet.VOYAGE_ACHEVE.equals(this.gestionTrajet.recupererTrajet(usager.getId()).getEtatTrajet())){
+            throw new TrajetDejaAcheveException();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean cloturerReservation(Long idUtilisateur, Long idReservation) throws TrajetDejaAcheveException, TrajetInexistantException, UsagerInexistantException, AucuneReservationException {
+        if (idUtilisateur == null || this.usagerFacade.find(idUtilisateur) == null)
+            throw new UsagerInexistantException();
+        //si réservation n'existe pas
+        //ou si réservation ne correspond pas à cet usager
+        if (idReservation == null || getReservation(idReservation) == null || !this.reservationExiste(idUtilisateur))
+            throw new AucuneReservationException();
+        if (EtatTrajet.VOYAGE_INITIE.equals(this.gestionTrajet.recupererTrajet(idUtilisateur).getEtatTrajet())){
+            this.gestionTrajet.recupererTrajet(idUtilisateur).setEtatTrajet(EtatTrajet.VOYAGE_ACHEVE);
+            return true;
+        } else if (EtatTrajet.VOYAGE_ACHEVE.equals(this.gestionTrajet.recupererTrajet(idUtilisateur).getEtatTrajet())){
+            throw new TrajetDejaAcheveException();
+        }
+        return false;
+    }
+
 
 }

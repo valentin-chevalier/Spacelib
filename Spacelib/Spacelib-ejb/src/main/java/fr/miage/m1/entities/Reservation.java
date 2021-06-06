@@ -31,7 +31,7 @@ public class Reservation implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
     
     private int nbPassagers;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -54,7 +54,7 @@ public class Reservation implements Serializable {
         
     }
 
-    public Reservation(int id, int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
+    public Reservation(Long id, int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
         this.id = id;
         this.nbPassagers = nbPassagers;
         this.dateDepart = dateDepart;
@@ -114,11 +114,11 @@ public class Reservation implements Serializable {
         this.quaiArrivee = quaiArrivee;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

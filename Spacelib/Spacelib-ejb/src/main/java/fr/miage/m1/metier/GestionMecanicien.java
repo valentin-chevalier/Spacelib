@@ -154,7 +154,7 @@ public class GestionMecanicien implements GestionMecanicienLocal {
     }
     
     @Override
-    public Operation cloturerReservation(Long idMecanicien, Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException{
+    public Operation cloturerReparation(Long idMecanicien, Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException{
         if (idMecanicien == null || getMecanicien(idMecanicien) == null){
             throw new UsagerInexistantException();
         }

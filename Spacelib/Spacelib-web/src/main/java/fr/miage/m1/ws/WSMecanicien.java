@@ -24,7 +24,7 @@ import javax.jws.WebService;
  *
  * @author Flo
  */
-@WebService(serviceName = "WSMecan")
+@WebService(serviceName = "WSMecanicien")
 public class WSMecanicien {
 
     @EJB
@@ -71,9 +71,9 @@ public class WSMecanicien {
         return ejbRef.choisirNavetteAReviser(idMecanicien, idNavette).toString();
     }
 
-    @WebMethod(operationName = "cloturerReservation")
-    public String cloturerReservation(@WebParam(name = "idMecanicien") Long idMecanicien, @WebParam(name = "idNavette") Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException {
-        return ejbRef.cloturerReservation(idMecanicien, idNavette).toString();
+    @WebMethod(operationName = "cloturerReparation")
+    public String cloturerReparation(@WebParam(name = "idMecanicien") Long idMecanicien, @WebParam(name = "idNavette") Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException {
+        return ejbRef.cloturerReparation(idMecanicien, idNavette).toString();
     }
     
 }

@@ -75,8 +75,8 @@ public class ExpoMecanicien implements ExpoMecanicienLocal {
     }
 
     @Override
-    public Operation cloturerReservation(Long idMecanicien, Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException{
-        return this.gestionMecanicien.cloturerReservation(idMecanicien, idNavette);
+    public Operation cloturerReparation(Long idMecanicien, Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException{
+        return this.gestionMecanicien.cloturerReparation(idMecanicien, idNavette);
     }
 
 }
