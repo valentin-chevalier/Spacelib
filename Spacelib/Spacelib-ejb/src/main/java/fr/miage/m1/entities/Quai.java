@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 
 /**
@@ -17,15 +19,13 @@ import javax.persistence.OneToOne;
  * @author Valentin
  */
 @Entity
-/*
 @NamedQueries({
-    @NamedQuery(name="Quai.getAllQuais", query="SELECT q FROM Quai q"
-            + "WHERE q.station.id = :vid"),
-    @NamedQuery(name="Quai.getQuaisDispo", query="SELECT q FROM Quai q"
-            + "WHERE q.station.id = :vid "
+    @NamedQuery(name="Quai.getAllQuais", query="SELECT q FROM Quai q "
+            + "WHERE q.station.id = :vstation"),
+    @NamedQuery(name="Quai.getQuaisDispo", query="SELECT q FROM Quai q "
+            + "WHERE q.station = :vstation "
             + "AND q.estLibre = true")
 })
-*/
 public class Quai implements Serializable {
 
     private static final long serialVersionUID = 1L;

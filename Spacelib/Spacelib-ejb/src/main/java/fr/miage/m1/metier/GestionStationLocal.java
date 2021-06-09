@@ -23,9 +23,7 @@ public interface GestionStationLocal {
     public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteNonAutoriseeException;
     
     public Station getStation(Long idStation);
-    
-    public void transfererNavettesDeStations(Station station);
-    
+        
     public boolean verifierStationDansBd(Long idStation) throws StationInexistanteException; 
     
     public List<Station> getAllStations();

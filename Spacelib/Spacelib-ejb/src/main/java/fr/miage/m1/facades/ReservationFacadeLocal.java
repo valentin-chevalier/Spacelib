@@ -11,6 +11,7 @@ import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.utilities.AucuneReservationException;
+import fr.miage.m1.utilities.PasDeReservationPourStationException;
 import fr.miage.m1.utilities.ReservationInexistanteException;
 import java.util.Date;
 import java.util.List;
@@ -44,4 +45,6 @@ public interface ReservationFacadeLocal {
     public Reservation controlerReservation(Long idUtilisateur) throws ReservationInexistanteException, AucuneReservationException;
     
     public boolean reservationExiste(Long idUtilisateur);
+    
+    public List<Reservation> getReservationByStation (Long idStation) throws PasDeReservationPourStationException;
 }

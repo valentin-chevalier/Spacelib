@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
@@ -19,12 +21,11 @@ import javax.persistence.Temporal;
  * @author Valentin
  */
 @Entity
-/*
+
 @NamedQueries({
-    @NamedQuery(name="Reservation.controlerUtilisateur", 
-            query="SELECT r FROM Reservation r WHERE r.usager = :vid")
+    @NamedQuery(name="Reservation.getReservationByStation", 
+            query="SELECT r FROM Reservation r WHERE r.stationDepart = :vstationDepart")
 })
-*/
 public class Reservation implements Serializable {
 
     private static final long serialVersionUID = 1L;

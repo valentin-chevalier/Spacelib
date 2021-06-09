@@ -7,7 +7,9 @@ package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
+import fr.miage.m1.facades.NavetteFacadeLocal;
 import fr.miage.m1.facades.QuaiFacadeLocal;
+import fr.miage.m1.facades.ReservationFacadeLocal;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -17,6 +19,15 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class GestionQuai implements GestionQuaiLocal {
+
+    @EJB
+    private NavetteFacadeLocal navetteFacade;
+
+    @EJB
+    private GestionStationLocal gestionStation;
+
+    @EJB
+    private ReservationFacadeLocal reservationFacade;
 
     @EJB
     private QuaiFacadeLocal quaiFacade;
@@ -33,10 +44,5 @@ public class GestionQuai implements GestionQuaiLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-
-    @Override
-    public void calculerQuantiteQuaisDispo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 }

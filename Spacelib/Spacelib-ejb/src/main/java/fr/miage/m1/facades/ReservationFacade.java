@@ -11,12 +11,15 @@ import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.utilities.AucuneReservationException;
+import fr.miage.m1.utilities.PasDeReservationPourStationException;
 import fr.miage.m1.utilities.ReservationInexistanteException;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -24,6 +27,9 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class ReservationFacade extends AbstractFacade<Reservation> implements ReservationFacadeLocal {
+
+    @EJB
+    private StationFacadeLocal stationFacade;
 
     @EJB
     private TrajetFacadeLocal trajetFacade;
@@ -88,4 +94,15 @@ public class ReservationFacade extends AbstractFacade<Reservation> implements Re
         }
         return false;
     }
+    
+    @Override
+    public List<Reservation> getReservationByStation (Long idStation) throws PasDeReservationPourStationException{
+        Station station = this.stationFacade.find(idStation);
+        Query q = this.em.createNamedQuery("Reservation.getReservationByStation");
+        q.setParameter("vstationDepart", station);
+        if (q.getResultList().isEmpty())
+            throw new PasDeReservationPourStationException();
+        return q.getResultList();
+    }
+
 }

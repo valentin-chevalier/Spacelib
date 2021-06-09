@@ -110,9 +110,7 @@ public class GestionReservation implements GestionReservationLocal {
                     this.navetteFacade.edit(navette);
                     SimpleDateFormat formatter1=new SimpleDateFormat("dd/MM/yyyy");  
                     Date date1=formatter1.parse(dateDepart);  
-                    System.out.println("DATE " + date1);
                     res = this.reservationFacade.creerReservation(nbPassagers, date1, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
-                    System.out.println("DATE DEPART " + dateDepart);
                     Trajet t = this.trajetFacade.creerTrajet(nbPassagers, EtatTrajet.VOYAGE_INITIE, stationDepart, stationArrivee, quaiDepart, quaiArrivee, usager);
                     t.setDateDepart(date1);
                     this.operationFacade.creerOperation(new Date(), navette);
@@ -151,10 +149,7 @@ public class GestionReservation implements GestionReservationLocal {
         //ou si réservation ne correspond pas à cet usager
         if (idReservation == null || getReservation(idReservation) == null || !this.reservationExiste(usager.getId()))
             throw new AucuneReservationException();
-        System.out.println("date 1 " + new Date());
-        System.out.println("date 2 " + getReservation(idReservation).getDateDepart());
         int nbJours = new Date().compareTo(getReservation(idReservation).getDateDepart());
-        System.out.println("LAPS DE TEMPS " + nbJours);
         if (nbJours > 0)
             throw new DelaiAnnulationResDepasseException();
         Reservation res = getReservation(idReservation);

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.miage.m1.metier;
+package fr.miage.m1.exposition;
 
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.utilities.PasDeQuaiDispoException;
@@ -12,13 +12,14 @@ import javax.ejb.Local;
 
 /**
  *
- * @author Valentin
+ * @author Flo
  */
 @Local
-public interface GestionSystemeLocal {
-        
+public interface ExpoConducteurLocal {
+
+    public void calculerDispoQuai(Long idStation) throws PasDeQuaiDispoException, PasDeReservationPourStationException;
+    
     public void transfererNavettesDeStations(Station station);
     
-    public void calculerDispoQuai(Long idStation) throws PasDeQuaiDispoException, PasDeReservationPourStationException;
-
+    public Station getStation(Long idStation);
 }
