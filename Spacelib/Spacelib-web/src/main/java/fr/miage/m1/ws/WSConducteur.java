@@ -33,4 +33,10 @@ public class WSConducteur {
     public void transfererNavettesDeStations(@WebParam(name = "idStation") Long idStation) {
         ejbRef.transfererNavettesDeStations(ejbRef.getStation(idStation));
     }
+    
+    @WebMethod(operationName = "stationsQuaisALiberer")
+    public String stationsQuaisALiberer() throws PasDeQuaiDispoException, PasDeReservationPourStationException{
+        return ejbRef.stationsQuaisALiberer().toString();
+    }
+
 }

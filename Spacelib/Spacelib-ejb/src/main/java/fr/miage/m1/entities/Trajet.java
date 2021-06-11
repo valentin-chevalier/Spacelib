@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -34,7 +35,9 @@ public class Trajet implements Serializable {
 
     private int nbPassagers;
     private EtatTrajet etatTrajet;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateDepart;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateArrivee;
     
     @OneToOne
@@ -51,8 +54,10 @@ public class Trajet implements Serializable {
     public Trajet() {
     }
 
-    public Trajet(Long id, int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) {
+    public Trajet(Long id, Date dateDepart, Date dateArrivee, int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) {
         this.id = id;
+        this.dateDepart = dateDepart;
+        this.dateArrivee = dateArrivee;
         this.nbPassagers = nbPassagers;
         this.etatTrajet = etatTrajet;
         this.stationDepart = stationDepart;

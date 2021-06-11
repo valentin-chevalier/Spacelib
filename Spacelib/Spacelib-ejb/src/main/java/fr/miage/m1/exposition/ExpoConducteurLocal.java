@@ -8,6 +8,7 @@ package fr.miage.m1.exposition;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.utilities.PasDeQuaiDispoException;
 import fr.miage.m1.utilities.PasDeReservationPourStationException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -22,4 +23,7 @@ public interface ExpoConducteurLocal {
     public void transfererNavettesDeStations(Station station);
     
     public Station getStation(Long idStation);
+    
+    public List<Station> stationsQuaisALiberer() throws PasDeQuaiDispoException, PasDeReservationPourStationException;
+
 }

@@ -10,6 +10,7 @@ import fr.miage.m1.metier.GestionStationLocal;
 import fr.miage.m1.metier.GestionSystemeLocal;
 import fr.miage.m1.utilities.PasDeQuaiDispoException;
 import fr.miage.m1.utilities.PasDeReservationPourStationException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -39,6 +40,11 @@ public class ExpoConducteur implements ExpoConducteurLocal {
     @Override
     public Station getStation (Long idStation){
         return this.gestionStation.getStation(idStation);
+    }
+    
+    @Override
+    public List<Station> stationsQuaisALiberer() throws PasDeQuaiDispoException, PasDeReservationPourStationException{
+        return this.gestionSysteme.stationsQuaisALiberer();
     }
 
 }

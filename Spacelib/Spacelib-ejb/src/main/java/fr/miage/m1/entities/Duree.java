@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 
 /**
@@ -17,6 +19,10 @@ import javax.persistence.OneToOne;
  * @author Valentin
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name="Duree.recupererDuree", query="SELECT d FROM Duree d WHERE (d.station1 = :vstation1 AND d.station2 = :vstation2)"
+            + "OR (d.station1 = :vstation2 AND d.station2 = :vstation1)"),
+})
 public class Duree implements Serializable {
 
     private static final long serialVersionUID = 1L;

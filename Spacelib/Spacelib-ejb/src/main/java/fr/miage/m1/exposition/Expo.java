@@ -183,8 +183,8 @@ public class Expo implements ExpoLocal {
     }
 
     @Override
-    public Reservation creerReservation(int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
-        return this.gestionReservation.creerReservation(nbPassagers, dateDepart, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
+    public Reservation creerReservation(int nbPassagers, Date dateDepart, Date dateArrivee, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
+        return this.gestionReservation.creerReservation(nbPassagers, dateDepart, dateArrivee, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
     }
 
     @Override

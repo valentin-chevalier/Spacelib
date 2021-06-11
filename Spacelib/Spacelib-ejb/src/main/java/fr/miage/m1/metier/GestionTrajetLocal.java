@@ -38,4 +38,6 @@ public interface GestionTrajetLocal {
     public Trajet recupererTrajet(Long idUser) throws TrajetInexistantException;
     
     public List<Quai> verifierQuaiDispo(Station station);
+    
+    public List<Trajet> getAllTrajet();
 }

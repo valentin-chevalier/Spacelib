@@ -111,4 +111,8 @@ public class GestionTrajet implements GestionTrajetLocal {
         }
         return listeQuaisDispo;
     }
+    
+    public List<Trajet> getAllTrajet(){
+        return this.trajetFacade.findAll();
+    }
 }

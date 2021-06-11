@@ -157,14 +157,14 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerReservation")
-    public String creerReservation(@WebParam(name = "nbPassagers") int nbPassagers, @WebParam(name = "dateDepart") Date dateDepart, @WebParam(name = "idNavette") Long idNavette, @WebParam(name = "idUsager") Long idUsager, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "idQuaiDepart") Long idQuaiDepart, @WebParam(name = "idQuaiArrivee") Long idQuaiArrivee) {
+    public String creerReservation(@WebParam(name = "nbPassagers") int nbPassagers, @WebParam(name = "dateDepart") Date dateDepart, @WebParam(name = "dateArrivee") Date dateArrivee, @WebParam(name = "idNavette") Long idNavette, @WebParam(name = "idUsager") Long idUsager, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "idQuaiDepart") Long idQuaiDepart, @WebParam(name = "idQuaiArrivee") Long idQuaiArrivee) {
         Navette navette = ejbRef.getNavette(idNavette);
         Usager usager = ejbRef.getUsager(idUsager);
         Station stationDepart = ejbRef.getStation(idStationDepart);
         Station stationArrivee = ejbRef.getStation(idStationArrivee);
         Quai quaiDepart = ejbRef.getQuai(idQuaiDepart);
         Quai quaiArrivee = ejbRef.getQuai(idQuaiArrivee);
-        Reservation reservation = ejbRef.creerReservation(nbPassagers, dateDepart, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
+        Reservation reservation = ejbRef.creerReservation(nbPassagers, dateDepart, dateArrivee, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
         return reservation.toString();
     }
 

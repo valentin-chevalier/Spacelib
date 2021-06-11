@@ -19,4 +19,6 @@ public interface GestionDureeLocal {
     public Duree creerDuree(int duree, Station station1, Station station2);
     
     public Duree getDuree(Long idDuree);
+    
+    public Long calculerDuree(Station station1, Station station2);
 }

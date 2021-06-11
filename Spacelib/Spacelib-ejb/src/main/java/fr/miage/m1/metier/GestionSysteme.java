@@ -12,6 +12,7 @@ import fr.miage.m1.entities.Station;
 import fr.miage.m1.facades.ReservationFacadeLocal;
 import fr.miage.m1.utilities.PasDeQuaiDispoException;
 import fr.miage.m1.utilities.PasDeReservationPourStationException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -23,6 +24,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class GestionSysteme implements GestionSystemeLocal {
+
+    @EJB
+    private GestionReservationLocal gestionReservation;
 
     @EJB
     private ReservationFacadeLocal reservationFacade;
@@ -37,7 +41,7 @@ public class GestionSysteme implements GestionSystemeLocal {
         List<Navette> listeNavettesByStation = station.getListeNavettes();
         //récupérer le nb de quais de la station
         int nbQuais = station.getListeQuais().size();
-        List<Reservation> listeRes = this.reservationFacade.getReservationByStation(idStation);
+        List<Reservation> listeRes = this.reservationFacade.getReservationByStationDepart(idStation);
         //pour chaque réservation
         for (Reservation res : listeRes){
             //dans 10j
@@ -94,6 +98,34 @@ public class GestionSysteme implements GestionSystemeLocal {
                 }
             }
         }
+    }    
+    
+    public List<Station> stationsQuaisALiberer() throws PasDeQuaiDispoException, PasDeReservationPourStationException {
+        float occupe = 0;
+        float total = 0;
+        List<Station> listeStationsSurchargees = new ArrayList<Station>();
+        List<Reservation> reservationsArriveeStation;
+        List<Reservation> reservationsDepartStation;
+        for (Station station : this.gestionStation.getAllStations()){
+            reservationsArriveeStation = this.reservationFacade.getReservationByStationArrivee(station.getId());
+            for (Quai quai : station.getListeQuais()){
+                if (!quai.isEstLibre())
+                    occupe++;
+            }
+            
+            total = station.getListeQuais().size();
+            System.out.println("Nb quais occupés : " + occupe);
+            System.out.println("Nb quais total : " + total);
+            System.out.println("Total de STATION : " + station.getNom());
+            System.out.println("Ratio occupation/total : " + occupe/total);
+            if (occupe/total > 0.9){
+                System.out.println("STATION SURCHARGE");
+                listeStationsSurchargees.add(station);
+            }
+            occupe=0;
+            total=0;
+        }
+        return listeStationsSurchargees;
     }
     
     @Override

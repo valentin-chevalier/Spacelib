@@ -34,7 +34,7 @@ import javax.ejb.Local;
 @Local
 public interface GestionReservationLocal {
     
-    public Reservation creerReservation (int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee);
+    public Reservation creerReservation (int nbPassagers, Date dateDepart, Date dateArrivee, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee);
     
     public Reservation getReservation (Long idReservation);
     
@@ -47,4 +47,6 @@ public interface GestionReservationLocal {
     public boolean cloturerReservation(Long idUtilisateur, Long idReservation) throws TrajetDejaAcheveException, TrajetInexistantException, UsagerInexistantException, AucuneReservationException;
     
     public boolean annulerReservation(Usager usager, Long idReservation) throws ParseException, TrajetDejaAcheveException, TrajetInexistantException, DelaiAnnulationResDepasseException, UsagerInexistantException, AucuneReservationException;
+    
+    public void supprimerReservationsNonCloturees();
 }

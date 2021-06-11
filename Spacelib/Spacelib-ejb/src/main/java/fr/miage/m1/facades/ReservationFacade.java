@@ -47,9 +47,10 @@ public class ReservationFacade extends AbstractFacade<Reservation> implements Re
     }
 
     @Override
-    public Reservation creerReservation(int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
+    public Reservation creerReservation(int nbPassagers, Date dateDepart, Date dateArrivee, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
         Reservation reservation = new Reservation();
         reservation.setDateDepart(dateDepart);
+        reservation.setDateArrivee(dateArrivee);
         reservation.setNavette(navette);
         reservation.setNbPassagers(nbPassagers);
         reservation.setQuaiArrivee(quaiArrivee);
@@ -96,10 +97,20 @@ public class ReservationFacade extends AbstractFacade<Reservation> implements Re
     }
     
     @Override
-    public List<Reservation> getReservationByStation (Long idStation) throws PasDeReservationPourStationException{
+    public List<Reservation> getReservationByStationDepart (Long idStation) throws PasDeReservationPourStationException{
         Station station = this.stationFacade.find(idStation);
         Query q = this.em.createNamedQuery("Reservation.getReservationByStation");
         q.setParameter("vstationDepart", station);
+        if (q.getResultList().isEmpty())
+            throw new PasDeReservationPourStationException();
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<Reservation> getReservationByStationArrivee (Long idStation) throws PasDeReservationPourStationException{
+        Station station = this.stationFacade.find(idStation);
+        Query q = this.em.createNamedQuery("Reservation.getReservationsByStationArrivee");
+        q.setParameter("vstationArrivee", station);
         if (q.getResultList().isEmpty())
             throw new PasDeReservationPourStationException();
         return q.getResultList();

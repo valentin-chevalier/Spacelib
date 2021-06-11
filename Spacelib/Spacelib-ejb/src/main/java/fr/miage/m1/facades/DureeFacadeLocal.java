@@ -35,4 +35,6 @@ public interface DureeFacadeLocal {
     
     public Duree getDuree(Long idDuree);
     
+    public Long calculerDuree(Station station1, Station station2);
+    
 }

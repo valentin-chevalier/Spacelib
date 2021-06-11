@@ -38,7 +38,7 @@ public interface ReservationFacadeLocal {
 
     int count();
     
-    public Reservation creerReservation (int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee);
+    public Reservation creerReservation(int nbPassagers, Date dateDepart, Date dateArrivee, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee);
     
     public Reservation getReservation (Long idReservation);
     
@@ -46,5 +46,7 @@ public interface ReservationFacadeLocal {
     
     public boolean reservationExiste(Long idUtilisateur);
     
-    public List<Reservation> getReservationByStation (Long idStation) throws PasDeReservationPourStationException;
+    public List<Reservation> getReservationByStationDepart (Long idStation) throws PasDeReservationPourStationException;
+    
+    public List<Reservation> getReservationByStationArrivee (Long idStation) throws PasDeReservationPourStationException;
 }

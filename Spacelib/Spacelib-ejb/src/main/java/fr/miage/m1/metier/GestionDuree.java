@@ -30,7 +30,10 @@ public class GestionDuree implements GestionDureeLocal {
     public Duree getDuree(Long idDuree) {
         return this.dureeFacade.getDuree(idDuree);
     }
+    
+    @Override
+    public Long calculerDuree(Station station1, Station station2){
+        return this.dureeFacade.calculerDuree(station1, station2);
+    }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
 }

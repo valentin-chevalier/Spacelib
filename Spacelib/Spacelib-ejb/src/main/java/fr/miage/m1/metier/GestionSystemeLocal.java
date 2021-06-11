@@ -8,6 +8,7 @@ package fr.miage.m1.metier;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.utilities.PasDeQuaiDispoException;
 import fr.miage.m1.utilities.PasDeReservationPourStationException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -21,4 +22,5 @@ public interface GestionSystemeLocal {
     
     public void calculerDispoQuai(Long idStation) throws PasDeQuaiDispoException, PasDeReservationPourStationException;
 
+    public List<Station> stationsQuaisALiberer() throws PasDeQuaiDispoException, PasDeReservationPourStationException;
 }

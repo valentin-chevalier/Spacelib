@@ -34,6 +34,8 @@ import fr.miage.m1.utilities.TrajetInexistantException;
 import fr.miage.m1.utilities.UsagerInexistantException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -44,6 +46,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class GestionReservation implements GestionReservationLocal {
+
+    @EJB
+    private GestionDureeLocal gestionDuree;
 
     @EJB
     private NavetteFacadeLocal navetteFacade;
@@ -70,8 +75,8 @@ public class GestionReservation implements GestionReservationLocal {
     private ReservationFacadeLocal reservationFacade;
 
     @Override
-    public Reservation creerReservation(int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
-        return this.reservationFacade.creerReservation(nbPassagers, dateDepart, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
+    public Reservation creerReservation(int nbPassagers, Date dateDepart, Date dateArrivee, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
+        return this.reservationFacade.creerReservation(nbPassagers, dateDepart, dateArrivee, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
     }
 
     @Override
@@ -109,8 +114,13 @@ public class GestionReservation implements GestionReservationLocal {
                     navette.incrementerNbVoyages();
                     this.navetteFacade.edit(navette);
                     SimpleDateFormat formatter1=new SimpleDateFormat("dd/MM/yyyy");  
-                    Date date1=formatter1.parse(dateDepart);  
-                    res = this.reservationFacade.creerReservation(nbPassagers, date1, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
+                    Date date1=formatter1.parse(dateDepart); 
+                    LocalDate date = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    LocalDate dateArrivee = date.plusDays(this.gestionDuree.calculerDuree(stationDepart, stationDepart));
+                    Date date2 = Date.from(dateArrivee.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    System.out.println("DATE DEPART " + date1);
+                    System.out.println("DATE ARRIVEE " + date2);
+                    res = this.reservationFacade.creerReservation(nbPassagers, date1, date2, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
                     Trajet t = this.trajetFacade.creerTrajet(nbPassagers, EtatTrajet.VOYAGE_INITIE, stationDepart, stationArrivee, quaiDepart, quaiArrivee, usager);
                     t.setDateDepart(date1);
                     this.operationFacade.creerOperation(new Date(), navette);
@@ -185,5 +195,23 @@ public class GestionReservation implements GestionReservationLocal {
         return false;
     }
 
+    @Override
+    public void supprimerReservationsNonCloturees(){
+        //pour chaque trajet
+        for (Trajet trajet : this.gestionTrajet.getAllTrajet()){
+            //si trajet initié mais date dépassée
+            if (EtatTrajet.VOYAGE_INITIE.equals(trajet.getEtatTrajet()) && new Date().compareTo(trajet.getDateDepart()) > 0){
+                //parcourir les réservations
+                for (Reservation res : this.reservationFacade.findAll()){
+                    //si l'usager inscrit sur la navette et dans la résa est le même
+                    if (res.getUsager().getId().equals(trajet.getUtilisateur().getId())){
+                        //supprimer
+                        this.reservationFacade.remove(res);
+                        this.trajetFacade.remove(trajet);
+                    }
+                }
+            }
+        }
+    }
 
 }

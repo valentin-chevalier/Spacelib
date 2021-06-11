@@ -24,7 +24,13 @@ import javax.persistence.Temporal;
 
 @NamedQueries({
     @NamedQuery(name="Reservation.getReservationByStation", 
-            query="SELECT r FROM Reservation r WHERE r.stationDepart = :vstationDepart")
+            query="SELECT r FROM Reservation r WHERE r.stationDepart = :vstationDepart"),
+    @NamedQuery(name="Reservation.getReservationsByStationArrivee", 
+            query="SELECT r FROM Reservation r WHERE r.stationArrivee = :vstationArrivee"),
+    @NamedQuery(name="Reservation.getReservationByStationAndQuaiDepart", 
+            query="SELECT r FROM Reservation r WHERE r.stationDepart = :vstationDepart"),
+    @NamedQuery(name="Reservation.getReservationsByStationAndQuaiArrivee", 
+            query="SELECT r FROM Reservation r WHERE r.stationArrivee = :vstationArrivee")
 })
 public class Reservation implements Serializable {
 
@@ -37,6 +43,8 @@ public class Reservation implements Serializable {
     private int nbPassagers;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateDepart;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dateArrivee;
     
     @OneToOne
     public Navette navette;
@@ -55,10 +63,11 @@ public class Reservation implements Serializable {
         
     }
 
-    public Reservation(Long id, int nbPassagers, Date dateDepart, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
+    public Reservation(Long id, int nbPassagers, Date dateDepart, Date dateArrivee, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
         this.id = id;
         this.nbPassagers = nbPassagers;
         this.dateDepart = dateDepart;
+        this.dateArrivee = dateArrivee;
         this.navette = navette;
         this.usager = usager;
         this.stationDepart = stationDepart;
@@ -85,6 +94,14 @@ public class Reservation implements Serializable {
 
     public Station getStationDepart() {
         return stationDepart;
+    }
+
+    public Date getDateArrivee() {
+        return dateArrivee;
+    }
+
+    public void setDateArrivee(Date dateArrivee) {
+        this.dateArrivee = dateArrivee;
     }
 
     public void setStationDepart(Station stationDepart) {
