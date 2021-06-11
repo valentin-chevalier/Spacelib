@@ -15,6 +15,7 @@ import fr.miage.m1.utilities.PasDeReservationPourStationException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -108,11 +109,23 @@ public class GestionSysteme implements GestionSystemeLocal {
         List<Reservation> reservationsDepartStation;
         for (Station station : this.gestionStation.getAllStations()){
             reservationsArriveeStation = this.reservationFacade.getReservationByStationArrivee(station.getId());
+            reservationsDepartStation = this.reservationFacade.getReservationByStationDepart(station.getId());
+            for (Reservation res : reservationsArriveeStation){
+                if (getDifferenceDays(new Date(), res.getDateArrivee()) <= 10 && getDifferenceDays(new Date(), res.getDateArrivee())>0){
+                    occupe++;
+                    System.out.println("test1 " + getDifferenceDays(new Date(), res.getDateArrivee()));
+                }
+            }
+            for (Reservation res : reservationsDepartStation){
+                if (getDifferenceDays(new Date(), res.getDateDepart()) <= 10 && getDifferenceDays(new Date(), res.getDateArrivee())>0){
+                    occupe--;
+                    System.out.println("test2 " + getDifferenceDays(new Date(), res.getDateArrivee()));
+                }
+            }
             for (Quai quai : station.getListeQuais()){
                 if (!quai.isEstLibre())
                     occupe++;
             }
-            
             total = station.getListeQuais().size();
             System.out.println("Nb quais occupés : " + occupe);
             System.out.println("Nb quais total : " + total);
@@ -126,6 +139,11 @@ public class GestionSysteme implements GestionSystemeLocal {
             total=0;
         }
         return listeStationsSurchargees;
+    }
+    
+    public static int getDifferenceDays(Date d1, Date d2){
+        long diff = d2.getTime() - d1.getTime();
+        return (int)TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
     
     @Override

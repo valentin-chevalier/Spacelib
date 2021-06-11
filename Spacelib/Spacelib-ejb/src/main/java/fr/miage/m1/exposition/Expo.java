@@ -133,7 +133,7 @@ public class Expo implements ExpoLocal {
     }
 
     @Override
-    public Duree creerDuree(int duree, Station station1, Station station2) {
+    public Duree creerDuree(Long duree, Station station1, Station station2) {
         return this.gestionDuree.creerDuree(duree, station1, station2);
     }
 

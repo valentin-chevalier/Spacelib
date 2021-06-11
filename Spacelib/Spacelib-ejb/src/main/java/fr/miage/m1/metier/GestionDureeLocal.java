@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface GestionDureeLocal {
     
-    public Duree creerDuree(int duree, Station station1, Station station2);
+    public Duree creerDuree(Long duree, Station station1, Station station2);
     
     public Duree getDuree(Long idDuree);
     

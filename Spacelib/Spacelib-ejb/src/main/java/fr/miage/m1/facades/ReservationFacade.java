@@ -11,7 +11,6 @@ import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.utilities.AucuneReservationException;
-import fr.miage.m1.utilities.PasDeReservationPourStationException;
 import fr.miage.m1.utilities.ReservationInexistanteException;
 import java.util.Date;
 import java.util.List;
@@ -97,23 +96,18 @@ public class ReservationFacade extends AbstractFacade<Reservation> implements Re
     }
     
     @Override
-    public List<Reservation> getReservationByStationDepart (Long idStation) throws PasDeReservationPourStationException{
+    public List<Reservation> getReservationByStationDepart (Long idStation){
         Station station = this.stationFacade.find(idStation);
         Query q = this.em.createNamedQuery("Reservation.getReservationByStation");
         q.setParameter("vstationDepart", station);
-        if (q.getResultList().isEmpty())
-            throw new PasDeReservationPourStationException();
         return q.getResultList();
     }
     
     @Override
-    public List<Reservation> getReservationByStationArrivee (Long idStation) throws PasDeReservationPourStationException{
+    public List<Reservation> getReservationByStationArrivee (Long idStation){
         Station station = this.stationFacade.find(idStation);
         Query q = this.em.createNamedQuery("Reservation.getReservationsByStationArrivee");
         q.setParameter("vstationArrivee", station);
-        if (q.getResultList().isEmpty())
-            throw new PasDeReservationPourStationException();
         return q.getResultList();
     }
-
 }

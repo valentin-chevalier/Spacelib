@@ -20,7 +20,7 @@ import javax.persistence.OneToOne;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name="Duree.recupererDuree", query="SELECT d FROM Duree d WHERE (d.station1 = :vstation1 AND d.station2 = :vstation2)"
+    @NamedQuery(name="Duree.recupererDuree", query="SELECT d.duree FROM Duree d WHERE (d.station1 = :vstation1 AND d.station2 = :vstation2)"
             + "OR (d.station1 = :vstation2 AND d.station2 = :vstation1)"),
 })
 public class Duree implements Serializable {
@@ -30,7 +30,7 @@ public class Duree implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private int duree;
+    private Long duree;
 
     @OneToOne
     public Station station1;
@@ -40,18 +40,18 @@ public class Duree implements Serializable {
     public Duree() {
     }
 
-    public Duree(Long id, int duree, Station station1, Station station2) {
+    public Duree(Long id, Long duree, Station station1, Station station2) {
         this.id = id;
         this.duree = duree;
         this.station1 = station1;
         this.station2 = station2;
     }
 
-    public int getDuree() {
+    public Long getDuree() {
         return duree;
     }
 
-    public void setDuree(int duree) {
+    public void setDuree(Long duree) {
         this.duree = duree;
     }
 

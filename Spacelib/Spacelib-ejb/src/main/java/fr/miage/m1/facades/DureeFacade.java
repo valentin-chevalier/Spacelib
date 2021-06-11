@@ -32,7 +32,7 @@ public class DureeFacade extends AbstractFacade<Duree> implements DureeFacadeLoc
     }
 
     @Override
-    public Duree creerDuree(int duree, Station station1, Station station2) {
+    public Duree creerDuree(Long duree, Station station1, Station station2) {
         Duree objDuree = new Duree();
         objDuree.setDuree(duree);
         objDuree.setStation1(station1);

@@ -116,7 +116,7 @@ public class GestionReservation implements GestionReservationLocal {
                     SimpleDateFormat formatter1=new SimpleDateFormat("dd/MM/yyyy");  
                     Date date1=formatter1.parse(dateDepart); 
                     LocalDate date = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    LocalDate dateArrivee = date.plusDays(this.gestionDuree.calculerDuree(stationDepart, stationDepart));
+                    LocalDate dateArrivee = date.plusDays(this.gestionDuree.calculerDuree(stationDepart, stationArrivee));
                     Date date2 = Date.from(dateArrivee.atStartOfDay(ZoneId.systemDefault()).toInstant());
                     System.out.println("DATE DEPART " + date1);
                     System.out.println("DATE ARRIVEE " + date2);

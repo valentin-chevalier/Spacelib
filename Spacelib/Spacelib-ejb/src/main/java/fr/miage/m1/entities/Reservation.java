@@ -26,10 +26,6 @@ import javax.persistence.Temporal;
     @NamedQuery(name="Reservation.getReservationByStation", 
             query="SELECT r FROM Reservation r WHERE r.stationDepart = :vstationDepart"),
     @NamedQuery(name="Reservation.getReservationsByStationArrivee", 
-            query="SELECT r FROM Reservation r WHERE r.stationArrivee = :vstationArrivee"),
-    @NamedQuery(name="Reservation.getReservationByStationAndQuaiDepart", 
-            query="SELECT r FROM Reservation r WHERE r.stationDepart = :vstationDepart"),
-    @NamedQuery(name="Reservation.getReservationsByStationAndQuaiArrivee", 
             query="SELECT r FROM Reservation r WHERE r.stationArrivee = :vstationArrivee")
 })
 public class Reservation implements Serializable {

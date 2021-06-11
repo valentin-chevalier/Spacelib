@@ -95,7 +95,7 @@ public class WS {
     }
 
     @WebMethod(operationName = "creerDuree")
-    public String creerDuree(@WebParam(name = "duree") int duree, @WebParam(name = "idStation1") Long idStation1, @WebParam(name = "idStation2") Long idStation2) {
+    public String creerDuree(@WebParam(name = "duree") Long duree, @WebParam(name = "idStation1") Long idStation1, @WebParam(name = "idStation2") Long idStation2) {
         Duree objDuree = ejbRef.creerDuree(duree, ejbRef.getStation(idStation1), ejbRef.getStation(idStation2));
         return objDuree.toString();
     }
