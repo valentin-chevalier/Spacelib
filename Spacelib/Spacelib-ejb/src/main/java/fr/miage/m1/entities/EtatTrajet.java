@@ -10,6 +10,7 @@ package fr.miage.m1.entities;
  * @author Valentin
  */
 public enum EtatTrajet {
+    VOYAGE_PLANIFIE,
     VOYAGE_INITIE, 
     VOYAGE_ACHEVE
 }

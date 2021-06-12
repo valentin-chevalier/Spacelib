@@ -5,15 +5,22 @@
  */
 package fr.miage.m1.metier;
 
+import fr.miage.m1.entities.ChargeNavette;
+import fr.miage.m1.entities.ChargeQuai;
+import fr.miage.m1.entities.Conducteur;
+import fr.miage.m1.entities.EtatTrajet;
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Reservation;
 import fr.miage.m1.entities.Station;
+import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.facades.ReservationFacadeLocal;
+import fr.miage.m1.utilities.PasDeNavetteAQuaiException;
 import fr.miage.m1.utilities.PasDeQuaiDispoException;
-import fr.miage.m1.utilities.PasDeReservationPourStationException;
+import fr.miage.m1.utilities.RevisionNavetteException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.ejb.EJB;
@@ -35,168 +42,157 @@ public class GestionSysteme implements GestionSystemeLocal {
     @EJB
     private GestionStationLocal gestionStation;
 
-    public void calculerDispoQuai(Long idStation) throws PasDeQuaiDispoException, PasDeReservationPourStationException {
-        int capaciteAPrevoir = 0;
-        Station station = this.gestionStation.getStation(idStation);
-        //récupérer la liste des navettes de la station
-        List<Navette> listeNavettesByStation = station.getListeNavettes();
-        //récupérer le nb de quais de la station
-        int nbQuais = station.getListeQuais().size();
-        List<Reservation> listeRes = this.reservationFacade.getReservationByStationDepart(idStation);
-        //pour chaque réservation
-        for (Reservation res : listeRes){
-            //dans 10j
-            System.out.println("DATE " + res.getDateDepart());
-            if (new Date().compareTo(res.getDateDepart()) > -10){
-                //calculer nb de quais occupés
-                capaciteAPrevoir++;
-            }
-        }
-        int total = 0;
-        int occupe = 0;
-        //si ratio quais occupés / totalité des quais de la station < 10%
-        if (capaciteAPrevoir/nbQuais < 0.1){
-            //tant que c'est < 20%
-            while (capaciteAPrevoir/nbQuais < 0.2){
-                //pour chaque navette
-                for (Navette navette : listeNavettesByStation){
-                    System.out.println("Avant modif : " + navette.getQuai());
-                    //parcourir les stations
-                    for (Station s : this.gestionStation.getAllStations()){
-                        List<Quai> listeQuais = s.getListeQuais();
-                        //récupérer les quais
-                        for (Quai q : listeQuais){
-                            System.out.println("QUAI : " + q);
-                            System.out.println("STATION CONCERNEE : " + q.getStation());
-                            //calculer le ratio quais occupés / quais totaux
-                            for (Reservation res : listeRes){
-                                if (res.getQuaiDepart() == q && new Date().compareTo(res.getDateDepart()) > -10)
-                                    occupe++;
-                                else 
-                                    total++;
-                            }
-                            System.out.println("Ratio de la station : " + occupe/total);
+    @EJB
+    private GestionTrajetLocal gestionTrajet;
 
-                            //si ratio < 10%
-                            gestioneffectif:
-                            if (occupe/total < 0.1)
-                                //aucune action
-                                break gestioneffectif;
-                            else {
-                                // tant que ratio < 10%
-                                while (occupe/total > 0.1){
-                                    //maj le transfert
-                                    navette.getQuai().setEstLibre(true);
-                                    navette.setQuai(q);
-                                    q.setEstLibre(false);
-                                    System.out.println("Apres modif : " + navette.getQuai());
-
-                                    s.getListeNavettes().add(navette);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }    
-    
-    public List<Station> stationsQuaisALiberer() throws PasDeQuaiDispoException, PasDeReservationPourStationException {
-        float occupe = 0;
-        float total = 0;
-        List<Station> listeStationsSurchargees = new ArrayList<Station>();
+    @Override
+    public HashMap<Station, ChargeQuai> stationsQuaisALiberer() {
+        int nbQuaisOccupes = 0;
+        int nbQuaisTotal = 0;
+        HashMap<Station, ChargeQuai> listeStationsSurchargees = new HashMap<Station, ChargeQuai>();
         List<Reservation> reservationsArriveeStation;
         List<Reservation> reservationsDepartStation;
-        for (Station station : this.gestionStation.getAllStations()){
+        for (Station station : this.gestionStation.getAllStations()) {
+            //System.out.println("NOM DE LA STATION " + station.getNom());
             reservationsArriveeStation = this.reservationFacade.getReservationByStationArrivee(station.getId());
             reservationsDepartStation = this.reservationFacade.getReservationByStationDepart(station.getId());
-            for (Reservation res : reservationsArriveeStation){
-                if (getDifferenceDays(new Date(), res.getDateArrivee()) <= 10 && getDifferenceDays(new Date(), res.getDateArrivee())>0){
-                    occupe++;
-                    System.out.println("test1 " + getDifferenceDays(new Date(), res.getDateArrivee()));
+            for (Reservation res : reservationsArriveeStation) {
+                if (getDifferenceDays(new Date(), res.getDateArrivee()) <= 10 && getDifferenceDays(new Date(), res.getDateArrivee()) > 0) {
+                    nbQuaisOccupes++;
                 }
             }
-            for (Reservation res : reservationsDepartStation){
-                if (getDifferenceDays(new Date(), res.getDateDepart()) <= 10 && getDifferenceDays(new Date(), res.getDateArrivee())>0){
-                    occupe--;
-                    System.out.println("test2 " + getDifferenceDays(new Date(), res.getDateArrivee()));
+            for (Reservation res : reservationsDepartStation) {
+                if (getDifferenceDays(new Date(), res.getDateDepart()) <= 10 && getDifferenceDays(new Date(), res.getDateArrivee()) > 0) {
+                    nbQuaisOccupes--;
                 }
             }
-            for (Quai quai : station.getListeQuais()){
-                if (!quai.isEstLibre())
-                    occupe++;
+            for (Quai quai : station.getListeQuais()) {
+                if (!quai.isEstLibre()) {
+                    nbQuaisOccupes++;
+                }
             }
-            total = station.getListeQuais().size();
-            System.out.println("Nb quais occupés : " + occupe);
-            System.out.println("Nb quais total : " + total);
-            System.out.println("Total de STATION : " + station.getNom());
-            System.out.println("Ratio occupation/total : " + occupe/total);
-            if (occupe/total > 0.9){
-                System.out.println("STATION SURCHARGE");
-                listeStationsSurchargees.add(station);
+            nbQuaisTotal = station.getListeQuais().size();
+            //System.out.println("NB QUAIS DISPO " + nbQuaisOccupes);
+            //System.out.println("NB QUAIS TOTAL " + nbQuaisTotal);
+            //System.out.println("RATIO DISPO/TOTAL " + (float) nbQuaisOccupes / (float) nbQuaisTotal);
+            if ((float) nbQuaisOccupes / (float) nbQuaisTotal > 0.9) {
+                //System.out.println("SURCHARGE");
+                listeStationsSurchargees.put(station, new ChargeQuai(nbQuaisTotal-nbQuaisOccupes, nbQuaisTotal));
             }
-            occupe=0;
-            total=0;
+            nbQuaisOccupes = 0;
+            nbQuaisTotal = 0;
         }
         return listeStationsSurchargees;
     }
-    
-    public static int getDifferenceDays(Date d1, Date d2){
-        long diff = d2.getTime() - d1.getTime();
-        return (int)TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-    }
-    
+
     @Override
-    public void transfererNavettesDeStations(Station station) {
-        //récupérer toutes les réservations
-        List<Reservation> listeReservations = this.reservationFacade.findAll();
-        //pour chaque réservation
-        for (Reservation res : listeReservations){
-            int totalQuaisStationDepart = 0;
-            int nbQuaisDispoStationDepart = 0;
-            //si la date de réservation est dans - de 10j
-            if((res.getStationDepart() == station || res.getStationArrivee() == station) && (new Date().compareTo(res.getDateDepart()) == -10)){
-                //récupérer le nombre de quais dispo parmi toutes les quais
-                for (Quai q : station.getListeQuais()){
-                    totalQuaisStationDepart++;
-                    if (q.isEstLibre())
-                        nbQuaisDispoStationDepart++;
+    public HashMap<Station, ChargeNavette> stationsNavettesATransferer() {
+        int nbNavettesDispo = 0;
+        int nbQuais = 0;
+        HashMap<Station, ChargeNavette> listeStationsLibres = new HashMap<Station, ChargeNavette>();
+        List<Reservation> reservationsArriveeStation;
+        for (Station station : this.gestionStation.getAllStations()) {
+            //System.out.println("NOM DE LA STATION " + station.getNom());
+            reservationsArriveeStation = this.reservationFacade.getReservationByStationArrivee(station.getId());
+            for (Reservation res : reservationsArriveeStation) {
+                if (getDifferenceDays(new Date(), res.getDateArrivee()) <= 10 && getDifferenceDays(new Date(), res.getDateArrivee()) > 0) {
+                    nbNavettesDispo++;
                 }
-                //calculer si < 10%
-                if ((nbQuaisDispoStationDepart / totalQuaisStationDepart) <0.1){
-                    //tant que ça n'est pas > 20%
-                    while ((nbQuaisDispoStationDepart / totalQuaisStationDepart) >= 0.2){
-                        //rechercher les autres stations
-                        List<Station> listeStations = this.gestionStation.getAllStations();
-                        //pour chaque station
-                        for (Station nouvelleStation : listeStations){
-                            int totalQuais = 0;
-                            int nbQuaisDispo = 0;
-                            //récupérer les quais
-                            for (Quai quai : nouvelleStation.getListeQuais()){
-                                totalQuais++;
-                                if (quai.isEstLibre()){
-                                    nbQuaisDispo++;
-                                }
-                            }
-                            //si le ratio quais dispo / total quais > 20% dans la nouvelle station
-                            if ((nbQuaisDispo / totalQuais) > 0.2){
-                                //tant que le rapport < 0.1
-                                while(!((nbQuaisDispo / totalQuais) < 0.1)){
-                                    //pour chaque quai
-                                    for (Quai quai : nouvelleStation.getListeQuais()){
-                                        //on change le quai de notre navette
-                                        for (Navette navette : station.getListeNavettes()){
-                                            navette.setQuai(quai);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+            }
+            for (Quai quai : station.getListeQuais()) {
+                //recuperation navette du quai
+                for (Navette navette : station.getListeNavettes()) {
+                    if (navette.getQuai().equals(quai) && navette.isEstDispo()) {
+                        nbNavettesDispo++;
                     }
                 }
             }
+            nbQuais = station.getListeQuais().size();
+            //System.out.println("NB NAVETTES DISPO " + nbNavettesDispo);
+            //System.out.println("NB QUAIS TOTAL " + nbQuais);
+            //System.out.println("RATIO DISPO/TOTAL " + (float) nbNavettesDispo / (float) nbQuais);
+            if (nbNavettesDispo / nbQuais < 0.1) {
+                //System.out.println("RAMENER DES NAVETTES");
+                listeStationsLibres.put(station, new ChargeNavette(nbNavettesDispo, nbQuais));
+            }
+            nbNavettesDispo = 0;
+            nbQuais = 0;
         }
-        
+
+        return listeStationsLibres;
     }
+
+    public static int getDifferenceDays(Date d1, Date d2) {
+        long diff = d2.getTime() - d1.getTime();
+        return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public List<Trajet> creerListeVoyages(Conducteur conducteur) throws RevisionNavetteException, PasDeQuaiDispoException, PasDeNavetteAQuaiException {
+        List<Trajet> listeTrajets = new ArrayList<Trajet>();
+        HashMap<Station, ChargeQuai> fonctionQuai = stationsQuaisALiberer();
+        HashMap<Station, ChargeNavette> fonctionNavette = stationsNavettesATransferer();
+        System.out.println(fonctionQuai);
+        System.out.println(fonctionNavette);
+        Station stationDepart = new Station();
+        Station stationArrivee = new Station();
+        Navette navette = new Navette();
+        Quai quai = new Quai();
+        Trajet trajet = new Trajet();
+        float ratioParcours = 1;
+        float ratioMin = 1;
+        listerTrajets :
+        while (!stationsQuaisALiberer().isEmpty() || !stationsNavettesATransferer().isEmpty()) {
+            ratioParcours = 1;
+            ratioMin = 1;
+            for (Station station : fonctionQuai.keySet()) {
+                ratioParcours = fonctionQuai.get(station).calculerRatio();
+                System.out.println("RATIO PARCOURS : " + ratioParcours);
+                if (ratioParcours > 0.2) {
+                    fonctionQuai.remove(station);
+                    if (fonctionQuai.isEmpty()){
+                        break listerTrajets;
+                    }
+                } else if (ratioParcours < ratioMin) {
+                    ratioMin = ratioParcours;
+                    stationDepart = station;
+                }
+            }
+            System.out.println("ICI : " + stationDepart.toString());
+            rechercheNavetteLibre:
+            for (Navette navetteParcours : stationDepart.getListeNavettes()) {
+                if (navetteParcours.isEstDispo()) {
+                    navette = navetteParcours;
+                    break rechercheNavetteLibre;
+                }
+            }
+            ratioParcours = 1;
+            ratioMin = 1;
+            for (Station station : fonctionNavette.keySet()) {
+                ratioParcours = fonctionNavette.get(station).calculerRatio();
+                if (ratioParcours > 0.2) {
+                    fonctionNavette.remove(station);
+                    if (fonctionNavette.isEmpty()){
+                        break listerTrajets;
+                    }
+                } else if (ratioParcours < ratioMin) {
+                    ratioMin = ratioParcours;
+                    stationArrivee = station;
+                }
+            }
+            rechercheQuaiArriveeLibre : 
+            for (Quai quaiParcours : stationArrivee.getListeQuais()){
+                if (quaiParcours.isEstLibre()){
+                    quai = quaiParcours;
+                    break rechercheQuaiArriveeLibre;
+                }
+            }
+            trajet = this.gestionTrajet.creerTrajet(1, EtatTrajet.VOYAGE_PLANIFIE, stationDepart, stationArrivee, navette.getQuai(), quai, conducteur);
+            listeTrajets.add(trajet);
+            fonctionNavette.get(stationArrivee).incrementerNbNavettesLibres();
+            fonctionQuai.get(stationDepart).incrementerNbQuaisLibres();
+        }
+        return listeTrajets;
+    }
+
 }

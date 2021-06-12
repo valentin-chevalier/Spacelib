@@ -112,6 +112,7 @@ public class GestionReservation implements GestionReservationLocal {
                 //vérifier la capacité de la navette
                 if (navette.isEstDispo() && !navette.isEstEnRevision() && navette.getCapacite() >= nbPassagers && navette.getNbVoyages() < 3){
                     navette.incrementerNbVoyages();
+                    navette.setEstDispo(false);
                     this.navetteFacade.edit(navette);
                     SimpleDateFormat formatter1=new SimpleDateFormat("dd/MM/yyyy");  
                     Date date1=formatter1.parse(dateDepart); 

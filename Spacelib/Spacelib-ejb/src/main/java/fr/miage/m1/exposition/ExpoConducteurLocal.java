@@ -5,9 +5,15 @@
  */
 package fr.miage.m1.exposition;
 
+import fr.miage.m1.entities.ChargeNavette;
+import fr.miage.m1.entities.ChargeQuai;
+import fr.miage.m1.entities.Conducteur;
 import fr.miage.m1.entities.Station;
+import fr.miage.m1.entities.Trajet;
+import fr.miage.m1.utilities.PasDeNavetteAQuaiException;
 import fr.miage.m1.utilities.PasDeQuaiDispoException;
-import fr.miage.m1.utilities.PasDeReservationPourStationException;
+import fr.miage.m1.utilities.RevisionNavetteException;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -18,12 +24,13 @@ import javax.ejb.Local;
 @Local
 public interface ExpoConducteurLocal {
 
-    public void calculerDispoQuai(Long idStation) throws PasDeQuaiDispoException, PasDeReservationPourStationException;
-    
-    public void transfererNavettesDeStations(Station station);
-    
     public Station getStation(Long idStation);
     
-    public List<Station> stationsQuaisALiberer() throws PasDeQuaiDispoException, PasDeReservationPourStationException;
+    public HashMap<Station, ChargeQuai> stationsQuaisALiberer();
+    
+    public HashMap<Station, ChargeNavette> stationsNavettesATransferer();
 
+    public List<Trajet> creerListeVoyages(Conducteur conducteur) throws RevisionNavetteException, PasDeQuaiDispoException, PasDeNavetteAQuaiException;
+    
+    public Conducteur getConducteur(Long idConducteur);
 }
