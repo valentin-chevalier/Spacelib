@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -199,13 +200,15 @@ public class GestionReservation implements GestionReservationLocal {
     @Override
     public void supprimerReservationsNonCloturees(){
         //pour chaque trajet
-        for (Trajet trajet : this.gestionTrajet.getAllTrajet()){
+        for (Trajet trajet : this.gestionTrajet.getAllTrajets()){
             //si trajet initié mais date dépassée
             if (EtatTrajet.VOYAGE_INITIE.equals(trajet.getEtatTrajet()) && new Date().compareTo(trajet.getDateDepart()) > 0){
                 //parcourir les réservations
                 for (Reservation res : this.reservationFacade.findAll()){
                     //si l'usager inscrit sur la navette et dans la résa est le même
                     if (res.getUsager().getId().equals(trajet.getUtilisateur().getId())){
+                        trajet.getQuaiDepart().setEstLibre(false);
+                        trajet.getQuaiArrivee().setEstLibre(true);
                         //supprimer
                         this.reservationFacade.remove(res);
                         this.trajetFacade.remove(trajet);
@@ -214,5 +217,11 @@ public class GestionReservation implements GestionReservationLocal {
             }
         }
     }
+    
+    @Override
+    public List<Reservation> getAllReservations(){
+        return this.reservationFacade.findAll();
+    }
+
 
 }

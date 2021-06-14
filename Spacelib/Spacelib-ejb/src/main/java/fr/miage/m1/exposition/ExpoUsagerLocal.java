@@ -3,14 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.miage.m1.metier;
+package fr.miage.m1.exposition;
 
-import fr.miage.m1.entities.EtatTrajet;
-import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
-import fr.miage.m1.entities.Trajet;
-import fr.miage.m1.entities.Usager;
-import fr.miage.m1.entities.Utilisateur;
 import fr.miage.m1.utilities.AucuneReservationException;
 import fr.miage.m1.utilities.CapaciteNavetteInsuffisanteException;
 import fr.miage.m1.utilities.NbPassagersNonAutoriseException;
@@ -20,7 +15,6 @@ import fr.miage.m1.utilities.ReservationDejaExistanteException;
 import fr.miage.m1.utilities.ReservationInexistanteException;
 import fr.miage.m1.utilities.RevisionNavetteException;
 import fr.miage.m1.utilities.StationInexistanteException;
-import fr.miage.m1.utilities.TrajetDejaAcheveException;
 import fr.miage.m1.utilities.TrajetInexistantException;
 import fr.miage.m1.utilities.UsagerInexistantException;
 import java.text.ParseException;
@@ -32,19 +26,10 @@ import javax.ejb.Local;
  * @author Flo
  */
 @Local
-public interface GestionTrajetLocal {
-
-    public Trajet creerTrajet(int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur) throws RevisionNavetteException, PasDeQuaiDispoException, PasDeNavetteAQuaiException;
-    
-    public Trajet getTrajet(Long idTrajet);
-    
-    public Trajet finaliserTrajet(Usager usager) throws TrajetDejaAcheveException, TrajetInexistantException, UsagerInexistantException, RevisionNavetteException, ReservationInexistanteException, AucuneReservationException;
-
-    public Trajet recupererTrajet(Long idUser) throws TrajetInexistantException;
-    
-    public List<Quai> verifierQuaiDispo(Station station);
-    
-    public List<Trajet> getAllTrajets();
+public interface ExpoUsagerLocal {
     
     public List<String> getTrajetsPossibles(Long idUsager, Station stationDepart, Station stationArrivee, int nbPassagers, String dateMin, String dateDepart) throws ParseException, PasDeNavetteAQuaiException, RevisionNavetteException, TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException, RevisionNavetteException, PasDeQuaiDispoException, PasDeNavetteAQuaiException;
+
+    public Station getStation(Long idStation);
+
 }

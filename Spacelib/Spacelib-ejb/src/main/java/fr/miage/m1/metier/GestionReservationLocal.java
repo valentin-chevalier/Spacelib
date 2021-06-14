@@ -25,6 +25,7 @@ import fr.miage.m1.utilities.TrajetInexistantException;
 import fr.miage.m1.utilities.UsagerInexistantException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -49,4 +50,6 @@ public interface GestionReservationLocal {
     public boolean annulerReservation(Usager usager, Long idReservation) throws ParseException, TrajetDejaAcheveException, TrajetInexistantException, DelaiAnnulationResDepasseException, UsagerInexistantException, AucuneReservationException;
     
     public void supprimerReservationsNonCloturees();
+    
+    public List<Reservation> getAllReservations();
 }

@@ -18,4 +18,5 @@ public interface ExpoAdminLocal {
     
     public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteNonAutoriseeException;
     
+    public void supprimerReservationsNonCloturees();
 }

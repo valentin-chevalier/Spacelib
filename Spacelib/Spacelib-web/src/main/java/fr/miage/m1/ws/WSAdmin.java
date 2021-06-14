@@ -27,4 +27,10 @@ public class WSAdmin {
         return ejbRef.creerStation(nom, coordonnees, nbQuais, capaciteNavettes).toString();
     }
     
+    @WebMethod(operationName = "supprimerReservationsNonCloturees")
+    public String supprimerReservationsNonCloturees() {
+        ejbRef.supprimerReservationsNonCloturees();
+        return "Les réservations non clôturées ont bien été supprimées de la bd.";
+    }
+
 }

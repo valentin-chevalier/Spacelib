@@ -6,6 +6,7 @@
 package fr.miage.m1.exposition;
 
 import fr.miage.m1.entities.Station;
+import fr.miage.m1.metier.GestionReservationLocal;
 import fr.miage.m1.metier.GestionStationLocal;
 import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
 import javax.ejb.EJB;
@@ -17,6 +18,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class ExpoAdmin implements ExpoAdminLocal {
+
+    @EJB
+    private GestionReservationLocal gestionReservation;
     
     @EJB
     private GestionStationLocal gestionStation;
@@ -24,6 +28,11 @@ public class ExpoAdmin implements ExpoAdminLocal {
     @Override
     public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteNonAutoriseeException {
         return this.gestionStation.creerStation(nom, coordonnees, nbQuais, capaciteNavettes);
+    }
+
+    @Override
+    public void supprimerReservationsNonCloturees() {
+        this.gestionReservation.supprimerReservationsNonCloturees();
     }
 
 }
