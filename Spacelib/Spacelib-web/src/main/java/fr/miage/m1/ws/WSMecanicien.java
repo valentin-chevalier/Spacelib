@@ -6,15 +6,15 @@
 package fr.miage.m1.ws;
 
 import fr.miage.m1.exposition.ExpoMecanicienLocal;
-import fr.miage.m1.utilities.AucuneReparationException;
-import fr.miage.m1.utilities.MailInexistantException;
-import fr.miage.m1.utilities.MauvaisMecanicienException;
-import fr.miage.m1.utilities.NavetteInexistanteException;
-import fr.miage.m1.utilities.NavettePasRevisableException;
-import fr.miage.m1.utilities.PasDeNavetteAReviserException;
-import fr.miage.m1.utilities.QuaiInexistantException;
-import fr.miage.m1.utilities.StationInexistanteException;
-import fr.miage.m1.utilities.UsagerInexistantException;
+import fr.miage.m1.spacelibshared.utilities.AucuneReparationException;
+import fr.miage.m1.spacelibshared.utilities.MailInexistantException;
+import fr.miage.m1.spacelibshared.utilities.MauvaisMecanicienException;
+import fr.miage.m1.spacelibshared.utilities.NavetteInexistanteException;
+import fr.miage.m1.spacelibshared.utilities.NavettePasRevisableException;
+import fr.miage.m1.spacelibshared.utilities.PasDeNavetteAReviserException;
+import fr.miage.m1.spacelibshared.utilities.QuaiInexistantException;
+import fr.miage.m1.spacelibshared.utilities.StationInexistanteException;
+import fr.miage.m1.spacelibshared.utilities.UsagerInexistantException;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

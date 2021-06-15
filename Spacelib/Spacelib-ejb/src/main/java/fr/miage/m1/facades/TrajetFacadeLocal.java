@@ -10,7 +10,7 @@ import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.entities.Utilisateur;
-import fr.miage.m1.utilities.TrajetInexistantException;
+import fr.miage.m1.spacelibshared.utilities.TrajetInexistantException;
 import java.util.List;
 import javax.ejb.Local;
 

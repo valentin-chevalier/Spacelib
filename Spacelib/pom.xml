@@ -10,4 +10,11 @@
     <module>Spacelib-web</module>
     <module>Spacelib-ejb</module>
   </modules>
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>SpacelibShared</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

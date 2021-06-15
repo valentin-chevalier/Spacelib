@@ -6,7 +6,7 @@
 package fr.miage.m1.exposition;
 
 import fr.miage.m1.entities.Station;
-import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
+import fr.miage.m1.spacelibshared.utilities.CapaciteNavetteNonAutoriseeException;
 import javax.ejb.Local;
 
 /**

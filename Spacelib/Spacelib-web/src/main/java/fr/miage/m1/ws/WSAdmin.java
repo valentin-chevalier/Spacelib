@@ -6,7 +6,7 @@
 package fr.miage.m1.ws;
 
 import fr.miage.m1.exposition.ExpoAdminLocal;
-import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
+import fr.miage.m1.spacelibshared.utilities.CapaciteNavetteNonAutoriseeException;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

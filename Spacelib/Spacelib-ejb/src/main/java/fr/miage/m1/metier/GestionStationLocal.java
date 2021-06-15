@@ -6,8 +6,8 @@
 package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Station;
-import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
-import fr.miage.m1.utilities.StationInexistanteException;
+import fr.miage.m1.spacelibshared.utilities.CapaciteNavetteNonAutoriseeException;
+import fr.miage.m1.spacelibshared.utilities.StationInexistanteException;
 import java.util.List;
 import javax.ejb.Local;
 

@@ -7,7 +7,7 @@ package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
-import fr.miage.m1.utilities.NavetteSansQuaiException;
+import fr.miage.m1.spacelibshared.utilities.NavetteSansQuaiException;
 import java.util.List;
 import javax.ejb.Local;
 

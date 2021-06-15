@@ -7,7 +7,7 @@ package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Mecanicien;
 import fr.miage.m1.entities.Reparation;
-import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.spacelibshared.utilities.MailInexistantException;
 import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

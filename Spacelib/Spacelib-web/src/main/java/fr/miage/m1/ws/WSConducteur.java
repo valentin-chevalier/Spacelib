@@ -6,9 +6,9 @@
 package fr.miage.m1.ws;
 
 import fr.miage.m1.exposition.ExpoConducteurLocal;
-import fr.miage.m1.utilities.PasDeNavetteAQuaiException;
-import fr.miage.m1.utilities.PasDeQuaiDispoException;
-import fr.miage.m1.utilities.RevisionNavetteException;
+import fr.miage.m1.spacelibshared.utilities.PasDeNavetteAQuaiException;
+import fr.miage.m1.spacelibshared.utilities.PasDeQuaiDispoException;
+import fr.miage.m1.spacelibshared.utilities.RevisionNavetteException;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

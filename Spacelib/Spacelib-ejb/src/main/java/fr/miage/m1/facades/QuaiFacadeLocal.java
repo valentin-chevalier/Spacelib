@@ -7,7 +7,7 @@ package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
-import fr.miage.m1.utilities.PasDeQuaiDispoException;
+import fr.miage.m1.spacelibshared.utilities.PasDeQuaiDispoException;
 import java.util.List;
 import javax.ejb.Local;
 

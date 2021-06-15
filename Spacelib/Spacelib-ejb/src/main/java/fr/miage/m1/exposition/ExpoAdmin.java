@@ -8,7 +8,7 @@ package fr.miage.m1.exposition;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.metier.GestionReservationLocal;
 import fr.miage.m1.metier.GestionStationLocal;
-import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
+import fr.miage.m1.spacelibshared.utilities.CapaciteNavetteNonAutoriseeException;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 

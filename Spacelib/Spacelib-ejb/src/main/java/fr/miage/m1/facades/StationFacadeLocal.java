@@ -6,7 +6,7 @@
 package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Station;
-import fr.miage.m1.utilities.StationInexistanteException;
+import fr.miage.m1.spacelibshared.utilities.StationInexistanteException;
 import java.util.List;
 import javax.ejb.Local;
 

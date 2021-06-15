@@ -5,7 +5,7 @@
  */
 package fr.miage.m1.entities;
 
-import fr.miage.m1.utilities.RevisionNavetteException;
+import fr.miage.m1.spacelibshared.utilities.RevisionNavetteException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.persistence.Entity;

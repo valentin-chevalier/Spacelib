@@ -6,8 +6,8 @@
 package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Usager;
-import fr.miage.m1.utilities.MailUsagerDejaExistantException;
-import fr.miage.m1.utilities.MailInexistantException;
+import fr.miage.m1.spacelibshared.utilities.MailUsagerDejaExistantException;
+import fr.miage.m1.spacelibshared.utilities.MailInexistantException;
 import javax.ejb.Local;
 
 /**

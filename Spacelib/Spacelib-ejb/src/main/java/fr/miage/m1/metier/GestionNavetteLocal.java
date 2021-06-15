@@ -7,9 +7,9 @@ package fr.miage.m1.metier;
 
 import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Quai;
-import fr.miage.m1.utilities.CapaciteNavetteNonAutoriseeException;
-import fr.miage.m1.utilities.NavetteInexistanteException;
-import fr.miage.m1.utilities.NavetteSansQuaiException;
+import fr.miage.m1.spacelibshared.utilities.CapaciteNavetteNonAutoriseeException;
+import fr.miage.m1.spacelibshared.utilities.NavetteInexistanteException;
+import fr.miage.m1.spacelibshared.utilities.NavetteSansQuaiException;
 import java.util.List;
 import javax.ejb.Local;
 
