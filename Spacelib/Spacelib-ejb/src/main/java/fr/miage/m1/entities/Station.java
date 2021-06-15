@@ -132,6 +132,4 @@ public class Station implements Serializable {
         this.trajet2 = trajet2;
     }
     
-    
-    
 }

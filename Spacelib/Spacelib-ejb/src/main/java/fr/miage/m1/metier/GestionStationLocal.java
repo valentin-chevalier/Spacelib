@@ -5,6 +5,8 @@
  */
 package fr.miage.m1.metier;
 
+import fr.miage.m1.entities.Navette;
+import fr.miage.m1.entities.Quai;
 import fr.miage.m1.entities.Station;
 import fr.miage.m1.spacelibshared.utilities.CapaciteNavetteNonAutoriseeException;
 import fr.miage.m1.spacelibshared.utilities.StationInexistanteException;
@@ -27,4 +29,8 @@ public interface GestionStationLocal {
     public boolean verifierStationDansBd(Long idStation) throws StationInexistanteException; 
     
     public List<Station> getAllStations();
+    
+    public List<Quai> getListeQuaisByIdStation(Long idStation);
+    
+    public List<Navette> getListeNavettesByIdStation(Long idStation);
 }

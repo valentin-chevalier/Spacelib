@@ -49,6 +49,18 @@ public class GestionStation implements GestionStationLocal {
     public Station getStation(Long idStation){
         return this.stationFacade.getStation(idStation);
     }
+    
+    @Override
+    public List<Quai> getListeQuaisByIdStation(Long idStation){
+        Station station = this.stationFacade.getStation(idStation);
+        return station.getListeQuais();
+    }
+    
+    @Override
+    public List<Navette> getListeNavettesByIdStation(Long idStation){
+        Station station = this.stationFacade.getStation(idStation);
+        return station.getListeNavettes();
+    }
 
     @Override
     public Station creerStation(String nom, String coordonnees, int nbQuais, int capaciteNavettes) throws CapaciteNavetteNonAutoriseeException{
