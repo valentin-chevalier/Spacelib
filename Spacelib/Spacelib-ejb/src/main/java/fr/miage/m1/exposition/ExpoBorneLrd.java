@@ -117,7 +117,7 @@ public class ExpoBorneLrd implements ExpoBorneLrdRemote {
     // METHODES EXPORT RMI 
         
     public List<StationExport> creerListeStationsExport(List<Station> listeStations) {
-        List<StationExport> listeStationsExport = new List<StationExport>();
+        List<StationExport> listeStationsExport = new ArrayList<StationExport>();
         for (Station station : listeStations) {
             StationExport stationExport = creerStationExport(station);
             listeStationsExport.add(stationExport);
@@ -126,7 +126,7 @@ public class ExpoBorneLrd implements ExpoBorneLrdRemote {
     }
 
     public ArrayList<NavetteExport> creerListeNavettesExport(List<Navette> listeNavettes) {
-        List<NavetteExport> listeNavettesExport = new ArrayList<NavetteExport>();
+        ArrayList<NavetteExport> listeNavettesExport = new ArrayList<NavetteExport>();
         for (Navette navette : listeNavettes) {
             NavetteExport navetteExport = creerNavetteExport(navette);
             listeNavettesExport.add(navetteExport);
@@ -139,7 +139,7 @@ public class ExpoBorneLrd implements ExpoBorneLrdRemote {
     }
 
     public ArrayList<OperationExport> creerListeOperationsExport(List<Operation> listeOperations) {
-        List<OperationExport> listeOperationsExport = new ArrayList<OperationExport>();
+        ArrayList<OperationExport> listeOperationsExport = new ArrayList<OperationExport>();
         for (Operation operation : listeOperations) {
             OperationExport operationExport = creerOperationExport(operation);
             listeOperationsExport.add(operationExport);
@@ -180,7 +180,7 @@ public class ExpoBorneLrd implements ExpoBorneLrdRemote {
     }
 
     public ArrayList<QuaiExport> creerListeQuaisExport(List<Quai> listeQuais) {
-        List<QuaiExport> listeQuaiExport = new ArrayList<QuaiExport>();
+        ArrayList<QuaiExport> listeQuaiExport = new ArrayList<QuaiExport>();
         for (Quai quai : listeQuais) {
             QuaiExport quaiExport = creerQuaiExport(quai);
             listeQuaiExport.add(quaiExport);
