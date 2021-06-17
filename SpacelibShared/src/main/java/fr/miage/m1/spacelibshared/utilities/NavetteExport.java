@@ -25,14 +25,14 @@ public class NavetteExport implements Serializable{
     public NavetteExport() {
     }
 
-    public NavetteExport(Long id, boolean estDispo, boolean estEnRevision, int nbVoyages, int capacite, QuaiExport quai, ArrayList<OperationExport> listeOperations) {
+    public NavetteExport(Long id, boolean estDispo, boolean estEnRevision, int nbVoyages, int capacite, QuaiExport quai) {
         this.id = id;
         this.estDispo = estDispo;
         this.estEnRevision = estEnRevision;
         this.nbVoyages = nbVoyages;
         this.capacite = capacite;
         this.quai = quai;
-        this.listeOperations = listeOperations;
+        this.listeOperations = new ArrayList<OperationExport>();
     }
 
     public Long getId() {

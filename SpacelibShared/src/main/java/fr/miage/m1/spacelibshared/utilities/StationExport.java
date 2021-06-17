@@ -25,14 +25,12 @@ public class StationExport implements Serializable{
     public StationExport() {
     }
 
-    public StationExport(Long id, String nom, String coordonnees, ArrayList<QuaiExport> listeQuais, ArrayList<NavetteExport> listeNavettes, TrajetExport trajet1, TrajetExport trajet2) {
+    public StationExport(Long id, String nom, String coordonnees) {
         this.id = id;
         this.nom = nom;
         this.coordonnees = coordonnees;
         this.listeQuais = listeQuais;
         this.listeNavettes = listeNavettes;
-        this.trajet1 = trajet1;
-        this.trajet2 = trajet2;
     }
 
     public Long getId() {

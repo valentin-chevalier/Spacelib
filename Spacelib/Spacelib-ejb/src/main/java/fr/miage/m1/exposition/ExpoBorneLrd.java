@@ -46,6 +46,8 @@ import fr.miage.m1.spacelibshared.utilities.UtilisateurExport;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -95,27 +97,39 @@ public class ExpoBorneLrd implements ExpoBorneLrdRemote {
     @Override
     public TrajetExport getTrajet(Long idTrajet) {
         Trajet trajet = this.gestionTrajet.getTrajet(idTrajet);
-        return creerTrajetExport(trajet);
+        //return creerTrajetExport(trajet);
+        return null;
     }
 
     @Override
     public ReservationExport effectuerReservation(String dateDepart, UsagerExport usagerExport, StationExport stationDepartExport, StationExport stationArriveeExport, int nbPassagers) throws ParseException, PasDeNavetteAQuaiException, RevisionNavetteException, TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException {
-        Usager usager = new Usager(usagerExport.getId(), usagerExport.getPrenom(), usagerExport.getNom(), usagerExport.getMail(), usagerExport.getMdp());
-        Station stationDepart = new Station(stationDepartExport.getId(), stationDepartExport.getNom(), stationDepartExport.getCoordonnees());
-        Station stationArrivee = new Station(stationArriveeExport.getId(), stationArriveeExport.getNom(), stationArriveeExport.getCoordonnees());
-        Reservation res = this.gestionReservation.effectuerReservation(dateDepart, usager, stationDepart, stationArrivee, nbPassagers);
-        return creerReservationExport(res);
+        try {
+            Usager usager = this.gestionUsager.creerUsager(usagerExport.getPrenom(), usagerExport.getNom(), usagerExport.getMail(), usagerExport.getMdp());
+            Station stationDepart = this.gestionStation.getStation(stationDepartExport.getId());
+            Station stationArrivee = this.gestionStation.getStation(stationArriveeExport.getId());
+            Reservation res = this.gestionReservation.effectuerReservation(dateDepart, usager, stationDepart, stationArrivee, nbPassagers);
+            //transformer en export pour appeler méthodes rmi
+            StationExport stationExportDepart = creerStationExport(stationDepart);
+            QuaiExport quaiExportDepart = creerQuaiExport(res.getQuaiDepart(), stationExportDepart);
+            StationExport stationExportArrivee = creerStationExport(stationArrivee);
+            QuaiExport quaiExportArrivee = creerQuaiExport(res.getQuaiDepart(), stationExportArrivee);
+            NavetteExport navetteExport = creerNavetteExport(res.getNavette(), creerQuaiExport(res.getQuaiDepart(), stationExportDepart));
+            return creerReservationExport(navetteExport, res, stationExportDepart, stationExportArrivee, quaiExportDepart, quaiExportArrivee, usagerExport);
+        } catch (MailUsagerDejaExistantException ex) {
+            Logger.getLogger(ExpoBorneLrd.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
     public TrajetExport finaliserTrajet(UsagerExport usagerExport) throws TrajetDejaAcheveException, TrajetInexistantException, UsagerInexistantException, RevisionNavetteException, ReservationInexistanteException, AucuneReservationException {
         Usager usager = new Usager(usagerExport.getId(), usagerExport.getPrenom(), usagerExport.getNom(), usagerExport.getMail(), usagerExport.getMdp());
         Trajet trajet = this.gestionTrajet.finaliserTrajet(usager);
-        return creerTrajetExport(trajet);
+        //return creerTrajetExport(trajet);
+        return null;
     }
 
     // METHODES EXPORT RMI 
-        
     public List<StationExport> creerListeStationsExport(List<Station> listeStations) {
         List<StationExport> listeStationsExport = new ArrayList<StationExport>();
         for (Station station : listeStations) {
@@ -125,46 +139,48 @@ public class ExpoBorneLrd implements ExpoBorneLrdRemote {
         return listeStationsExport;
     }
 
-    public ArrayList<NavetteExport> creerListeNavettesExport(List<Navette> listeNavettes) {
+    public ArrayList<NavetteExport> creerListeNavettesExport(List<Navette> listeNavettes, List<QuaiExport> listeQuaisExport) {
         ArrayList<NavetteExport> listeNavettesExport = new ArrayList<NavetteExport>();
+        int compteur = 0;
         for (Navette navette : listeNavettes) {
-            NavetteExport navetteExport = creerNavetteExport(navette);
+            NavetteExport navetteExport = creerNavetteExport(navette, listeQuaisExport.get(compteur));
+            compteur++;
             listeNavettesExport.add(navetteExport);
         }
         return listeNavettesExport;
     }
 
-    public NavetteExport creerNavetteExport(Navette navette) {
-        return new NavetteExport(navette.getId(), navette.isEstDispo(), navette.isEstEnRevision(), navette.getNbVoyages(), navette.getCapacite(), creerQuaiExport(navette.getQuai()), creerListeOperationsExport(navette.getListeOperations()));
+    public NavetteExport creerNavetteExport(Navette navette, QuaiExport quaiExport) {
+        return new NavetteExport(navette.getId(), navette.isEstDispo(), navette.isEstEnRevision(), navette.getNbVoyages(), navette.getCapacite(), quaiExport);
     }
 
-    public ArrayList<OperationExport> creerListeOperationsExport(List<Operation> listeOperations) {
+    public ArrayList<OperationExport> creerListeOperationsExport(List<Operation> listeOperations, NavetteExport navetteExport) {
         ArrayList<OperationExport> listeOperationsExport = new ArrayList<OperationExport>();
         for (Operation operation : listeOperations) {
-            OperationExport operationExport = creerOperationExport(operation);
+            OperationExport operationExport = creerOperationExport(operation, navetteExport);
             listeOperationsExport.add(operationExport);
         }
         return listeOperationsExport;
     }
 
-    public OperationExport creerOperationExport(Operation operation) {
-        return new OperationExport(operation.getId(), operation.getDateOperation(), creerEtatRevisionExport(operation.getEtatRevision()), operation.getDateCreationOperation(), creerNavetteExport(operation.getNavette()));
+    public OperationExport creerOperationExport(Operation operation, NavetteExport navetteExport) {
+        return new OperationExport(operation.getId(), operation.getDateOperation(), creerEtatRevisionExport(operation.getEtatRevision()), operation.getDateCreationOperation(), navetteExport);
     }
 
     public EtatRevisionExport creerEtatRevisionExport(Operation.EtatRevision etatRevision) {
         return EtatRevisionExport.valueOf(etatRevision.toString());
     }
 
-    public QuaiExport creerQuaiExport(Quai quai) {
-        return new QuaiExport(quai.getId(), quai.getNoQuai(), quai.isEstLibre(), creerStationExport(quai.getStation()));
+    public QuaiExport creerQuaiExport(Quai quai, StationExport stationExport) {
+        return new QuaiExport(quai.getId(), quai.getNoQuai(), quai.isEstLibre(), stationExport);
     }
 
     public EtatTrajetExport creerEtatTrajetExport(EtatTrajet etatTrajet) {
         return EtatTrajetExport.valueOf(etatTrajet.toString());
     }
 
-    public TrajetExport creerTrajetExport(Trajet trajet) {
-        return new TrajetExport(trajet.getId(), trajet.getNbPassagers(), creerEtatTrajetExport(trajet.getEtatTrajet()), trajet.getDateDepart(), trajet.getDateArrivee(), creerStationExport(trajet.getStationDepart()), creerStationExport(trajet.getStationArrivee()), creerQuaiExport(trajet.getQuaiDepart()), creerQuaiExport(trajet.getQuaiArrivee()), creerUtilisateurExport(trajet.getUtilisateur()));
+    public TrajetExport creerTrajetExport(Trajet trajet, StationExport stationExportDepart, StationExport stationExportArrivee, QuaiExport quaiExportDepart, QuaiExport quaiExportArrivee, UtilisateurExport utilisateurExport) {
+        return new TrajetExport(trajet.getId(), trajet.getNbPassagers(), creerEtatTrajetExport(trajet.getEtatTrajet()), trajet.getDateDepart(), trajet.getDateArrivee(), stationExportDepart, stationExportArrivee, quaiExportDepart, quaiExportArrivee, utilisateurExport);
     }
 
     public UtilisateurExport creerUtilisateurExport(Utilisateur usager) {
@@ -176,19 +192,24 @@ public class ExpoBorneLrd implements ExpoBorneLrdRemote {
     }
 
     public StationExport creerStationExport(Station station) {
-        return new StationExport(station.getId(), station.getNom(), station.getCoordonnees(), creerListeQuaisExport(station.getListeQuais()), creerListeNavettesExport(station.getListeNavettes()), creerTrajetExport(station.getTrajet1()), creerTrajetExport(station.getTrajet2()));
+        StationExport stationExport = new StationExport(station.getId(), station.getNom(), station.getCoordonnees());
+        ArrayList<QuaiExport> listeQuaiExport = creerListeQuaisExport(station.getListeQuais(), stationExport);
+        stationExport.setListeQuais(listeQuaiExport);
+        ArrayList<NavetteExport> listeNavetteExport = creerListeNavettesExport(station.getListeNavettes(), listeQuaiExport);
+        stationExport.setListeNavettes(listeNavetteExport);
+        return stationExport;
     }
 
-    public ArrayList<QuaiExport> creerListeQuaisExport(List<Quai> listeQuais) {
+    public ArrayList<QuaiExport> creerListeQuaisExport(List<Quai> listeQuais, StationExport stationExport) {
         ArrayList<QuaiExport> listeQuaiExport = new ArrayList<QuaiExport>();
         for (Quai quai : listeQuais) {
-            QuaiExport quaiExport = creerQuaiExport(quai);
+            QuaiExport quaiExport = creerQuaiExport(quai, stationExport);
             listeQuaiExport.add(quaiExport);
         }
         return listeQuaiExport;
     }
-    
-    public ReservationExport creerReservationExport(Reservation reservation){
-        return new ReservationExport(reservation.getId(), reservation.getNbPassagers(), reservation.getDateDepart(), reservation.getDateArrivee(), creerNavetteExport(reservation.getNavette()), creerUsagerExport(reservation.getUsager()), creerStationExport(reservation.getStationDepart()), creerStationExport(reservation.getStationArrivee()), creerQuaiExport(reservation.getQuaiDepart()), creerQuaiExport(reservation.getQuaiArrivee()));
+
+    public ReservationExport creerReservationExport(NavetteExport navetteExport, Reservation reservation, StationExport stationExportDepart, StationExport stationExportArrivee, QuaiExport quaiExportDepart, QuaiExport quaiExportArrivee, UsagerExport usagerExport) {
+        return new ReservationExport(reservation.getId(), reservation.getNbPassagers(), reservation.getDateDepart(), reservation.getDateArrivee(), navetteExport, usagerExport, stationExportDepart, stationExportArrivee, quaiExportDepart, quaiExportArrivee);
     }
 }
