@@ -12,6 +12,7 @@ import fr.miage.m1.spacelibshared.utilities.MailUsagerDejaExistantException;
 import fr.miage.m1.spacelibshared.utilities.NbPassagersNonAutoriseException;
 import fr.miage.m1.spacelibshared.utilities.PasDeNavetteAQuaiException;
 import fr.miage.m1.spacelibshared.utilities.PasDeQuaiDispoException;
+import fr.miage.m1.spacelibshared.utilities.QuaiExport;
 import fr.miage.m1.spacelibshared.utilities.ReservationDejaExistanteException;
 import fr.miage.m1.spacelibshared.utilities.ReservationExport;
 import fr.miage.m1.spacelibshared.utilities.ReservationInexistanteException;
@@ -46,5 +47,7 @@ public interface ExpoBorneLrdRemote {
     public ReservationExport effectuerReservation (String dateDepart, UsagerExport usager, StationExport stationDepart, StationExport stationArrivee, int nbPassagers) throws ParseException, PasDeNavetteAQuaiException, RevisionNavetteException, TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException;
 
     public TrajetExport finaliserTrajet(UsagerExport usager) throws TrajetDejaAcheveException, TrajetInexistantException, UsagerInexistantException, RevisionNavetteException, ReservationInexistanteException, AucuneReservationException;
+
+    public QuaiExport demanderReservation(String dateDepart, UsagerExport usagerExport, StationExport stationDepartExport, StationExport stationArriveeExport, int nbPassagers) throws ParseException, PasDeNavetteAQuaiException, RevisionNavetteException, TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException;
 
 }

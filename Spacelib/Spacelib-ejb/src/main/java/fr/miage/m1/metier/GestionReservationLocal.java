@@ -41,6 +41,8 @@ public interface GestionReservationLocal {
     
     public Reservation effectuerReservation (String dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws ParseException, PasDeNavetteAQuaiException, RevisionNavetteException, TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException;
 
+    public Quai demanderReservation(String dateDepart, Usager usager, Station stationDepart, Station stationArrivee, int nbPassagers) throws ParseException, PasDeNavetteAQuaiException, RevisionNavetteException, TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException;
+    
     public Reservation controlerReservation(Long idUtilisateur) throws ReservationInexistanteException, AucuneReservationException;
 
     public boolean reservationExiste(Long idUtilisateur);

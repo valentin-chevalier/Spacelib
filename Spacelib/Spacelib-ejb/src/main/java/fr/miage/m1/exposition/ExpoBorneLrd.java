@@ -97,8 +97,12 @@ public class ExpoBorneLrd implements ExpoBorneLrdRemote {
     @Override
     public TrajetExport getTrajet(Long idTrajet) {
         Trajet trajet = this.gestionTrajet.getTrajet(idTrajet);
-        //return creerTrajetExport(trajet);
-        return null;
+        StationExport stationDepartExport = creerStationExport(trajet.getStationDepart());
+        StationExport stationArriveeExport = creerStationExport(trajet.getStationArrivee());
+        QuaiExport quaiDepartExport = creerQuaiExport(trajet.getQuaiDepart(), stationDepartExport);
+        QuaiExport quaiArriveeExport = creerQuaiExport(trajet.getQuaiArrivee(), stationArriveeExport);
+        UtilisateurExport userExport = creerUtilisateurExport(trajet.getUtilisateur());
+        return creerTrajetExport(trajet, stationDepartExport, stationArriveeExport, quaiDepartExport, quaiArriveeExport, userExport);
     }
 
     @Override
@@ -123,12 +127,37 @@ public class ExpoBorneLrd implements ExpoBorneLrdRemote {
 
     @Override
     public TrajetExport finaliserTrajet(UsagerExport usagerExport) throws TrajetDejaAcheveException, TrajetInexistantException, UsagerInexistantException, RevisionNavetteException, ReservationInexistanteException, AucuneReservationException {
-        Usager usager = new Usager(usagerExport.getId(), usagerExport.getPrenom(), usagerExport.getNom(), usagerExport.getMail(), usagerExport.getMdp());
-        Trajet trajet = this.gestionTrajet.finaliserTrajet(usager);
-        //return creerTrajetExport(trajet);
+        try {
+            Usager usager = this.gestionUsager.creerUsager(usagerExport.getPrenom(), usagerExport.getNom(), usagerExport.getMail(), usagerExport.getMdp());
+            Trajet trajet = this.gestionTrajet.finaliserTrajet(usager);
+            StationExport stationExportDepart =
+                    creerStationExport(trajet.getStationDepart());
+            StationExport stationExportArrivee =
+                    creerStationExport(trajet.getStationArrivee());
+            QuaiExport quaiExportDepart = creerQuaiExport(trajet.getQuaiDepart(), stationExportDepart);
+            QuaiExport quaiExportArrivee = creerQuaiExport(trajet.getQuaiArrivee(), stationExportArrivee);
+            return creerTrajetExport(trajet, stationExportDepart, stationExportArrivee, quaiExportDepart, quaiExportArrivee, usagerExport);
+        } catch (MailUsagerDejaExistantException ex) {
+            Logger.getLogger(ExpoBorneLrd.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return null;
     }
 
+    @Override
+    public QuaiExport demanderReservation(String dateDepart, UsagerExport usagerExport, StationExport stationDepartExport, StationExport stationArriveeExport, int nbPassagers) throws ParseException, PasDeNavetteAQuaiException, RevisionNavetteException, TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException {
+        try {
+            Usager usager = this.gestionUsager.creerUsager(usagerExport.getPrenom(), usagerExport.getNom(), usagerExport.getMail(), usagerExport.getMdp());
+            Station stationDepart = this.gestionStation.getStation(stationDepartExport.getId());
+            Station stationArrivee = this.gestionStation.getStation(stationArriveeExport.getId());
+            Quai quai = this.gestionReservation.demanderReservation(dateDepart, usager, stationDepart, stationArrivee, nbPassagers);
+            return creerQuaiExport(quai, stationDepartExport);
+        } catch (MailUsagerDejaExistantException ex) {
+            Logger.getLogger(ExpoBorneLrd.class.getName()).log(Level.SEVERE, null, ex);
+        }   
+        return null;
+    }
+
+            
     // METHODES EXPORT RMI 
     public List<StationExport> creerListeStationsExport(List<Station> listeStations) {
         List<StationExport> listeStationsExport = new ArrayList<StationExport>();
@@ -212,4 +241,6 @@ public class ExpoBorneLrd implements ExpoBorneLrdRemote {
     public ReservationExport creerReservationExport(NavetteExport navetteExport, Reservation reservation, StationExport stationExportDepart, StationExport stationExportArrivee, QuaiExport quaiExportDepart, QuaiExport quaiExportArrivee, UsagerExport usagerExport) {
         return new ReservationExport(reservation.getId(), reservation.getNbPassagers(), reservation.getDateDepart(), reservation.getDateArrivee(), navetteExport, usagerExport, stationExportDepart, stationExportArrivee, quaiExportDepart, quaiExportArrivee);
     }
+    
+
 }

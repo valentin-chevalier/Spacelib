@@ -153,7 +153,7 @@ public class GestionTrajet implements GestionTrajetLocal {
         for (Navette navette : listeNavettesDispo) {
             for (Quai quai : listeQuaisDispo) {
                 System.out.println("+1 trajet");
-                Reservation res = this.gestionReservation.effectuerReservation(dateDepart, this.gestionUsager.getUsager(idUsager), stationDepart, stationArrivee, nbPassagers);
+                this.gestionReservation.effectuerReservation(dateDepart, this.gestionUsager.getUsager(idUsager), stationDepart, stationArrivee, nbPassagers);
                 String trajet = "Départ [quai de la navette] : " + navette.getQuai().getNoQuai() + " / [date] : " + dateMin + " | Arrivée [quai] " + quai.getNoQuai() + "\n";
                 listeTrajetsPossibles.add(trajet);
                 i++;

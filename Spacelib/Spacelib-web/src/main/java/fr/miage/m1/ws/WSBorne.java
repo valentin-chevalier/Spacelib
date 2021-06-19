@@ -72,4 +72,11 @@ public class WSBorne {
             throw new UsagerInexistantException();
         return ejbRef.finaliserTrajet(this.ejbRef.getUsager(idUsager)).toString();
     }
+    
+    
+    @WebMethod(operationName = "demanderReservation")
+    public String demanderReservation(@WebParam(name = "dateDepart") String dateDepart, @WebParam(name = "idUsager") Long idUsager, @WebParam(name = "idStationDepart") Long idStationDepart, @WebParam(name = "idStationArrivee") Long idStationArrivee, @WebParam(name = "nbPassagers") int nbPassagers) throws ParseException, PasDeNavetteAQuaiException, RevisionNavetteException, TrajetInexistantException, CapaciteNavetteInsuffisanteException, PasDeQuaiDispoException, StationInexistanteException, UsagerInexistantException, NbPassagersNonAutoriseException, ReservationInexistanteException, ReservationDejaExistanteException, AucuneReservationException{
+        return ejbRef.demanderReservation(dateDepart, ejbRef.getUsager(idUsager), ejbRef.getStation(idStationDepart), ejbRef.getStation(idStationArrivee), nbPassagers).toString();
+    }
+
 }
