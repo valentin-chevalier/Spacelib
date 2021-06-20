@@ -109,28 +109,28 @@ public class GestionReservation implements GestionReservationLocal {
         Reservation res = null;
         int n = 0;
         //vérifier qu'un quai soit dispo
-        if (!this.quaiFacade.getQuaisDispo(stationDepart.getId()).isEmpty()
-                && !this.quaiFacade.getQuaisDispo(stationArrivee.getId()).isEmpty()) {
+        if (!this.quaiFacade.getQuaisDispo(stationArrivee.getId()).isEmpty()) {
             System.out.println("étape quais");
             //récupérer le premier résultat de la liste
-            Quai quaiDepart = this.quaiFacade.getQuaisDispo(stationDepart.getId()).get(n);
             Quai quaiArrivee = this.quaiFacade.getQuaisDispo(stationArrivee.getId()).get(n);
             //pour chaque navette de la station
             for (Navette navette : stationDepart.getListeNavettes()) {
                 System.out.println("étape navette");
                 //vérifier la capacité de la navette
                 if (navette.isEstDispo() && !navette.isEstEnRevision() && navette.getCapacite() >= nbPassagers && navette.getNbVoyages() < 3) {
+                    Quai quaiDepart = navette.getQuai();
                     System.out.println("étape navette dispo");
                     navette.incrementerNbVoyages();
                     navette.setEstDispo(false);
+                    quaiDepart.setEstLibre(false);
                     this.navetteFacade.edit(navette);
                     SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
                     Date date1 = formatter1.parse(dateDepart);
                     LocalDate date = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                     LocalDate dateArrivee = date.plusDays(this.gestionDuree.calculerDuree(stationDepart, stationArrivee));
                     Date date2 = Date.from(dateArrivee.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                    System.out.println("DATE DEPART " + date1);
-                    System.out.println("DATE ARRIVEE " + date2);
+                    System.out.println("STATION DEPART " + stationDepart.getId());
+                    System.out.println("STATION ARRIVEE " + stationArrivee.getId());
                     res = this.reservationFacade.creerReservation(nbPassagers, date1, date2, navette, usager, stationDepart, stationArrivee, quaiDepart, quaiArrivee);
                     Trajet t = this.trajetFacade.creerTrajet(nbPassagers, EtatTrajet.VOYAGE_INITIE, stationDepart, stationArrivee, quaiDepart, quaiArrivee, usager);
                     t.setDateDepart(date1);

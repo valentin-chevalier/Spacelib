@@ -147,11 +147,6 @@ public class GestionMecanicien implements GestionMecanicienLocal {
         if (this.gestionQuai.getQuai(this.gestionNavette.getNavette(idNavette).getQuai().getId()) == null) {
             throw new NavetteInexistanteException();
         }
-        for (Navette navette : this.gestionNavette.getAllNavettes()) {
-            if (!navette.getId().equals(idNavette)) {
-                throw new NavettePasRevisableException();
-            }
-        }
         //créer opération de maintenance
         this.gestionOperation.creerOperationMaintenance(this.gestionNavette.getNavette(idNavette), Operation.EtatRevision.DEBUT_REVISION);
         //créer réparation
@@ -175,10 +170,6 @@ public class GestionMecanicien implements GestionMecanicienLocal {
         Navette navette = this.gestionNavette.getNavette(idNavette);
         if (navette == null) {
             throw new NavetteInexistanteException();
-        }
-        //récupérer le début révision
-        if (navette.getListeOperations().isEmpty()) {
-            throw new AucuneReparationException();
         }
         for (Reparation rep : getMecanicien(idMecanicien).getListeReparations()) {
             if (!idMecanicien.equals(rep.getMecanicien().getId())) {

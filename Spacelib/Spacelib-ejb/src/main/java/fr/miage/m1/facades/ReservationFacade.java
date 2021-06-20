@@ -12,6 +12,7 @@ import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.spacelibshared.utilities.AucuneReservationException;
 import fr.miage.m1.spacelibshared.utilities.ReservationInexistanteException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -75,14 +76,17 @@ public class ReservationFacade extends AbstractFacade<Reservation> implements Re
             throw new ReservationInexistanteException();
         return (Reservation) q.getSingleResult();
         */
+        List<Reservation> listeResa = new ArrayList<Reservation>();
         for (Reservation res : this.findAll()){
             if (idUtilisateur.equals(res.getUsager().getId())){
-                return res;
+                listeResa.add(res);
             } else {
                 throw new ReservationInexistanteException();
             }
         } 
-        throw new AucuneReservationException();
+        if (listeResa.isEmpty())
+            throw new AucuneReservationException();
+        return listeResa.get(listeResa.size()-1);
     }
     
     @Override

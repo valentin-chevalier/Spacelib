@@ -14,7 +14,9 @@ import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.entities.Utilisateur;
 import fr.miage.m1.facades.NavetteFacadeLocal;
+import fr.miage.m1.facades.QuaiFacadeLocal;
 import fr.miage.m1.facades.ReservationFacadeLocal;
+import fr.miage.m1.facades.StationFacadeLocal;
 import fr.miage.m1.facades.TrajetFacadeLocal;
 import fr.miage.m1.spacelibshared.utilities.AucuneReservationException;
 import fr.miage.m1.spacelibshared.utilities.CapaciteNavetteInsuffisanteException;
@@ -42,6 +44,12 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class GestionTrajet implements GestionTrajetLocal {
+
+    @EJB
+    private QuaiFacadeLocal quaiFacade;
+
+    @EJB
+    private StationFacadeLocal stationFacade;
 
     @EJB
     private ReservationFacadeLocal reservationFacade;
@@ -108,16 +116,18 @@ public class GestionTrajet implements GestionTrajetLocal {
         //verifier que le trajet n'ait pas déjà été achevé
         if (EtatTrajet.VOYAGE_INITIE.equals(trajetFacade.recupererTrajet(usager.getId()).getEtatTrajet())) {
             trajet.setEtatTrajet(EtatTrajet.VOYAGE_ACHEVE);
-            res.getNavette().setEstDispo(true);
-            System.out.println("STATION DEPART " + res.getNavette().getQuai().getStation());
-
             res.getNavette().setQuai(res.getQuaiArrivee());
-            res.getNavette().getQuai().setStation(res.getQuaiArrivee().getStation());
-            this.trajetFacade.edit(trajet);
+            res.getNavette().setEstDispo(true);
+            res.getQuaiDepart().setEstLibre(true);
+            res.getQuaiArrivee().setEstLibre(false);
+            res.getStationDepart().getListeNavettes().remove(res.getNavette());
+            res.getStationArrivee().getListeNavettes().add(res.getNavette());
+            if(res.getNavette().getNbVoyages() == 3)
+                res.getNavette().setEstDispo(false);
             this.navetteFacade.edit(res.getNavette());
+            this.quaiFacade.edit(res.getQuaiDepart());
+            this.quaiFacade.edit(res.getQuaiArrivee());
             this.reservationFacade.edit(res);
-            System.out.println("STATION ARRIVEE " + res.getNavette().getQuai().getStation());
-
         } else if (EtatTrajet.VOYAGE_ACHEVE.equals(trajetFacade.recupererTrajet(usager.getId()).getEtatTrajet())) {
             throw new TrajetDejaAcheveException();
         }
