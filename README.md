@@ -1,3 +1,3 @@
 # Spacelib
-Projet spacelib sans L majuscule
-jjj
+Projet d'applications d'entreprise de M1 MIAGE IDP & ITN
+Réalisé par Valentin CHEVALIER, Flore GRONDIN et Elias OUBOUAZIZ
