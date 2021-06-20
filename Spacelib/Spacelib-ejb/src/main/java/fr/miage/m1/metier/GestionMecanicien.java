@@ -74,25 +74,28 @@ public class GestionMecanicien implements GestionMecanicienLocal {
     public Mecanicien getMecanicien(Long idMecanicien) {
         return this.mecanicienFacade.getMecanicien(idMecanicien);
     }
-    
+
     @Override
-    public Mecanicien verifierMecanicienDansBd (String mail, String mdp) throws MailInexistantException{
+    public Mecanicien verifierMecanicienDansBd(String mail, String mdp) throws MailInexistantException {
         return this.mecanicienFacade.verifierMecanicienDansBd(mail, mdp);
     }
-    
+
     @Override
-    public Station getStation(Long idStation) throws StationInexistanteException{
-        if (idStation == null || this.stationFacade.getStation(idStation) == null)
+    public Station getStation(Long idStation) throws StationInexistanteException {
+        if (idStation == null || this.stationFacade.getStation(idStation) == null) {
             throw new StationInexistanteException();
+        }
         return this.stationFacade.getStation(idStation);
     }
-    
+
     @Override
-    public Quai commencerReparation(Long idMecanicien, Long idNavette) throws NavetteInexistanteException, QuaiInexistantException{
-        if (idNavette == null || this.gestionNavette.getNavette(idNavette) == null)
+    public Quai commencerReparation(Long idMecanicien, Long idNavette) throws NavetteInexistanteException, QuaiInexistantException {
+        if (idNavette == null || this.gestionNavette.getNavette(idNavette) == null) {
             throw new NavetteInexistanteException();
-        if (this.gestionNavette.getNavette(idNavette).getQuai() == null)
+        }
+        if (this.gestionNavette.getNavette(idNavette).getQuai() == null) {
             throw new QuaiInexistantException();
+        }
         //récupérer le quai
         Quai quai = this.gestionNavette.getNavette(idNavette).getQuai();
         quai.setEstLibre(false);
@@ -114,30 +117,40 @@ public class GestionMecanicien implements GestionMecanicienLocal {
     }
 
     @Override
-    public List<Navette> getNavettesAReviser(Station station) throws PasDeNavetteAReviserException{
-        List<Navette> listeNavettesAReviser = new ArrayList<>();
-        for (Navette navette : station.getListeNavettes()){
-            if(navette.getNbVoyages() >= 3 && !navette.isEstEnRevision())
+    public List<Navette> getNavettesAReviser(Station station) throws PasDeNavetteAReviserException {
+        List<Navette> listeNavettesAReviser = new ArrayList<Navette>();
+        for (Navette navette : station.getListeNavettes()) {
+            System.out.println("Navette " + navette.getId());
+            System.out.println("Nb voyages " +navette.getNbVoyages());
+            System.out.println("Dispo " +navette.isEstDispo());
+            System.out.println("EstEnRevision " +navette.isEstEnRevision());
+
+            if (navette.getNbVoyages() >= 3 && !navette.isEstEnRevision()) {
                 listeNavettesAReviser.add(navette);
+            }
         }
-        if (listeNavettesAReviser.isEmpty()){
+        if (listeNavettesAReviser.isEmpty()) {
             throw new PasDeNavetteAReviserException();
         }
         return listeNavettesAReviser;
     }
-    
+
     @Override
-    public Quai choisirNavetteAReviser(Long idMecanicien, Long idNavette) throws NavettePasRevisableException, UsagerInexistantException, PasDeNavetteAReviserException, NavetteInexistanteException{
+    public Quai choisirNavetteAReviser(Long idMecanicien, Long idNavette) throws NavettePasRevisableException, UsagerInexistantException, PasDeNavetteAReviserException, NavetteInexistanteException {
         //gestion des erreurs
-        if (idMecanicien == null || getMecanicien(idMecanicien) == null)
+        if (idMecanicien == null || getMecanicien(idMecanicien) == null) {
             throw new UsagerInexistantException();
-        if (idNavette == null || this.gestionNavette.getNavette(idNavette) == null)
-                throw new NavetteInexistanteException();
-        if (this.gestionQuai.getQuai(this.gestionNavette.getNavette(idNavette).getQuai().getId()) == null)
+        }
+        if (idNavette == null || this.gestionNavette.getNavette(idNavette) == null) {
             throw new NavetteInexistanteException();
-        for (Navette navette : this.gestionNavette.getAllNavettes()){
-            if (!navette.getId().equals(idNavette))
+        }
+        if (this.gestionQuai.getQuai(this.gestionNavette.getNavette(idNavette).getQuai().getId()) == null) {
+            throw new NavetteInexistanteException();
+        }
+        for (Navette navette : this.gestionNavette.getAllNavettes()) {
+            if (!navette.getId().equals(idNavette)) {
                 throw new NavettePasRevisableException();
+            }
         }
         //créer opération de maintenance
         this.gestionOperation.creerOperationMaintenance(this.gestionNavette.getNavette(idNavette), Operation.EtatRevision.DEBUT_REVISION);
@@ -152,25 +165,29 @@ public class GestionMecanicien implements GestionMecanicienLocal {
         //retourner le quai où est la navette
         return this.gestionNavette.getNavette(idNavette).getQuai();
     }
-    
+
     @Override
-    public Operation cloturerReparation(Long idMecanicien, Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException{
-        if (idMecanicien == null || getMecanicien(idMecanicien) == null){
+    public Operation cloturerReparation(Long idMecanicien, Long idNavette) throws AucuneReparationException, NavetteInexistanteException, UsagerInexistantException, AucuneReparationException, MauvaisMecanicienException {
+        if (idMecanicien == null || getMecanicien(idMecanicien) == null) {
             throw new UsagerInexistantException();
         }
         //récupérer la navette
         Navette navette = this.gestionNavette.getNavette(idNavette);
-        if (navette == null)
+        if (navette == null) {
             throw new NavetteInexistanteException();
+        }
         //récupérer le début révision
-        if (navette.getListeOperations().isEmpty())
+        if (navette.getListeOperations().isEmpty()) {
             throw new AucuneReparationException();
-        for (Reparation rep : getMecanicien(idMecanicien).getListeReparations()){
-            if (!idMecanicien.equals(rep.getMecanicien().getId()))
+        }
+        for (Reparation rep : getMecanicien(idMecanicien).getListeReparations()) {
+            if (!idMecanicien.equals(rep.getMecanicien().getId())) {
                 throw new MauvaisMecanicienException();
-            if (this.gestionOperation.getOperation(rep.getId()) == null 
-                    || !idNavette.equals(this.gestionOperation.getOperation(rep.getId()).getNavette()))
+            }
+            if (this.gestionOperation.getOperation(rep.getId()) == null
+                    || !idNavette.equals(this.gestionOperation.getOperation(rep.getId()).getNavette())) {
                 throw new AucuneReparationException();
+            }
         }
         Operation ope = this.gestionOperation.creerOperationMaintenance(navette, Operation.EtatRevision.FIN_REVISION);
         //navette redevient disponible à l'emprunt

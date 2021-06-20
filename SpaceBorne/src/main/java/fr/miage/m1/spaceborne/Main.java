@@ -12,13 +12,13 @@ import fr.miage.m1.spacelibshared.utilities.MailUsagerDejaExistantException;
 import fr.miage.m1.spacelibshared.utilities.NbPassagersNonAutoriseException;
 import fr.miage.m1.spacelibshared.utilities.PasDeNavetteAQuaiException;
 import fr.miage.m1.spacelibshared.utilities.PasDeQuaiDispoException;
-import fr.miage.m1.spacelibshared.utilities.QuaiExport;
 import fr.miage.m1.spacelibshared.utilities.ReservationDejaExistanteException;
 import fr.miage.m1.spacelibshared.utilities.ReservationInexistanteException;
 import fr.miage.m1.spacelibshared.utilities.RevisionNavetteException;
 import fr.miage.m1.spacelibshared.utilities.StationExport;
 import fr.miage.m1.spacelibshared.utilities.StationInexistanteException;
 import fr.miage.m1.spacelibshared.utilities.TrajetDejaAcheveException;
+import fr.miage.m1.spacelibshared.utilities.TrajetExport;
 import fr.miage.m1.spacelibshared.utilities.TrajetInexistantException;
 import fr.miage.m1.spacelibshared.utilities.UsagerExport;
 import fr.miage.m1.spacelibshared.utilities.UsagerInexistantException;
@@ -45,7 +45,7 @@ public class Main {
             //objet à contacter
             ExpoBorneLrdRemote borne = (ExpoBorneLrdRemote) ctx.lookup("java:global/Spacelib-ear/Spacelib-ejb-1.0-SNAPSHOT/ExpoBorneLrd!fr.miage.m1.spacelibshared.interfremote.ExpoBorneLrdRemote");
             
-            //UsagerExport usager = borne.creerUsager("flo", "test", "flo@flo.com", "flo");
+            //sagerExport usager = borne.creerUsager("flo", "test", "flo@flo.com", "flo");
             UsagerExport usager = borne.getUsager(34L);
             System.out.println("USAGER " + usager.getPrenom() + " " + usager.getNom());
             StationExport stationDepart = borne.getStation(1L);
@@ -54,9 +54,10 @@ public class Main {
             StationExport stationArrivee = borne.getStation(17L);
             System.out.println("STATION ARRIVEE " + stationArrivee.getNom());
 
-            QuaiExport quai = borne.demanderReservation("17/06/2021", usager, stationDepart, stationArrivee, 30);
-            //borne.finaliserTrajet(usager);
-            System.out.println("RDV au quai " + quai.getNoQuai());
+            //borne.demanderReservation("17/06/2021", usager, stationDepart, stationArrivee, 2);
+            TrajetExport trajet = borne.finaliserTrajet(usager);
+            
+            System.out.println("Etat trajet " + trajet.getEtatTrajet());
     }
     
 }

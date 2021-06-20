@@ -13,6 +13,8 @@ import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Trajet;
 import fr.miage.m1.entities.Usager;
 import fr.miage.m1.entities.Utilisateur;
+import fr.miage.m1.facades.NavetteFacadeLocal;
+import fr.miage.m1.facades.ReservationFacadeLocal;
 import fr.miage.m1.facades.TrajetFacadeLocal;
 import fr.miage.m1.spacelibshared.utilities.AucuneReservationException;
 import fr.miage.m1.spacelibshared.utilities.CapaciteNavetteInsuffisanteException;
@@ -40,6 +42,12 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class GestionTrajet implements GestionTrajetLocal {
+
+    @EJB
+    private ReservationFacadeLocal reservationFacade;
+
+    @EJB
+    private NavetteFacadeLocal navetteFacade;
 
     @EJB
     private GestionUsagerLocal gestionUsager;
@@ -96,14 +104,24 @@ public class GestionTrajet implements GestionTrajetLocal {
             throw new UsagerInexistantException();
         }
         Trajet trajet = this.trajetFacade.recupererTrajet(usager.getId());
+        Reservation res = this.gestionReservation.controlerReservation(usager.getId());
         //verifier que le trajet n'ait pas déjà été achevé
         if (EtatTrajet.VOYAGE_INITIE.equals(trajetFacade.recupererTrajet(usager.getId()).getEtatTrajet())) {
             trajet.setEtatTrajet(EtatTrajet.VOYAGE_ACHEVE);
+            res.getNavette().setEstDispo(true);
+            System.out.println("STATION DEPART " + res.getNavette().getQuai().getStation());
+
+            res.getNavette().setQuai(res.getQuaiArrivee());
+            res.getNavette().getQuai().setStation(res.getQuaiArrivee().getStation());
+            this.trajetFacade.edit(trajet);
+            this.navetteFacade.edit(res.getNavette());
+            this.reservationFacade.edit(res);
+            System.out.println("STATION ARRIVEE " + res.getNavette().getQuai().getStation());
+
         } else if (EtatTrajet.VOYAGE_ACHEVE.equals(trajetFacade.recupererTrajet(usager.getId()).getEtatTrajet())) {
             throw new TrajetDejaAcheveException();
         }
         trajet.setDateArrivee(new Date());
-        Reservation res = this.gestionReservation.controlerReservation(usager.getId());
         this.gestionOperation.creerOperation(new Date(), res.getNavette());
         return trajet;
     }
@@ -139,20 +157,20 @@ public class GestionTrajet implements GestionTrajetLocal {
             //voir si elles sont libres aux dates prévues && voir si elles ont la capacité
             if (navette.isEstDispo() && nbPassagers <= navette.getCapacite()) {
                 listeNavettesDispo.add(navette);
-                System.out.println("+1 navette départ");
+                //System.out.println("+1 navette départ");
             }
         }
         for (Quai quai : this.gestionStation.getStation(stationArrivee.getId()).getListeQuais()) {
             //checker station arrivee && voir si au moins 1 quai libre
             if (quai.isEstLibre()) {
                 listeQuaisDispo.add(quai);
-                System.out.println("+1 quai arrivée dans la station " + stationArrivee.getNom());
+                //System.out.println("+1 quai arrivée dans la station " + stationArrivee.getNom());
             }
         }
         int i = 0;
         for (Navette navette : listeNavettesDispo) {
             for (Quai quai : listeQuaisDispo) {
-                System.out.println("+1 trajet");
+                //System.out.println("+1 trajet");
                 this.gestionReservation.effectuerReservation(dateDepart, this.gestionUsager.getUsager(idUsager), stationDepart, stationArrivee, nbPassagers);
                 String trajet = "Départ [quai de la navette] : " + navette.getQuai().getNoQuai() + " / [date] : " + dateMin + " | Arrivée [quai] " + quai.getNoQuai() + "\n";
                 listeTrajetsPossibles.add(trajet);

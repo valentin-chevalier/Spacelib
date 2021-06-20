@@ -34,9 +34,6 @@ import javax.ejb.Stateless;
 public class GestionSysteme implements GestionSystemeLocal {
 
     @EJB
-    private GestionReservationLocal gestionReservation;
-
-    @EJB
     private ReservationFacadeLocal reservationFacade;
 
     @EJB
@@ -47,13 +44,14 @@ public class GestionSysteme implements GestionSystemeLocal {
 
     @Override
     public HashMap<Station, ChargeQuai> stationsQuaisALiberer() {
+        System.out.println("LISTE DES STAIONS OU LIBERE DES QUAIS : ");
         int nbQuaisOccupes = 0;
         int nbQuaisTotal = 0;
         HashMap<Station, ChargeQuai> listeStationsSurchargees = new HashMap<Station, ChargeQuai>();
         List<Reservation> reservationsArriveeStation;
         List<Reservation> reservationsDepartStation;
         for (Station station : this.gestionStation.getAllStations()) {
-            //System.out.println("NOM DE LA STATION " + station.getNom());
+            System.out.println("NOM DE LA STATION " + station.getNom());
             reservationsArriveeStation = this.reservationFacade.getReservationByStationArrivee(station.getId());
             reservationsDepartStation = this.reservationFacade.getReservationByStationDepart(station.getId());
             for (Reservation res : reservationsArriveeStation) {
@@ -72,11 +70,11 @@ public class GestionSysteme implements GestionSystemeLocal {
                 }
             }
             nbQuaisTotal = station.getListeQuais().size();
-            //System.out.println("NB QUAIS DISPO " + nbQuaisOccupes);
-            //System.out.println("NB QUAIS TOTAL " + nbQuaisTotal);
-            //System.out.println("RATIO DISPO/TOTAL " + (float) nbQuaisOccupes / (float) nbQuaisTotal);
+            System.out.println("NOMBRE DE QUAIS DISPONIBLES " + nbQuaisOccupes);
+            System.out.println("NOMBRE DE QUAIS TOTAL " + nbQuaisTotal);
+            System.out.println("RATIO DISPO/TOTAL " + (float) nbQuaisOccupes / (float) nbQuaisTotal);
             if ((float) nbQuaisOccupes / (float) nbQuaisTotal > 0.9) {
-                //System.out.println("SURCHARGE");
+                System.out.println("LIBERE DES QUAIS");
                 listeStationsSurchargees.put(station, new ChargeQuai(nbQuaisTotal-nbQuaisOccupes, nbQuaisTotal));
             }
             nbQuaisOccupes = 0;
@@ -87,12 +85,13 @@ public class GestionSysteme implements GestionSystemeLocal {
 
     @Override
     public HashMap<Station, ChargeNavette> stationsNavettesATransferer() {
+        System.out.println("LISTE DES STAIONS OU RAMENER DES NAVETTES : ");
         int nbNavettesDispo = 0;
         int nbQuais = 0;
         HashMap<Station, ChargeNavette> listeStationsLibres = new HashMap<Station, ChargeNavette>();
         List<Reservation> reservationsArriveeStation;
         for (Station station : this.gestionStation.getAllStations()) {
-            //System.out.println("NOM DE LA STATION " + station.getNom());
+            System.out.println("NOM DE LA STATION " + station.getNom());
             reservationsArriveeStation = this.reservationFacade.getReservationByStationArrivee(station.getId());
             for (Reservation res : reservationsArriveeStation) {
                 if (getDifferenceDays(new Date(), res.getDateArrivee()) <= 10 && getDifferenceDays(new Date(), res.getDateArrivee()) > 0) {
@@ -108,11 +107,11 @@ public class GestionSysteme implements GestionSystemeLocal {
                 }
             }
             nbQuais = station.getListeQuais().size();
-            //System.out.println("NB NAVETTES DISPO " + nbNavettesDispo);
-            //System.out.println("NB QUAIS TOTAL " + nbQuais);
-            //System.out.println("RATIO DISPO/TOTAL " + (float) nbNavettesDispo / (float) nbQuais);
-            if (nbNavettesDispo / nbQuais < 0.1) {
-                //System.out.println("RAMENER DES NAVETTES");
+            System.out.println("NOMBRE DE NAVETTES DISPO " + nbNavettesDispo);
+            System.out.println("NOMBRE DE QUAIS TOTAL " + nbQuais);
+            System.out.println("RATIO DISPO/TOTAL " + (float) nbNavettesDispo / (float) nbQuais);
+            if (((float) nbNavettesDispo / (float)nbQuais) < 0.1) {
+                System.out.println("RAMENER DES NAVETTES");
                 listeStationsLibres.put(station, new ChargeNavette(nbNavettesDispo, nbQuais));
             }
             nbNavettesDispo = 0;
@@ -147,7 +146,7 @@ public class GestionSysteme implements GestionSystemeLocal {
             ratioMin = 1;
             for (Station station : fonctionQuai.keySet()) {
                 ratioParcours = fonctionQuai.get(station).calculerRatio();
-                System.out.println("RATIO PARCOURS : " + ratioParcours);
+                //System.out.println("RATIO PARCOURS : " + ratioParcours);
                 if (ratioParcours > 0.2) {
                     fonctionQuai.remove(station);
                     if (fonctionQuai.isEmpty()){
@@ -158,7 +157,7 @@ public class GestionSysteme implements GestionSystemeLocal {
                     stationDepart = station;
                 }
             }
-            System.out.println("ICI : " + stationDepart.toString());
+            //System.out.println("ICI : " + stationDepart.toString());
             rechercheNavetteLibre:
             for (Navette navetteParcours : stationDepart.getListeNavettes()) {
                 if (navetteParcours.isEstDispo()) {

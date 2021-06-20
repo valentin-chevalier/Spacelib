@@ -132,12 +132,12 @@ public class Navette implements Serializable {
     }
     
     public void incrementerNbVoyages() throws RevisionNavetteException{
-        if (this.isEstEnRevision() || !this.isEstDispo() || this.nbVoyages >= 3){
+        if (this.nbVoyages >= 3){
             throw new RevisionNavetteException();
         }
-        System.out.println("Avant" + this.nbVoyages);
+        //System.out.println("Avant" + this.nbVoyages);
         this.nbVoyages++;
-        System.out.println("Apres" + this.nbVoyages);
+        //System.out.println("Apres" + this.nbVoyages);
         if (this.nbVoyages >= 3){
             //La navette passe en attente de révision
             this.estDispo = false;

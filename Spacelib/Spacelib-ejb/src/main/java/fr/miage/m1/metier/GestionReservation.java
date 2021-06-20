@@ -205,7 +205,13 @@ public class GestionReservation implements GestionReservationLocal {
             throw new AucuneReservationException();
         }
         if (EtatTrajet.VOYAGE_INITIE.equals(this.gestionTrajet.recupererTrajet(idUtilisateur).getEtatTrajet())) {
-            this.gestionTrajet.recupererTrajet(idUtilisateur).setEtatTrajet(EtatTrajet.VOYAGE_ACHEVE);
+            Trajet trajet = this.gestionTrajet.recupererTrajet(idUtilisateur);
+            trajet.setEtatTrajet(EtatTrajet.VOYAGE_ACHEVE);
+            Reservation res = this.reservationFacade.find(idReservation);
+            res.getNavette().setEstDispo(true);
+            this.trajetFacade.edit(trajet);
+            this.reservationFacade.edit(res);
+            this.navetteFacade.edit(res.getNavette());
             return true;
         } else if (EtatTrajet.VOYAGE_ACHEVE.equals(this.gestionTrajet.recupererTrajet(idUtilisateur).getEtatTrajet())) {
             throw new TrajetDejaAcheveException();
