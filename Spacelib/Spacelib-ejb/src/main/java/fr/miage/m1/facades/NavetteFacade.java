@@ -6,6 +6,11 @@
 package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Navette;
+import fr.miage.m1.entities.Operation;
+import fr.miage.m1.entities.Quai;
+import fr.miage.m1.spacelibshared.utilities.NavetteSansQuaiException;
+import java.util.ArrayList;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,6 +21,9 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class NavetteFacade extends AbstractFacade<Navette> implements NavetteFacadeLocal {
+
+    @EJB
+    private QuaiFacadeLocal quaiFacade;
 
     @PersistenceContext(unitName = "spaceLibPersistanceUnit")
     private EntityManager em;
@@ -29,4 +37,21 @@ public class NavetteFacade extends AbstractFacade<Navette> implements NavetteFac
         super(Navette.class);
     }
     
+    @Override
+    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) throws NavetteSansQuaiException{
+       Navette navette = new Navette();
+       navette.setListeOperations(new ArrayList<Operation>());
+       navette.setEstEnRevision(estEnRevision);
+       navette.setEstDispo(estDispo);
+       navette.setNbVoyages(nbVoyages);
+       navette.setCapacite(capacite);
+       navette.setQuai(quai);
+       this.create(navette);
+       return navette;
+    }
+    
+    @Override
+    public Navette getNavette(Long idNavette) {
+        return this.find(idNavette);
+    }
 }

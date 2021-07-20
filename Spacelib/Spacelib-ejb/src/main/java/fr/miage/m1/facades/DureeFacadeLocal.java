@@ -6,6 +6,7 @@
 package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Duree;
+import fr.miage.m1.entities.Station;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -29,5 +30,11 @@ public interface DureeFacadeLocal {
     List<Duree> findRange(int[] range);
 
     int count();
+    
+    public Duree creerDuree(Long duree, Station station1, Station station2);
+    
+    public Duree getDuree(Long idDuree);
+    
+    public Long calculerDuree(Station station1, Station station2);
     
 }

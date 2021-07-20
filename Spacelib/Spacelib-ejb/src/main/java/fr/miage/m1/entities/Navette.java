@@ -5,11 +5,15 @@
  */
 package fr.miage.m1.entities;
 
+import fr.miage.m1.spacelibshared.utilities.RevisionNavetteException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -22,7 +26,46 @@ public class Navette implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private boolean estDispo;
+    private boolean estEnRevision;
+    private int nbVoyages;
+    private int capacite;
+    
+    @OneToOne
+    public Quai quai;
+    
+    @OneToMany(mappedBy = "navette")
+    private ArrayList<Operation> listeOperations;
+    
+    public Navette() {
+    }
 
+    public Navette(Long id, boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) {
+        this.id = id;
+        this.estEnRevision = estEnRevision;
+        this.estDispo = estDispo;
+        this.nbVoyages = nbVoyages; 
+        this.capacite = capacite;
+        this.quai = quai;
+        this.listeOperations = listeOperations;
+    }
+
+    public boolean isEstDispo() {
+        return estDispo;
+    }
+
+    public void setEstDispo(boolean estDispo) {
+        this.estDispo = estDispo;
+    }
+
+    public Quai getQuai() {
+        return quai;
+    }
+
+    public void setQuai(Quai quai) {
+        this.quai = quai;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -55,5 +98,50 @@ public class Navette implements Serializable {
     public String toString() {
         return "fr.miage.m1.entities.Navette[ id=" + id + " ]";
     }
+
+    public boolean isEstEnRevision() {
+        return estEnRevision;
+    }
+
+    public void setEstEnRevision(boolean estEnRevision) {
+        this.estEnRevision = estEnRevision;
+    }
+
+    public int getNbVoyages() {
+        return nbVoyages;
+    }
+
+    public void setNbVoyages(int nbVoyages) {
+        this.nbVoyages = nbVoyages;
+    }
+
+    public int getCapacite() {
+        return capacite;
+    }
+
+    public void setCapacite(int capacite) {
+        this.capacite = capacite;
+    }
+
+    public ArrayList<Operation> getListeOperations() {
+        return listeOperations;
+    }
+
+    public void setListeOperations(ArrayList<Operation> listeOperations) {
+        this.listeOperations = listeOperations;
+    }
     
+    public void incrementerNbVoyages() throws RevisionNavetteException{
+        if (this.nbVoyages >= 3){
+            throw new RevisionNavetteException();
+        }
+        //System.out.println("Avant" + this.nbVoyages);
+        this.nbVoyages++;
+        //System.out.println("Apres" + this.nbVoyages);
+        if (this.nbVoyages >= 3){
+            //La navette passe en attente de révision
+            this.estDispo = false;
+            this.estEnRevision = false;
+        }
+    }
 }

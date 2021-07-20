@@ -30,4 +30,8 @@ public interface ConducteurFacadeLocal {
 
     int count();
     
+    public Conducteur creerConducteur(String prenom, String nom, String mail, String mdp);
+    
+    public Conducteur getConducteur(Long idConducteur);
+    
 }

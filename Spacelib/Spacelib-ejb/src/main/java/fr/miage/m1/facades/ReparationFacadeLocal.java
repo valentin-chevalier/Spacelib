@@ -5,7 +5,9 @@
  */
 package fr.miage.m1.facades;
 
+import fr.miage.m1.entities.Mecanicien;
 import fr.miage.m1.entities.Reparation;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -29,5 +31,9 @@ public interface ReparationFacadeLocal {
     List<Reparation> findRange(int[] range);
 
     int count();
+    
+    public Reparation creerReparation (Date dateCreationOperation);
+    
+    public Reparation getReparation(Long idReparation);
     
 }

@@ -5,7 +5,12 @@
  */
 package fr.miage.m1.facades;
 
+import fr.miage.m1.entities.EtatTrajet;
+import fr.miage.m1.entities.Quai;
+import fr.miage.m1.entities.Station;
 import fr.miage.m1.entities.Trajet;
+import fr.miage.m1.entities.Utilisateur;
+import fr.miage.m1.spacelibshared.utilities.TrajetInexistantException;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -30,4 +35,9 @@ public interface TrajetFacadeLocal {
 
     int count();
     
+    public Trajet creerTrajet(int nbPassagers, EtatTrajet etatTrajet, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee, Utilisateur utilisateur);
+    
+    public Trajet getTrajet(Long idTrajet);
+    
+    public Trajet recupererTrajet(Long idUtilisateur) throws TrajetInexistantException;    
 }

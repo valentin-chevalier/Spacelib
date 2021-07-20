@@ -6,6 +6,7 @@
 package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Mecanicien;
+import fr.miage.m1.spacelibshared.utilities.MailInexistantException;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -30,4 +31,9 @@ public interface MecanicienFacadeLocal {
 
     int count();
     
+    public Mecanicien creerMecanicien(String prenom, String nom, String mail, String mdp);
+
+    public Mecanicien getMecanicien(Long idMecanicien);
+    
+    public Mecanicien verifierMecanicienDansBd(String mail, String mdp) throws MailInexistantException;
 }

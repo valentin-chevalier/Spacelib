@@ -6,16 +6,24 @@
 package fr.miage.m1.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author Valentin
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name="Mecanicien.verifierDansBd", query="SELECT m FROM Mecanicien m WHERE m.mail = :vmail AND m.mdp = :vmdp"),
+    @NamedQuery(name="Mecanicien.getMail", query="SELECT m FROM Mecanicien m WHERE m.mail = :vmail")
+})
 public class Mecanicien extends Utilisateur implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,6 +31,15 @@ public class Mecanicien extends Utilisateur implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @OneToMany(mappedBy = "mecanicien")
+    private ArrayList<Reparation> listeReparations;
+
+    public Mecanicien() {
+    }
+    
+    public Mecanicien(Long id, String prenom, String nom, String mail, String mdp){
+        super(id, prenom, nom, mail, mdp);
+    }
     public Long getId() {
         return id;
     }
@@ -31,6 +48,14 @@ public class Mecanicien extends Utilisateur implements Serializable {
         this.id = id;
     }
 
+    public ArrayList<Reparation> getListeReparations() {
+        return listeReparations;
+    }
+
+    public void setListeReparations(ArrayList<Reparation> listeReparations) {
+        this.listeReparations = listeReparations;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

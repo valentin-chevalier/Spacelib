@@ -11,12 +11,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
  * @author Valentin
  */
 @Entity
+
+@NamedQueries({
+    @NamedQuery(name="Reservation.getReservationByStation", 
+            query="SELECT r FROM Reservation r WHERE r.stationDepart = :vstationDepart"),
+    @NamedQuery(name="Reservation.getReservationsByStationArrivee", 
+            query="SELECT r FROM Reservation r WHERE r.stationArrivee = :vstationArrivee")
+})
 public class Reservation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,32 +36,97 @@ public class Reservation implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private Long idNavette;
-    private Long idUsager;
-    private Long nbPassagers;
+    private int nbPassagers;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateDepart;
-    private Long idStationDepart;
-    private Long idStationArrivee;
-    private Long idQuaiDepart;
-    private Long idQuaiArrivee;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dateArrivee;
+    
+    @OneToOne
+    public Navette navette;
+    @OneToOne
+    public Usager usager;
+    @OneToOne
+    public Station stationDepart;
+    @OneToOne
+    public Station stationArrivee;
+    @OneToOne
+    public Quai quaiDepart;
+    @OneToOne
+    public Quai quaiArrivee;
     
     public Reservation(){
         
     }
 
-    public Reservation(Long id, Long idNavette, Long idUsager, Long nbPassagers, Date dateDepart, Long idStationDepart, Long idStationArrivee, Long idQuaiDepart, Long idQuaiArrivee) {
+    public Reservation(Long id, int nbPassagers, Date dateDepart, Date dateArrivee, Navette navette, Usager usager, Station stationDepart, Station stationArrivee, Quai quaiDepart, Quai quaiArrivee) {
         this.id = id;
-        this.idNavette = idNavette;
-        this.idUsager = idUsager;
         this.nbPassagers = nbPassagers;
         this.dateDepart = dateDepart;
-        this.idStationDepart = idStationDepart;
-        this.idStationArrivee = idStationArrivee;
-        this.idQuaiDepart = idQuaiDepart;
-        this.idQuaiArrivee = idQuaiArrivee;
+        this.dateArrivee = dateArrivee;
+        this.navette = navette;
+        this.usager = usager;
+        this.stationDepart = stationDepart;
+        this.stationArrivee = stationArrivee;
+        this.quaiDepart = quaiDepart;
+        this.quaiArrivee = quaiArrivee;
+    }
+    
+    public Navette getNavette() {
+        return navette;
     }
 
-    
+    public void setNavette(Navette navette) {
+        this.navette = navette;
+    }
+
+    public Usager getUsager() {
+        return usager;
+    }
+
+    public void setUsager(Usager usager) {
+        this.usager = usager;
+    }
+
+    public Station getStationDepart() {
+        return stationDepart;
+    }
+
+    public Date getDateArrivee() {
+        return dateArrivee;
+    }
+
+    public void setDateArrivee(Date dateArrivee) {
+        this.dateArrivee = dateArrivee;
+    }
+
+    public void setStationDepart(Station stationDepart) {
+        this.stationDepart = stationDepart;
+    }
+
+    public Station getStationArrivee() {
+        return stationArrivee;
+    }
+
+    public void setStationArrivee(Station stationArrivee) {
+        this.stationArrivee = stationArrivee;
+    }
+
+    public Quai getQuaiDepart() {
+        return quaiDepart;
+    }
+
+    public void setQuaiDepart(Quai quaiDepart) {
+        this.quaiDepart = quaiDepart;
+    }
+
+    public Quai getQuaiArrivee() {
+        return quaiArrivee;
+    }
+
+    public void setQuaiArrivee(Quai quaiArrivee) {
+        this.quaiArrivee = quaiArrivee;
+    }
 
     public Long getId() {
         return id;
@@ -61,51 +137,15 @@ public class Reservation implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Reservation)) {
-            return false;
-        }
-        Reservation other = (Reservation) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public String toString() {
         return "fr.miage.m1.entities.Reservation[ id=" + id + " ]";
     }
 
-    public Long getIdNavette() {
-        return idNavette;
-    }
-
-    public void setIdNavette(Long idNavette) {
-        this.idNavette = idNavette;
-    }
-
-    public Long getIdUsager() {
-        return idUsager;
-    }
-
-    public void setIdUsager(Long idUsager) {
-        this.idUsager = idUsager;
-    }
-
-    public Long getNbPassagers() {
+    public int getNbPassagers() {
         return nbPassagers;
     }
 
-    public void setNbPassagers(Long nbPassagers) {
+    public void setNbPassagers(int nbPassagers) {
         this.nbPassagers = nbPassagers;
     }
 
@@ -117,36 +157,4 @@ public class Reservation implements Serializable {
         this.dateDepart = dateDepart;
     }
 
-    public Long getIdStationDepart() {
-        return idStationDepart;
-    }
-
-    public void setIdStationDepart(Long idStationDepart) {
-        this.idStationDepart = idStationDepart;
-    }
-
-    public Long getIdStationArrivee() {
-        return idStationArrivee;
-    }
-
-    public void setIdStationArrivee(Long idStationArrivee) {
-        this.idStationArrivee = idStationArrivee;
-    }
-
-    public Long getIdQuaiDepart() {
-        return idQuaiDepart;
-    }
-
-    public void setIdQuaiDepart(Long idQuaiDepart) {
-        this.idQuaiDepart = idQuaiDepart;
-    }
-
-    public Long getIdQuaiArrivee() {
-        return idQuaiArrivee;
-    }
-
-    public void setIdQuaiArrivee(Long idQuaiArrivee) {
-        this.idQuaiArrivee = idQuaiArrivee;
-    }
-    
 }

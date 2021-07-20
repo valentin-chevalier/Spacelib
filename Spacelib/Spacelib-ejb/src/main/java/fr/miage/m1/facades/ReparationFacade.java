@@ -5,7 +5,9 @@
  */
 package fr.miage.m1.facades;
 
+import fr.miage.m1.entities.Mecanicien;
 import fr.miage.m1.entities.Reparation;
+import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +29,19 @@ public class ReparationFacade extends AbstractFacade<Reparation> implements Repa
 
     public ReparationFacade() {
         super(Reparation.class);
+    }
+
+    @Override
+    public Reparation creerReparation(Date dateCreationOperation) {
+        Reparation reparation = new Reparation();
+        reparation.setDateCreationOperation(new Date());
+        this.create(reparation);
+        return reparation;
+    }
+
+    @Override
+    public Reparation getReparation(Long idReparation) {
+        return this.find(idReparation);
     }
     
 }

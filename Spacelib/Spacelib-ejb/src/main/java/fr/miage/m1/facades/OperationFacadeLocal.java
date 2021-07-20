@@ -5,7 +5,9 @@
  */
 package fr.miage.m1.facades;
 
+import fr.miage.m1.entities.Navette;
 import fr.miage.m1.entities.Operation;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -29,5 +31,11 @@ public interface OperationFacadeLocal {
     List<Operation> findRange(int[] range);
 
     int count();
+    
+    public Operation creerOperation(Date dateOperation, Navette navette);
+    
+    public Operation getOperation (Long idOperation);
+    
+    public Operation creerOperationMaintenance(Date dateOperation, Navette navette, Operation.EtatRevision etatRevision);
     
 }

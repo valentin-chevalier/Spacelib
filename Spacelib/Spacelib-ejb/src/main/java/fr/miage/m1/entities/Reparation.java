@@ -6,10 +6,13 @@
 package fr.miage.m1.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -23,6 +26,36 @@ public class Reparation implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dateCreationOperation;
+
+    @ManyToOne
+    public Mecanicien mecanicien;
+    
+    public Reparation(Long id, Date dateCreationOperation) {
+        this.id = id;
+        this.dateCreationOperation = dateCreationOperation;
+    }
+
+    public Reparation() {
+    }
+
+    public Mecanicien getMecanicien() {
+        return mecanicien;
+    }
+
+    public void setMecanicien(Mecanicien mecanicien) {
+        this.mecanicien = mecanicien;
+    }
+
+    public Date getDateCreationOperation() {
+        return dateCreationOperation;
+    }
+
+    public void setDateCreationOperation(Date dateCreationOperation) {
+        this.dateCreationOperation = dateCreationOperation;
+    }
+    
     public Long getId() {
         return id;
     }

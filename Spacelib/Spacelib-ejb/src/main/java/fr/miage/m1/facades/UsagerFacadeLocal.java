@@ -6,6 +6,8 @@
 package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Usager;
+import fr.miage.m1.spacelibshared.utilities.MailUsagerDejaExistantException;
+import fr.miage.m1.spacelibshared.utilities.MailInexistantException;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -30,4 +32,11 @@ public interface UsagerFacadeLocal {
 
     int count();
     
+    public Usager creerUsager(String prenom, String nom, String mail, String mdp) throws MailUsagerDejaExistantException;
+
+    public Usager getUsager(Long idUsager);
+ 
+    public Usager verifierUsagerDansBd(String mail, String mdp) throws MailInexistantException;
+    
+    public boolean verifierUsagerExiste(Long idUsager) throws MailInexistantException;
 }

@@ -23,6 +23,13 @@ public class Administrateur extends Utilisateur implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    public Administrateur() {
+    }
+    
+    public Administrateur(Long id, String prenom, String nom, String mail, String mdp){
+        super(id, prenom, nom, mail, mdp);
+    }
+    
     public Long getId() {
         return id;
     }

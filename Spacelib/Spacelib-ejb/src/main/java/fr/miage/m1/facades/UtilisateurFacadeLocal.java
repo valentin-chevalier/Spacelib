@@ -30,4 +30,8 @@ public interface UtilisateurFacadeLocal {
 
     int count();
     
+    public Utilisateur creerUtilisateur(String prenom, String nom, String mail, String mdp);
+    
+    public Utilisateur getUtilisateur(Long idUtilisateur);
+    
 }

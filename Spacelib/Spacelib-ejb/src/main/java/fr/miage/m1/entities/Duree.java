@@ -10,12 +10,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author Valentin
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name="Duree.recupererDuree", query="SELECT d.duree FROM Duree d WHERE (d.station1 = :vstation1 AND d.station2 = :vstation2)"
+            + "OR (d.station1 = :vstation2 AND d.station2 = :vstation1)"),
+})
 public class Duree implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,18 +30,45 @@ public class Duree implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private Long idStation1;
-    private Long idStation2;
-    private int duree;
+    private Long duree;
 
+    @OneToOne
+    public Station station1;
+    @OneToOne
+    public Station station2;
+    
     public Duree() {
     }
 
-    public Duree(Long id, Long idStation1, Long idStation2, int duree) {
+    public Duree(Long id, Long duree, Station station1, Station station2) {
         this.id = id;
-        this.idStation1 = idStation1;
-        this.idStation2 = idStation2;
         this.duree = duree;
+        this.station1 = station1;
+        this.station2 = station2;
+    }
+
+    public Long getDuree() {
+        return duree;
+    }
+
+    public void setDuree(Long duree) {
+        this.duree = duree;
+    }
+
+    public Station getStation1() {
+        return station1;
+    }
+
+    public void setStation1(Station station1) {
+        this.station1 = station1;
+    }
+
+    public Station getStation2() {
+        return station2;
+    }
+
+    public void setStation2(Station station2) {
+        this.station2 = station2;
     }
     
 

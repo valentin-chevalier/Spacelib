@@ -28,5 +28,21 @@ public class AdministrateurFacade extends AbstractFacade<Administrateur> impleme
     public AdministrateurFacade() {
         super(Administrateur.class);
     }
+
+    @Override
+    public Administrateur creerAdmnistrateur(String prenom, String nom, String mail, String mdp) {
+        Administrateur admin = new Administrateur();
+        admin.setMail(mail);
+        admin.setMdp(mdp);
+        admin.setNom(nom);
+        admin.setPrenom(prenom);
+        this.create(admin);
+        return admin;
+    }
+
+    @Override
+    public Administrateur getAdmnistrateur(Long idAdmin) {
+        return this.find(idAdmin);
+    }
     
 }

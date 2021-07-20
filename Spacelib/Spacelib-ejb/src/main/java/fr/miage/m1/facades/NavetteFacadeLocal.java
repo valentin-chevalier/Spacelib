@@ -6,6 +6,8 @@
 package fr.miage.m1.facades;
 
 import fr.miage.m1.entities.Navette;
+import fr.miage.m1.entities.Quai;
+import fr.miage.m1.spacelibshared.utilities.NavetteSansQuaiException;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -30,4 +32,8 @@ public interface NavetteFacadeLocal {
 
     int count();
     
+    public Navette creerNavette(boolean estEnRevision, boolean estDispo, int nbVoyages, int capacite, Quai quai) throws NavetteSansQuaiException;
+
+    public Navette getNavette(Long idNavette);
+  
 }
